@@ -307,9 +307,14 @@ void NavBar::setCurrentIndex(int index)
 
 void NavBar::onClickPageButton(QAction *action)
 {
+    int current = stackedWidget->currentIndex();
     int index = action->data().toInt();
-    stackedWidget->setCurrentIndex(index);
-    emit currentChanged(index);
+
+    if(index != current)
+    {
+        stackedWidget->setCurrentIndex(index);
+        emit currentChanged(index);
+    }
 }
 
 void NavBar::onButtonVisibilityChanged(int visCount)

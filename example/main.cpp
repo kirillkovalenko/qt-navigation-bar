@@ -7,7 +7,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    QFile stylefile(":/styles/2003Gray.qss");
+    QFile stylefile(":/styles/2003gray.qss");
     if(stylefile.open(QFile::ReadOnly))
     {
         QTextStream stream(&stylefile);
