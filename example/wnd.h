@@ -17,7 +17,6 @@ private slots:
     void navBarCurrentChanged(int index);
     void navBarVisibleRowsChanged(int rows);
 
-
 protected:
     NavBar *navBar;
     QListWidget *signalWidget;

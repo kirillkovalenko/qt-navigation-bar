@@ -108,6 +108,12 @@ void NavBar::setRowHeight(int height)
     pageList->setRowHeight(height);
     pageToolBar->setMinimumHeight(height);
     splitter->setIncrement(height);
+
+    int left, top, right, bottom;
+    getContentsMargins(&left, &top, &right, &bottom);
+    splitter->setGeometry(left, top, width()-right-left, this->height()-(height+top+bottom));
+    pageToolBar->setGeometry(left, this->height()-(height+bottom), this->width()-left-right, height);
+
     setVisibleRows(rows);
 }
 
@@ -118,9 +124,12 @@ int NavBar::visibleRows() const
 
 void NavBar::setVisibleRows(int rows)
 {
-    int left, top, right, bottom;
-    getContentsMargins(&left, &top, &right, &bottom);
-    pageList->resize(width()-right-left, rows*rowHeight());
+    int listHeight = rows * rowHeight();
+    int pageHeight = splitter->height() - listHeight;
+    QList<int> sizes;
+    sizes.append(pageHeight);
+    sizes.append(listHeight);
+    splitter->setSizes(sizes);
 }
 
 void NavBar::resizeEvent(QResizeEvent *e)
@@ -305,6 +314,7 @@ void NavBar::setCurrentIndex(int index)
 {
     stackedWidget->setCurrentIndex(index);
     pageActions[index]->setChecked(true);
+    emit currentChanged(index);
 }
 
 void NavBar::onClickPageButton(QAction *action)
@@ -331,6 +341,7 @@ void NavBar::onButtonVisibilityChanged(int visCount)
         if(i > visCount-1)
             pageToolBar->addAction(pageActions[i]);
 
+    //TODO: do not emit this, when rowHeight is changed.
     emit visibleRowsChanged(visCount);
 }
 

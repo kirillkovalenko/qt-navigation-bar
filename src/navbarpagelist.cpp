@@ -41,6 +41,7 @@ int NavBarPageList::rowHeight() const
 void NavBarPageList::setRowHeight(int newHeight)
 {
     pageButtonHeight = newHeight;
+    setMaximumHeight(buttons.size() * pageButtonHeight);
 }
 /*
 QSize NavBarPageList::iconSize() const
@@ -64,7 +65,6 @@ void NavBarPageList::resizeEvent(QResizeEvent *e)
     for(int i = 0; i < buttons.size(); i++)
     {
         buttons[i]->setGeometry(0, i * pageButtonHeight, e->size().width(), pageButtonHeight);
-        buttons[i]->setVisible(i < rows);
         buttons[i]->setToolTip("");
     }
 

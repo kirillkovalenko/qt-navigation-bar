@@ -15,7 +15,7 @@ class NavBar : public QFrame
     Q_PROPERTY(int count READ count)
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentChanged)
     Q_PROPERTY(int rowHeight READ rowHeight WRITE setRowHeight)
-    Q_PROPERTY(int visibleRows READ visibleRows WRITE setVisibleRows)
+    Q_PROPERTY(int visibleRows READ visibleRows WRITE setVisibleRows NOTIFY visibleRowsChanged)
 //  Q_PROPERTY(QSize smallIconsSize READ smallIconSize WRITE setSmallIconSize)
 //  Q_PROPERTY(QSize largeIconsSize READ largeIconSize WRITE setLargeIconSize)
 
