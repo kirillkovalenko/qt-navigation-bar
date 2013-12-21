@@ -5,7 +5,5 @@
         <file>images/date_task.png</file>
         <file>images/mail_yellow.png</file>
         <file>images/note.png</file>
-        <file>styles/2003gray.qss</file>
-        <file>styles/splitter.png</file>
     </qresource>
 </RCC>

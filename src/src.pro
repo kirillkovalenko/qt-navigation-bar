@@ -20,3 +20,6 @@ unix:!symbian {
     }
     INSTALLS += target
 }
+
+RESOURCES += \
+    navbar.qrc

@@ -8,6 +8,8 @@
 #include <QResizeEvent>
 #include <QAction>
 #include <QList>
+#include <QFile>
+#include <QTextStream>
 #include "navbar.h"
 
 /**
@@ -330,4 +332,26 @@ void NavBar::onButtonVisibilityChanged(int visCount)
             pageToolBar->addAction(pageActions[i]);
 
     emit visibleRowsChanged(visCount);
+}
+
+QString NavBar::loadStyle(const QString &filename)
+{
+    QFile stylefile(filename);
+    if(stylefile.open(QFile::ReadOnly))
+    {
+        QTextStream stream(&stylefile);
+        QString stylesheet = stream.readAll();
+        return stylesheet;
+    }
+    else
+        return "";
+}
+
+/**
+ * Returns "Office 2003 Gray" style sheet
+ * @return Style sheet
+ */
+QString NavBar::office2003GrayStyle()
+{
+    return NavBar::loadStyle(":/styles/2003gray.qss");
 }

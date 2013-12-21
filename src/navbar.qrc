@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>styles/splitter.png</file>
+        <file>styles/2003gray.qss</file>
+    </qresource>
+</RCC>

@@ -22,6 +22,7 @@ Wnd::Wnd(QWidget *parent)
     navBar->addPage(new QLabel("This is page 5"), "Page 5", QIcon(":/images/note.png"));
 
     navBar->setVisibleRows(3);
+    navBar->setStyleSheet(NavBar::office2003GrayStyle());
 }
 
 Wnd::~Wnd()

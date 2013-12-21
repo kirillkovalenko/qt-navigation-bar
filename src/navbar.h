@@ -44,6 +44,8 @@ public:
     QWidget *widget(int index) const;
     QSize sizeHint() const;
 
+    static QString office2003GrayStyle();
+
 signals:
     void currentChanged(int index);
     void visibleRowsChanged(int rows);
@@ -60,6 +62,8 @@ private slots:
     void onButtonVisibilityChanged(int visCount);
 
 private:
+    static QString loadStyle(const QString &filename);
+
     QStackedWidget  *stackedWidget;
     NavBarSplitter  *splitter;
     NavBarPageList  *pageList;
