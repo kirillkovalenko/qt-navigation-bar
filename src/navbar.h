@@ -62,6 +62,7 @@ private slots:
     void onButtonVisibilityChanged(int visCount);
 
 private:
+    void resizeContent(const QSize &size, int rowheight);
     static QString loadStyle(const QString &filename);
 
     QStackedWidget  *stackedWidget;

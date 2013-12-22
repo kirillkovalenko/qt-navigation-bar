@@ -65,11 +65,7 @@ NavBar::NavBar(QWidget *parent):
     splitter->setStretchFactor(0, 1);
     splitter->setStretchFactor(1, 0);
 
-    int left, top, right, bottom;
-    int rh = pageList->rowHeight();
-    getContentsMargins(&left, &top, &right, &bottom);
-    splitter->setGeometry(left, top, width()-right-left, height()-(rh+top+bottom));
-    pageToolBar->setGeometry(left, height()-(rh+bottom), width()-left-right, rh);
+    resizeContent(size(), rowHeight());
 
     actionGroup = new QActionGroup(this);
     actionGroup->setExclusive(true);
@@ -108,12 +104,7 @@ void NavBar::setRowHeight(int height)
     pageList->setRowHeight(height);
     pageToolBar->setMinimumHeight(height);
     splitter->setIncrement(height);
-
-    int left, top, right, bottom;
-    getContentsMargins(&left, &top, &right, &bottom);
-    splitter->setGeometry(left, top, width()-right-left, this->height()-(height+top+bottom));
-    pageToolBar->setGeometry(left, this->height()-(height+bottom), this->width()-left-right, height);
-
+    resizeContent(size(), height);
     setVisibleRows(rows);
 }
 
@@ -134,14 +125,16 @@ void NavBar::setVisibleRows(int rows)
 
 void NavBar::resizeEvent(QResizeEvent *e)
 {
-    int rh = rowHeight();
+    resizeContent(e->size(), rowHeight());
+    QFrame::resizeEvent(e);
+}
+
+void NavBar::resizeContent(const QSize &size, int rowheight)
+{
     int left, top, right, bottom;
     getContentsMargins(&left, &top, &right, &bottom);
-
-    splitter->setGeometry(left, top, e->size().width()-right-left, e->size().height()-(rh+top+bottom));
-    pageToolBar->setGeometry(left, e->size().height()-(rh+bottom), e->size().width()-left-right, rh);
-
-    QFrame::resizeEvent(e);
+    splitter->setGeometry(left, top, size.width()-right-left, size.height()-(rowheight+top+bottom));
+    pageToolBar->setGeometry(left, size.height()-(rowheight+bottom), size.width()-left-right, rowheight);
 }
 
 /*
