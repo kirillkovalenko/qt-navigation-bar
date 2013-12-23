@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>styles/splitter.png</file>
-        <file>styles/2003gray.qss</file>
+        <file>styles/Office2007Blue.css</file>
+        <file>styles/Office2003Gray.css</file>
+        <file>styles/splitterblue.png</file>
     </qresource>
 </RCC>

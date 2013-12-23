@@ -74,12 +74,6 @@ void NavBarPageList::resizeEvent(QResizeEvent *e)
     QWidget::resizeEvent(e);
 }
 
-void NavBarPageList::changeButtonsVisibility(int visRows)
-{
-    for(int i = 0; i < buttons.size(); i++)
-        buttons[i]->setVisible(i < visRows);
-}
-
 QAbstractButton *NavBarPageList::createPageButton(QAction *action)
 {
     QToolButton *btn = new QToolButton(this);

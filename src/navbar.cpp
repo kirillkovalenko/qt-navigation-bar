@@ -338,6 +338,11 @@ void NavBar::onButtonVisibilityChanged(int visCount)
     emit visibleRowsChanged(visCount);
 }
 
+/**
+ * Helper function, which loads text file and returns it content as QString.
+ * @param filename Style sheet file name
+ * @return Style sheet
+ */
 QString NavBar::loadStyle(const QString &filename)
 {
     QFile stylefile(filename);
@@ -349,13 +354,4 @@ QString NavBar::loadStyle(const QString &filename)
     }
     else
         return "";
-}
-
-/**
- * Returns "Office 2003 Gray" style sheet
- * @return Style sheet
- */
-QString NavBar::office2003GrayStyle()
-{
-    return NavBar::loadStyle(":/styles/2003gray.qss");
 }

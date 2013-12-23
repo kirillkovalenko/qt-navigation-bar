@@ -44,7 +44,7 @@ public:
     QWidget *widget(int index) const;
     QSize sizeHint() const;
 
-    static QString office2003GrayStyle();
+    static QString loadStyle(const QString &filename);
 
 signals:
     void currentChanged(int index);
@@ -63,7 +63,6 @@ private slots:
 
 private:
     void resizeContent(const QSize &size, int rowheight);
-    static QString loadStyle(const QString &filename);
 
     QStackedWidget  *stackedWidget;
     NavBarSplitter  *splitter;

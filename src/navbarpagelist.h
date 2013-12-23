@@ -28,7 +28,6 @@ signals:
 
 protected:
     void resizeEvent(QResizeEvent *e);
-    void changeButtonsVisibility(int visRows);
     virtual QAbstractButton *createPageButton(QAction *action);
 
 private:
