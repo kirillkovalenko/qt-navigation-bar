@@ -1,16 +1,28 @@
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 #include <QLabel>
 #include "wnd.h"
 
 Wnd::Wnd(QWidget *parent)
     : QWidget(parent)
 {
-    navBar              = new NavBar;
-    signalWidget        = new QListWidget;
-    QHBoxLayout *layout = new QHBoxLayout;
-    layout->addWidget(navBar);
-    layout->addWidget(signalWidget);
-    setLayout(layout);
+    navBar       = new NavBar;
+    signalWidget = new QListWidget;
+    styleBox     = new QComboBox;
+
+    QVBoxLayout *vLayout = new QVBoxLayout;
+    QHBoxLayout *hLayout = new QHBoxLayout;
+    vLayout->addWidget(styleBox);
+    vLayout->addWidget(signalWidget);
+    hLayout->addWidget(navBar);
+    hLayout->addLayout(vLayout);
+    setLayout(hLayout);
+
+    styleBox->addItem("Office2003Gray");
+    styleBox->addItem("Office2007Blue");
+    styleBox->addItem("Office2007Black");
+    styleBox->addItem("Office2007Silver");
+    connect(styleBox, SIGNAL(currentIndexChanged(QString)), SLOT(changeStylesheet(QString)));
 
     connect(navBar, SIGNAL(currentChanged(int)),     SLOT(navBarCurrentChanged(int)));
     connect(navBar, SIGNAL(visibleRowsChanged(int)), SLOT(navBarVisibleRowsChanged(int)));
@@ -27,6 +39,11 @@ Wnd::Wnd(QWidget *parent)
 
 Wnd::~Wnd()
 {    
+}
+
+void Wnd::changeStylesheet(const QString &styleName)
+{
+    navBar->setStyleSheet(NavBar::loadStyle(":/styles/" + styleName + ".css"));
 }
 
 void Wnd::navBarCurrentChanged(int index)

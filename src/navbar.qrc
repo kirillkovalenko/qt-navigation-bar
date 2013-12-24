@@ -4,5 +4,9 @@
         <file>styles/Office2007Blue.css</file>
         <file>styles/Office2003Gray.css</file>
         <file>styles/splitterblue.png</file>
+        <file>styles/Office2007Black.css</file>
+        <file>styles/splitterblack.png</file>
+        <file>styles/Office2007Silver.css</file>
+        <file>styles/splittersilver.png</file>
     </qresource>
 </RCC>
