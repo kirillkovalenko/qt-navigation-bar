@@ -36,6 +36,10 @@
  * It's value changed when splitter is moved.
  */
 /**
+ * @property NavBar::showHeader
+ * This property controls visibility of NavBar header.
+ */
+/**
  * @fn NavBar::currentChanged
  * This signal is emitted when the current item is changed.
  * @param index Index of selected page
@@ -53,6 +57,9 @@
 NavBar::NavBar(QWidget *parent):
     QFrame(parent)
 {
+    m_showHeader = true;
+
+    header = new NavBarHeader(this);
     stackedWidget = new QStackedWidget(this);
     pageList = new NavBarPageList(this);
     pageToolBar = new QToolBar(this);  
@@ -90,6 +97,21 @@ int NavBar::count() const
 int NavBar::currentIndex() const
 {
     return stackedWidget->currentIndex();
+}
+
+bool NavBar::showHeader() const
+{
+    return m_showHeader;
+}
+
+void NavBar::setShowHeader(bool show)
+{
+    if(show != m_showHeader)
+    {
+        m_showHeader = show;
+        header->setVisible(show);
+        resizeContent(size(), rowHeight());
+    }
 }
 
 int NavBar::rowHeight() const
@@ -133,7 +155,15 @@ void NavBar::resizeContent(const QSize &size, int rowheight)
 {
     int left, top, right, bottom;
     getContentsMargins(&left, &top, &right, &bottom);
-    splitter->setGeometry(left, top, size.width()-right-left, size.height()-(rowheight+top+bottom));
+
+    if(m_showHeader)
+    {
+        header->setGeometry(left, top, size.width()-right-left, 26);
+        splitter->setGeometry(left, top + 26, size.width()-right-left, size.height()-(rowheight+top+bottom+26));
+    }
+    else
+        splitter->setGeometry(left, top, size.width()-right-left, size.height()-(rowheight+top+bottom));
+
     pageToolBar->setGeometry(left, size.height()-(rowheight+bottom), size.width()-left-right, rowheight);
 }
 
@@ -202,6 +232,7 @@ int NavBar::addPage(QWidget *page, const QString &title, const QIcon &icon)
 
     pageActions.append(action);
     pageActions[stackedWidget->currentIndex()]->setChecked(true);
+    header->setText(pageActions[stackedWidget->currentIndex()]->text());
 
     return idx;
 }
@@ -251,6 +282,7 @@ int NavBar::insertPage(int index, QWidget *page, const QString &title, const QIc
 
     pageActions.insert(index, action);
     pageActions[stackedWidget->currentIndex()]->setChecked(true);
+    header->setText(pageActions[stackedWidget->currentIndex()]->text());
 
     return idx;
 }
@@ -306,6 +338,7 @@ QSize NavBar::sizeHint() const
 void NavBar::setCurrentIndex(int index)
 {
     stackedWidget->setCurrentIndex(index);
+    header->setText(pageActions[index]->text());
     pageActions[index]->setChecked(true);
     emit currentChanged(index);
 }
@@ -318,6 +351,7 @@ void NavBar::onClickPageButton(QAction *action)
     if(index != current)
     {
         stackedWidget->setCurrentIndex(index);
+        header->setText(action->text());
         emit currentChanged(index);
     }
 }
@@ -354,4 +388,10 @@ QString NavBar::loadStyle(const QString &filename)
     }
     else
         return "";
+}
+
+
+NavBarHeader::NavBarHeader(QWidget *parent):
+    QLabel(parent)
+{
 }

@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QListWidget>
 #include <QComboBox>
+#include <QCheckBox>
 #include "navbar.h"
 
 class Wnd : public QWidget
@@ -23,6 +24,7 @@ protected:
     NavBar *navBar;
     QListWidget *signalWidget;
     QComboBox *styleBox;
+    QCheckBox *showHeaderBox;
 };
 
 #endif // WND_H

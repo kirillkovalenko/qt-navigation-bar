@@ -6,26 +6,8 @@
 Wnd::Wnd(QWidget *parent)
     : QWidget(parent)
 {
-    navBar       = new NavBar;
-    signalWidget = new QListWidget;
-    styleBox     = new QComboBox;
-
-    QVBoxLayout *vLayout = new QVBoxLayout;
-    QHBoxLayout *hLayout = new QHBoxLayout;
-    vLayout->addWidget(styleBox);
-    vLayout->addWidget(signalWidget);
-    hLayout->addWidget(navBar);
-    hLayout->addLayout(vLayout);
-    setLayout(hLayout);
-
-    styleBox->addItem("Office2003Gray");
-    styleBox->addItem("Office2007Blue");
-    styleBox->addItem("Office2007Black");
-    styleBox->addItem("Office2007Silver");
-    connect(styleBox, SIGNAL(currentIndexChanged(QString)), SLOT(changeStylesheet(QString)));
-
-    connect(navBar, SIGNAL(currentChanged(int)),     SLOT(navBarCurrentChanged(int)));
-    connect(navBar, SIGNAL(visibleRowsChanged(int)), SLOT(navBarVisibleRowsChanged(int)));
+    navBar = new NavBar;
+    navBar->setStyleSheet(NavBar::loadStyle(":/styles/Office2003Gray.css"));
 
     navBar->addPage(new QLabel("This is page 1"), "Page 1", QIcon(":/images/mail_yellow.png"));
     navBar->addPage(new QLabel("This is page 2"), "Page 2", QIcon(":/images/calendar.png"));
@@ -34,7 +16,32 @@ Wnd::Wnd(QWidget *parent)
     navBar->addPage(new QLabel("This is page 5"), "Page 5", QIcon(":/images/note.png"));
 
     navBar->setVisibleRows(3);
-    navBar->setStyleSheet(NavBar::loadStyle(":/styles/Office2003Gray.css"));
+
+    connect(navBar, SIGNAL(currentChanged(int)),     SLOT(navBarCurrentChanged(int)));
+    connect(navBar, SIGNAL(visibleRowsChanged(int)), SLOT(navBarVisibleRowsChanged(int)));
+
+    showHeaderBox = new QCheckBox;
+    showHeaderBox->setText("Show header");
+    showHeaderBox->setChecked(true);
+    connect(showHeaderBox, SIGNAL(toggled(bool)), navBar, SLOT(setShowHeader(bool)));
+
+    styleBox = new QComboBox;
+    styleBox->addItem("Office2003Gray");
+    styleBox->addItem("Office2007Blue");
+    styleBox->addItem("Office2007Black");
+    styleBox->addItem("Office2007Silver");
+    connect(styleBox, SIGNAL(currentIndexChanged(QString)), SLOT(changeStylesheet(QString)));
+
+    signalWidget = new QListWidget;
+
+    QVBoxLayout *vLayout = new QVBoxLayout;
+    QHBoxLayout *hLayout = new QHBoxLayout;
+    vLayout->addWidget(styleBox);
+    vLayout->addWidget(showHeaderBox);
+    vLayout->addWidget(signalWidget);
+    hLayout->addWidget(navBar);
+    hLayout->addLayout(vLayout);
+    setLayout(hLayout);
 }
 
 Wnd::~Wnd()

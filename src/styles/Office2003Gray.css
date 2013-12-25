@@ -1,6 +1,13 @@
 NavBar {
     border: 1px solid #848484;
 }
+NavBarHeader {
+    background-color: #848484;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    padding-left: 3px;
+}
 NavBarSplitter:handle {
     background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(212, 208, 200, 255), stop:1 rgba(142, 141, 140, 255));
     background-image: url(:/styles/splitter.png);

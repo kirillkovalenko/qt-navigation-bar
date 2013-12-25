@@ -1,5 +1,15 @@
 NavBar {
     border: 1px solid rgba(101, 147, 207, 255);
+    background-color: #ffffff;
+}
+NavBarHeader {
+    background-color:QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(227, 239, 255, 255), stop:1 rgba(175, 210, 255, 255));
+    border-top: 1px solid #ffffff;
+    border-bottom: 1px solid rgba(101, 147, 207, 255);
+    color: rgba(21, 66, 139, 255);
+    font-size: 14px;
+    font-weight: bold;
+    padding-left: 3px;
 }
 NavBarSplitter:handle {
     background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(249, 250, 252, 255), stop:1 rgba(191, 219, 255, 255));

@@ -1,6 +1,7 @@
 #ifndef NAVBAR_H
 #define NAVBAR_H
 
+#include <QLabel>
 #include <QStackedWidget>
 #include <QToolBar>
 #include <QVBoxLayout>
@@ -9,11 +10,20 @@
 #include "navbarsplitter.h"
 #include "navbarpagelist.h"
 
+class NavBarHeader: public QLabel
+{
+    Q_OBJECT
+
+public:
+    explicit NavBarHeader(QWidget *parent = 0);
+};
+
 class NavBar : public QFrame
 {
     Q_OBJECT
     Q_PROPERTY(int count READ count)
     Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentChanged)
+    Q_PROPERTY(bool showHeader READ showHeader WRITE setShowHeader)
     Q_PROPERTY(int rowHeight READ rowHeight WRITE setRowHeight)
     Q_PROPERTY(int visibleRows READ visibleRows WRITE setVisibleRows NOTIFY visibleRowsChanged)
 //  Q_PROPERTY(QSize smallIconsSize READ smallIconSize WRITE setSmallIconSize)
@@ -25,8 +35,8 @@ public:
 
     int  count() const;
     int  currentIndex() const;
+    bool showHeader() const;
     int  rowHeight() const;
-    void setRowHeight(int height);
     int  visibleRows() const;
 /*  QSize smallIconSize() const;
     void  setSmallIconSize(const QSize &size);
@@ -53,6 +63,8 @@ signals:
 public slots:
     void setCurrentIndex(int index);
     void setVisibleRows(int rows);
+    void setRowHeight(int height);
+    void setShowHeader(bool show);
 
 protected:
     void resizeEvent(QResizeEvent *e);
@@ -64,12 +76,15 @@ private slots:
 private:
     void resizeContent(const QSize &size, int rowheight);
 
+    NavBarHeader    *header;
     QStackedWidget  *stackedWidget;
     NavBarSplitter  *splitter;
     NavBarPageList  *pageList;
     QToolBar        *pageToolBar;
     QList<QAction *> pageActions;
     QActionGroup    *actionGroup;
+
+    bool m_showHeader;
 };
 
 #endif // NAVBAR_H
