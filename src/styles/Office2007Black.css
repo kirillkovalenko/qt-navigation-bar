@@ -12,7 +12,7 @@ NavBarHeader {
 }
 NavBarSplitter:handle {
     background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(195, 200, 206, 255));
-    background-image: url(:/styles/splitterblack.png);
+    background-image: url(:/styles/splitter2007black.png);
     background-position: center;
     background-repeat: no-repeat;
     border-top: 1px solid rgba(167, 173, 182, 255);

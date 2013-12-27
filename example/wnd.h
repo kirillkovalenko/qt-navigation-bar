@@ -16,7 +16,7 @@ public:
     ~Wnd();
 
 private slots:
-    void changeStylesheet(const QString &styleName);
+    void changeStylesheet(int index);
     void navBarCurrentChanged(int index);
     void navBarVisibleRowsChanged(int rows);
 

@@ -7,7 +7,7 @@ Wnd::Wnd(QWidget *parent)
     : QWidget(parent)
 {
     navBar = new NavBar;
-    navBar->setStyleSheet(NavBar::loadStyle(":/styles/Office2003Gray.css"));
+    navBar->setStyleSheet(NavBar::loadStyle(":/styles/office2003gray.css"));
 
     navBar->addPage(new QLabel("This is page 1"), "Page 1", QIcon(":/images/mail_yellow.png"));
     navBar->addPage(new QLabel("This is page 2"), "Page 2", QIcon(":/images/calendar.png"));
@@ -26,14 +26,14 @@ Wnd::Wnd(QWidget *parent)
     connect(showHeaderBox, SIGNAL(toggled(bool)), navBar, SLOT(setShowHeader(bool)));
 
     styleBox = new QComboBox;
-    styleBox->addItem("Office2003Gray");
-    styleBox->addItem("Office2003Blue");
-    styleBox->addItem("Office2003Silver");
-    styleBox->addItem("Office2003Green");
-    styleBox->addItem("Office2007Blue");
-    styleBox->addItem("Office2007Black");
-    styleBox->addItem("Office2007Silver");
-    connect(styleBox, SIGNAL(currentIndexChanged(QString)), SLOT(changeStylesheet(QString)));
+    styleBox->addItem("Office 2003 Gray",   ":/styles/office2003gray.css");
+    styleBox->addItem("Office 2003 Blue",   ":/styles/office2003blue.css");
+    styleBox->addItem("Office 2003 Silver", ":/styles/office2003silver.css");
+    styleBox->addItem("Office 2003 Green",  ":/styles/office2003green.css");
+    styleBox->addItem("Office 2007 Blue",   ":/styles/office2007blue.css");
+    styleBox->addItem("Office 2007 Black",  ":/styles/office2007black.css");
+    styleBox->addItem("Office 2007 Silver", ":/styles/office2007silver.css");
+    connect(styleBox, SIGNAL(currentIndexChanged(int)), SLOT(changeStylesheet(int)));
 
     signalWidget = new QListWidget;
 
@@ -51,9 +51,9 @@ Wnd::~Wnd()
 {    
 }
 
-void Wnd::changeStylesheet(const QString &styleName)
+void Wnd::changeStylesheet(int index)
 {
-    navBar->setStyleSheet(NavBar::loadStyle(":/styles/" + styleName + ".css"));
+    navBar->setStyleSheet(NavBar::loadStyle(styleBox->itemData(index).toString()));
 }
 
 void Wnd::navBarCurrentChanged(int index)
