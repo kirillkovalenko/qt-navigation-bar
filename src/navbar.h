@@ -4,7 +4,6 @@
 #include <QLabel>
 #include <QStackedWidget>
 #include <QToolBar>
-#include <QVBoxLayout>
 #include <QList>
 #include <QActionGroup>
 #include "navbarsplitter.h"

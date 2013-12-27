@@ -1,0 +1,59 @@
+NavBar {
+    border: 1px solid rgba(0, 45, 150, 255);
+}
+NavBarHeader {
+    background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(89, 135, 214, 255), stop:1 rgba(5, 57, 148, 255));
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    padding-left: 3px;
+}
+NavBarSplitter:handle {
+    background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(89, 135, 214, 255), stop:1 rgba(15, 67, 157, 255));
+    background-image: url(:/styles/splitter2003blue.png);
+    background-position: center;
+    background-repeat: no-repeat;
+}
+NavBarSplitter:handle:vertical {
+	height: 6px;
+}
+NavBar QToolButton {
+    border-top: 1px solid rgba(0, 45, 150, 255);
+    background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(203, 225, 252, 255), stop:1 rgba(126, 166, 225, 255));
+	font-weight: bold; 
+}
+NavBar QToolButton:hover {
+	background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 220, 255), stop:1 rgba(247, 192, 91, 255));
+}
+NavBar QToolButton:hover:checked {
+    background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(232, 127, 8, 255), stop:1 rgba(248, 219, 124, 255));
+}
+NavBar QToolButton:checked {
+    background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(251, 230, 148, 255), stop:1 rgba(239, 150, 21, 255));
+}
+NavBar QToolButton:pressed {
+    background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(232, 127, 8, 255), stop:1 rgba(248, 219, 124, 255));
+}
+NavBar QToolBar {
+    border-top: 1px solid rgba(0, 45, 150, 255);
+	background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(203, 225, 252, 255), stop:1 rgba(126, 166, 225, 255));
+}
+NavBar QToolBar QToolButton {
+	background-color: none;
+	border: 0px;
+}
+NavBar QToolBar QToolButton:hover {
+    background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 220, 255), stop:1 rgba(247, 192, 91, 255));
+}
+NavBar QToolBar QToolButton:hover:checked {
+    background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(232, 127, 8, 255), stop:1 rgba(248, 219, 124, 255));
+}
+NavBar QToolBar QToolButton:checked {
+    background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(251, 230, 148, 255), stop:1 rgba(239, 150, 21, 255));
+}
+NavBar QToolBar QToolButton:pressed {
+    background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(232, 127, 8, 255), stop:1 rgba(248, 219, 124, 255));
+}
+NavBar QStackedWidget {
+    background-color: #ffffff;
+}

@@ -238,7 +238,7 @@ int NavBar::addPage(QWidget *page, const QString &title, const QIcon &icon)
 }
 
 /**
- * Inserts new page at given position, or at the bottom of the toolbox if index is out of range.
+ * Inserts new page at given position, or at the bottom of the navigation bar if index is out of range.
  * @param index Page position
  * @param page Widget
  * @return The new page's index
@@ -249,7 +249,7 @@ int NavBar::insertPage(int index, QWidget *page)
 }
 
 /**
- * Inserts new page at given position, or at the bottom of the toolbox if index is out of range.
+ * Inserts new page at given position, or at the bottom of the navigation bar if index is out of range.
  * @param index Page position
  * @param page Widget
  * @param title Page title
@@ -261,7 +261,7 @@ int NavBar::insertPage(int index, QWidget *page, const QString &title)
 }
 
 /**
- * Inserts new page at given position, or at the bottom of the toolbox if index is out of range.
+ * Inserts new page at given position, or at the bottom of the navigation bar if index is out of range.
  * @param index Page position
  * @param page Widget
  * @param title Page title

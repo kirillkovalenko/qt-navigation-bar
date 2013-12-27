@@ -1,8 +1,8 @@
 NavBar {
-    border: 1px solid #848484;
+    border: 1px solid rgba(128, 128, 128);
 }
 NavBarHeader {
-    background-color: #848484;
+    background-color: rgba(128, 128, 128);
     color: #ffffff;
     font-size: 14px;
     font-weight: bold;
@@ -18,21 +18,26 @@ NavBarSplitter:handle:vertical {
 	height: 6px;
 }
 NavBar QToolButton {
-	border-top: 1px solid #848484; 
-	background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(253, 253, 253, 255), stop:1 rgba(190, 190, 190, 255)); 
+    border-top: 1px solid rgba(128, 128, 128);
+    background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 255, 255), stop:1 rgba(213, 210, 202, 255));
 	font-weight: bold; 
 }
 NavBar QToolButton:hover {
-	background-color: #8482c6;
+    background-color: rgba(182, 189, 210, 255);
 }
 NavBar QToolButton:hover:checked {
-	background-color: #8482c6;
+    background-color: rgba(133, 146, 181, 255);
+    color: #ffffff;
 }
 NavBar QToolButton:checked {
-	background-color: #cecfde;
+    background-color: rgba(212, 213, 216, 255);
+}
+NavBar QToolButton:pressed {
+    background-color: rgba(133, 146, 181, 255);
+    color: #ffffff;
 }
 NavBar QToolBar {
-	border-top: 1px solid #848484; 
+    border-top: 1px solid rgba(128, 128, 128);
 	background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(253, 253, 253, 255), stop:1 rgba(190, 190, 190, 255)); 
 }
 NavBar QToolBar QToolButton {
@@ -40,13 +45,16 @@ NavBar QToolBar QToolButton {
 	border: 0px;
 }
 NavBar QToolBar QToolButton:hover {
-	background-color: #8482c6;
+    background-color: rgba(182, 189, 210, 255);
 }
 NavBar QToolBar QToolButton:hover:checked {
-	background-color: #8482c6;
+    background-color: rgba(133, 146, 181, 255);
 }
 NavBar QToolBar QToolButton:checked {
-	background-color: #cecfde;
+    background-color: rgba(212, 213, 216, 255);
+}
+NavBar QToolBar QToolButton:pressed {
+    background-color: rgba(133, 146, 181, 255);
 }
 NavBar QStackedWidget {
     background-color: #ffffff;

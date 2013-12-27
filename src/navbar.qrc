@@ -8,5 +8,11 @@
         <file>styles/splitterblack.png</file>
         <file>styles/Office2007Silver.css</file>
         <file>styles/splittersilver.png</file>
+        <file>styles/Office2003Blue.css</file>
+        <file>styles/Office2003Green.css</file>
+        <file>styles/Office2003Silver.css</file>
+        <file>styles/splitter2003blue.png</file>
+        <file>styles/splitter2003green.png</file>
+        <file>styles/splitter2003silver.png</file>
     </qresource>
 </RCC>

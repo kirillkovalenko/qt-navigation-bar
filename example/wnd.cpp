@@ -27,6 +27,9 @@ Wnd::Wnd(QWidget *parent)
 
     styleBox = new QComboBox;
     styleBox->addItem("Office2003Gray");
+    styleBox->addItem("Office2003Blue");
+    styleBox->addItem("Office2003Silver");
+    styleBox->addItem("Office2003Green");
     styleBox->addItem("Office2007Blue");
     styleBox->addItem("Office2007Black");
     styleBox->addItem("Office2007Silver");
