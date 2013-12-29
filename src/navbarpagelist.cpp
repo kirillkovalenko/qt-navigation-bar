@@ -27,6 +27,7 @@ void NavBarPageList::addItem(QAction *action)
 void NavBarPageList::insertItem(int index, QAction *action)
 {
     buttons.insert(index, createPageButton(action));
+    setMaximumHeight(buttons.size() * pageButtonHeight);
 }
 
 void NavBarPageList::removeItem(int index)

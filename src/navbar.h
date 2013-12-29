@@ -77,6 +77,7 @@ private slots:
     void onButtonVisibilityChanged(int visCount);
 
 private:
+    int  createPage(int index, QWidget *page, const QString &title, const QIcon &icon);
     void resizeContent(const QSize &size, int rowheight);
 
     NavBarHeader    *header;

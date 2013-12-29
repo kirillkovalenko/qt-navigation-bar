@@ -236,21 +236,7 @@ int NavBar::addPage(QWidget *page, const QString &title)
  */
 int NavBar::addPage(QWidget *page, const QString &title, const QIcon &icon)
 {
-    QAction *action = new QAction(this);
-    action->setCheckable(true);
-    action->setData(pageActions.size());
-    action->setText(title);
-    action->setIcon(icon);
-
-    actionGroup->addAction(action);
-    pageList->addItem(action);
-    int idx = stackedWidget->addWidget(page);
-
-    pageActions.append(action);
-    pageActions[stackedWidget->currentIndex()]->setChecked(true);
-    header->setText(pageActions[stackedWidget->currentIndex()]->text());
-
-    return idx;
+    return createPage(-1, page, title, icon);
 }
 
 /**
@@ -286,17 +272,44 @@ int NavBar::insertPage(int index, QWidget *page, const QString &title)
  */
 int NavBar::insertPage(int index, QWidget *page, const QString &title, const QIcon &icon)
 {
+    return createPage(index, page, title, icon);
+}
+
+/**
+ * @internal
+ * Creates and inserts new page at given position. If index is -1, page wil be added.
+ * @param index Page index
+ * @param page Widget
+ * @param title Page title
+ * @param icon Page icon
+ * @return The new page's index
+ */
+int NavBar::createPage(int index, QWidget *page, const QString &title, const QIcon &icon)
+{
     QAction *action = new QAction(this);
     action->setCheckable(true);
-    action->setData(pageActions.size());
     action->setText(title);
     action->setIcon(icon);
-
     actionGroup->addAction(action);
-    pageList->insertItem(index, action);
-    int idx = stackedWidget->insertWidget(index, page);
 
-    pageActions.insert(index, action);
+    int idx;
+    if(index < 0) // add page
+    {
+        action->setData(pageActions.size());
+        pageList->addItem(action);
+        idx = stackedWidget->addWidget(page);
+        pageActions.append(action);
+    }
+    else // insert page
+    {
+        pageList->insertItem(index, action);
+        idx = stackedWidget->insertWidget(index, page);
+        pageActions.insert(index, action);
+
+        for(int i = 0; i < pageActions.size(); i++)
+            pageActions[i]->setData(i);
+    }
+
     pageActions[stackedWidget->currentIndex()]->setChecked(true);
     header->setText(pageActions[stackedWidget->currentIndex()]->text());
 
