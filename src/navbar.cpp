@@ -40,6 +40,14 @@
  * This property controls visibility of NavBar header.
  */
 /**
+ * @property NavBar::smallIconSize
+ * This property holds size of icons in the bottom toolbar.
+ */
+/**
+ * @property NavBar::largeIconSize
+ * This property holds size of icons in the page list.
+ */
+/**
  * @fn NavBar::currentChanged
  * This signal is emitted when the current item is changed.
  * @param index Index of selected page
@@ -57,9 +65,12 @@
 NavBar::NavBar(QWidget *parent):
     QFrame(parent)
 {
-    m_showHeader = true;
+    headerVisible = true;
+    headerHeight  = 26;
+    setFrameStyle(QFrame::Panel | QFrame::Sunken);
 
     header = new NavBarHeader(this);
+    header->setFrameStyle(QFrame::Panel | QFrame::Raised);
     stackedWidget = new QStackedWidget(this);
     pageList = new NavBarPageList(this);
     pageToolBar = new QToolBar(this);  
@@ -101,14 +112,14 @@ int NavBar::currentIndex() const
 
 bool NavBar::showHeader() const
 {
-    return m_showHeader;
+    return headerVisible;
 }
 
 void NavBar::setShowHeader(bool show)
 {
-    if(show != m_showHeader)
+    if(show != headerVisible)
     {
-        m_showHeader = show;
+        headerVisible = show;
         header->setVisible(show);
         resizeContent(size(), rowHeight());
     }
@@ -156,10 +167,10 @@ void NavBar::resizeContent(const QSize &size, int rowheight)
     int left, top, right, bottom;
     getContentsMargins(&left, &top, &right, &bottom);
 
-    if(m_showHeader)
+    if(headerVisible)
     {
-        header->setGeometry(left, top, size.width()-right-left, 26);
-        splitter->setGeometry(left, top + 26, size.width()-right-left, size.height()-(rowheight+top+bottom+26));
+        header->setGeometry(left, top, size.width()-right-left, headerHeight);
+        splitter->setGeometry(left, top + headerHeight, size.width()-right-left, size.height()-(rowheight+top+bottom+headerHeight));
     }
     else
         splitter->setGeometry(left, top, size.width()-right-left, size.height()-(rowheight+top+bottom));
@@ -167,7 +178,6 @@ void NavBar::resizeContent(const QSize &size, int rowheight)
     pageToolBar->setGeometry(left, size.height()-(rowheight+bottom), size.width()-left-right, rowheight);
 }
 
-/*
 QSize NavBar::smallIconSize() const
 {
     return pageToolBar->iconSize();
@@ -188,7 +198,6 @@ void NavBar::setLargeIconSize(const QSize &size)
 {
     pageList->setIconSize(size);
 }
-*/
 
 /**
  * Adds widget as new page to navigation bar

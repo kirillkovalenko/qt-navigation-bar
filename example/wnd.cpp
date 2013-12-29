@@ -33,6 +33,7 @@ Wnd::Wnd(QWidget *parent)
     styleBox->addItem("Office 2007 Blue",   ":/styles/office2007blue.css");
     styleBox->addItem("Office 2007 Black",  ":/styles/office2007black.css");
     styleBox->addItem("Office 2007 Silver", ":/styles/office2007silver.css");
+    styleBox->addItem("None",               "");
     connect(styleBox, SIGNAL(currentIndexChanged(int)), SLOT(changeStylesheet(int)));
 
     signalWidget = new QListWidget;

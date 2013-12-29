@@ -25,8 +25,8 @@ class NavBar : public QFrame
     Q_PROPERTY(bool showHeader READ showHeader WRITE setShowHeader)
     Q_PROPERTY(int rowHeight READ rowHeight WRITE setRowHeight)
     Q_PROPERTY(int visibleRows READ visibleRows WRITE setVisibleRows NOTIFY visibleRowsChanged)
-//  Q_PROPERTY(QSize smallIconsSize READ smallIconSize WRITE setSmallIconSize)
-//  Q_PROPERTY(QSize largeIconsSize READ largeIconSize WRITE setLargeIconSize)
+    Q_PROPERTY(QSize smallIconSize READ smallIconSize WRITE setSmallIconSize)
+    Q_PROPERTY(QSize largeIconSize READ largeIconSize WRITE setLargeIconSize)
 
 public:
     explicit NavBar(QWidget *parent = 0);
@@ -37,10 +37,10 @@ public:
     bool showHeader() const;
     int  rowHeight() const;
     int  visibleRows() const;
-/*  QSize smallIconSize() const;
+    QSize smallIconSize() const;
     void  setSmallIconSize(const QSize &size);
     QSize largeIconSize() const;
-    void  setLargeIconSize(const QSize &size); */
+    void  setLargeIconSize(const QSize &size);
     int  addPage(QWidget *page);
     int  addPage(QWidget *page, const QString &title);
     int  addPage(QWidget *page, const QString &title, const QIcon &icon);
@@ -83,7 +83,8 @@ private:
     QList<QAction *> pageActions;
     QActionGroup    *actionGroup;
 
-    bool m_showHeader;
+    bool headerVisible;
+    int  headerHeight;
 };
 
 #endif // NAVBAR_H

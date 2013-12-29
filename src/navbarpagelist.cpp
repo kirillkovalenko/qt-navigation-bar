@@ -5,6 +5,8 @@ NavBarPageList::NavBarPageList(QWidget *parent) :
     QWidget(parent)
 {
     pageButtonHeight = 32;
+    QToolButton tmp;
+    pageIconSize = tmp.iconSize();
 }
 
 NavBarPageList::~NavBarPageList()
@@ -43,21 +45,20 @@ void NavBarPageList::setRowHeight(int newHeight)
     pageButtonHeight = newHeight;
     setMaximumHeight(buttons.size() * pageButtonHeight);
 }
-/*
+
 QSize NavBarPageList::iconSize() const
 {
-    if(buttons.empty())
-        return QSize(16, 16);
-    else
-        return buttons[0]->iconSize();
+    return pageIconSize;
 }
 
 void NavBarPageList::setIconSize(const QSize &size)
 {
+    pageIconSize = size;
+
     for(int i = 0; i < buttons.size(); i++)
         buttons[i]->setIconSize(size);
 }
-*/
+
 void NavBarPageList::resizeEvent(QResizeEvent *e)
 {
     int rows = e->size().height() / pageButtonHeight;
@@ -81,6 +82,7 @@ QAbstractButton *NavBarPageList::createPageButton(QAction *action)
     btn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     btn->setToolTip("");
     btn->setAutoRaise(true);
+    btn->setIconSize(pageIconSize);
     btn->setGeometry(0, buttons.size() * pageButtonHeight, width(), pageButtonHeight);
 
     return btn;

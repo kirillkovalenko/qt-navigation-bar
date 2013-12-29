@@ -7,6 +7,7 @@ NavBarHeader {
     font-size: 14px;
     font-weight: bold;
     padding-left: 3px;
+    border: 0px;
 }
 NavBarSplitter:handle {
     background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(168, 167, 191, 255), stop:1 rgba(120, 119, 151, 255));
