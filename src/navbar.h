@@ -48,6 +48,8 @@ public:
     int  insertPage(int index, QWidget *page, const QString &title);
     int  insertPage(int index, QWidget *page, const QString &title, const QIcon &icon);
     void removePage(int index);
+    QString pageTitle(int index) const;
+    QIcon pageIcon(int index) const;
     void setPageTitle(int index, const QString &title);
     void setPageIcon(int index, const QIcon &icon);
     QWidget *widget(int index) const;

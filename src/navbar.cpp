@@ -16,7 +16,14 @@
  * @class NavBar
  * @brief Outlook-like navigation bar.
  *
+ * @image html navbar.png
  * Description...
+ * @code
+   NavBar *navBar = new NavBar(this);
+   navBar->setStyleSheet(NavBar::loadStyle(":/styles/office2003gray.css"));
+   navBar->addPage(new QLabel("Page 1 contents"), "Page 1", QIcon(":/images/mail.png"));
+   navBar->addPage(new QLabel("Page 2 contents"), "Page 2", QIcon(":/images/calendar.png"));
+   @endcode
  */
 /**
  * @property NavBar::count
@@ -88,8 +95,8 @@ NavBar::NavBar(QWidget *parent):
     actionGroup = new QActionGroup(this);
     actionGroup->setExclusive(true);
 
-    connect(actionGroup, SIGNAL(triggered(QAction*)), SLOT(onClickPageButton(QAction*)));
-    connect(pageList, SIGNAL(buttonVisibilityChanged(int)), SLOT(onButtonVisibilityChanged(int)));
+    connect(actionGroup, SIGNAL(triggered(QAction*)),          SLOT(onClickPageButton(QAction*)));
+    connect(pageList,    SIGNAL(buttonVisibilityChanged(int)), SLOT(onButtonVisibilityChanged(int)));
 }
 
 NavBar::~NavBar()
@@ -310,8 +317,28 @@ void NavBar::removePage(int index)
 }
 
 /**
- * Set page title.
- * @param index Index of page
+ * Returns the title of the page at given position, or an empty string if index is out of range.
+ * @param index Page index
+ * @return Page title
+ */
+QString NavBar::pageTitle(int index) const
+{
+    return pageActions[index]->text();
+}
+
+/**
+ * Returns the icon of the page at given position, or a null icon if index is out of range.
+ * @param index Page index
+ * @return Page icon
+ */
+QIcon NavBar::pageIcon(int index) const
+{
+    return pageActions[index]->icon();
+}
+
+/**
+ * Sets the title of the page at given position.
+ * @param index Page index
  * @param title New title
  */
 void NavBar::setPageTitle(int index, const QString &title)
@@ -320,8 +347,8 @@ void NavBar::setPageTitle(int index, const QString &title)
 }
 
 /**
- * Set page icon.
- * @param index Index of page
+ * Sets the icon of the page at given position.
+ * @param index Page index
  * @param icon New icon
  */
 void NavBar::setPageIcon(int index, const QIcon &icon)
@@ -330,7 +357,7 @@ void NavBar::setPageIcon(int index, const QIcon &icon)
 }
 
 /**
- * Returns the widget at the given index, or 0 if there is no such widget.
+ * Returns the widget at given index, or 0 if there is no such widget.
  * @param index Widget index
  * @return Widget
  */
