@@ -13,12 +13,12 @@ class NavBarContainerExtension : public QObject, public QDesignerContainerExtens
 public:
     explicit NavBarContainerExtension(NavBar *widget, QObject *parent);
 
-    void addWidget(QWidget *widget);
-    int  count() const;
-    int  currentIndex() const;
-    void insertWidget(int index, QWidget *widget);
-    void remove(int index);
-    void setCurrentIndex(int index);
+    void     addWidget(QWidget *widget);
+    int      count() const;
+    int      currentIndex() const;
+    void     insertWidget(int index, QWidget *widget);
+    void     remove(int index);
+    void     setCurrentIndex(int index);
     QWidget *widget(int index) const;
 
 private:

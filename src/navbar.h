@@ -20,11 +20,11 @@ public:
 class NavBar : public QFrame
 {
     Q_OBJECT
-    Q_PROPERTY(int count READ count)
-    Q_PROPERTY(int currentIndex READ currentIndex WRITE setCurrentIndex NOTIFY currentChanged)
-    Q_PROPERTY(bool showHeader READ showHeader WRITE setShowHeader)
-    Q_PROPERTY(int rowHeight READ rowHeight WRITE setRowHeight)
-    Q_PROPERTY(int visibleRows READ visibleRows WRITE setVisibleRows NOTIFY visibleRowsChanged)
+    Q_PROPERTY(int   count         READ count)
+    Q_PROPERTY(int   currentIndex  READ currentIndex  WRITE setCurrentIndex NOTIFY currentChanged)
+    Q_PROPERTY(int   rowHeight     READ rowHeight     WRITE setRowHeight)
+    Q_PROPERTY(bool  showHeader    READ showHeader    WRITE setShowHeader)
+    Q_PROPERTY(int   visibleRows   READ visibleRows   WRITE setVisibleRows  NOTIFY visibleRowsChanged)
     Q_PROPERTY(QSize smallIconSize READ smallIconSize WRITE setSmallIconSize)
     Q_PROPERTY(QSize largeIconSize READ largeIconSize WRITE setLargeIconSize)
 
@@ -32,28 +32,30 @@ public:
     explicit NavBar(QWidget *parent = 0);
     ~NavBar();
 
-    int  count() const;
-    int  currentIndex() const;
-    bool showHeader() const;
-    int  rowHeight() const;
-    int  visibleRows() const;
-    QSize smallIconSize() const;
-    void  setSmallIconSize(const QSize &size);
-    QSize largeIconSize() const;
-    void  setLargeIconSize(const QSize &size);
-    int  addPage(QWidget *page);
-    int  addPage(QWidget *page, const QString &title);
-    int  addPage(QWidget *page, const QString &title, const QIcon &icon);
-    int  insertPage(int index, QWidget *page);
-    int  insertPage(int index, QWidget *page, const QString &title);
-    int  insertPage(int index, QWidget *page, const QString &title, const QIcon &icon);
-    void removePage(int index);
-    QString pageTitle(int index) const;
-    QIcon pageIcon(int index) const;
-    void setPageTitle(int index, const QString &title);
-    void setPageIcon(int index, const QIcon &icon);
+    int      addPage(QWidget *page);
+    int      addPage(QWidget *page, const QString &title);
+    int      addPage(QWidget *page, const QString &title, const QIcon &icon);
+    int      insertPage(int index, QWidget *page);
+    int      insertPage(int index, QWidget *page, const QString &title);
+    int      insertPage(int index, QWidget *page, const QString &title, const QIcon &icon);
+    QIcon    pageIcon(int index) const;
+    QString  pageTitle(int index) const;
+    void     setPageIcon(int index, const QIcon &icon);
+    void     setPageTitle(int index, const QString &title);
+    void     removePage(int index);
     QWidget *widget(int index) const;
-    QSize sizeHint() const;
+
+    int      count() const;
+    int      currentIndex() const;
+    int      rowHeight() const;
+    bool     showHeader() const;
+    int      visibleRows() const;
+    QSize    smallIconSize() const;
+    QSize    largeIconSize() const;
+    void     setSmallIconSize(const QSize &size);
+    void     setLargeIconSize(const QSize &size);
+
+    QSize    sizeHint() const;
 
     static QString loadStyle(const QString &filename);
 
@@ -63,9 +65,9 @@ signals:
 
 public slots:
     void setCurrentIndex(int index);
-    void setVisibleRows(int rows);
     void setRowHeight(int height);
     void setShowHeader(bool show);
+    void setVisibleRows(int rows);
 
 protected:
     void resizeEvent(QResizeEvent *e);

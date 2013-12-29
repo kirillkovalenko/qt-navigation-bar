@@ -39,7 +39,7 @@
  */
 /**
  * @property NavBar::visibleRows
- * This property holds number of visible rows.
+ * This property holds number of currently visible rows.
  * It's value changed when splitter is moved.
  */
 /**
