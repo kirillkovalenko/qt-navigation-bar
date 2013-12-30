@@ -276,6 +276,16 @@ int NavBar::insertPage(int index, QWidget *page, const QString &title, const QIc
 }
 
 /**
+ * Returns true if the page at given position is enabled; otherwise returns false.
+ * @param index Page index
+ * @return Enabled or disabled
+ */
+bool NavBar::isPageEnabled(int index)
+{
+    return pageActions[index]->isEnabled();
+}
+
+/**
  * @internal
  * Creates and inserts new page at given position. If index is -1, page wil be added.
  * @param index Page index
@@ -337,6 +347,16 @@ void NavBar::removePage(int index)
 QString NavBar::pageTitle(int index) const
 {
     return pageActions[index]->text();
+}
+
+/**
+ * If enabled is true then the page at given position; otherwise the item at position index is disabled.
+ * @param index Page index
+ * @param enabled Enable or disable
+ */
+void NavBar::setPageEnabled(int index, bool enabled)
+{
+    pageActions[index]->setEnabled(enabled);
 }
 
 /**

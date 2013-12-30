@@ -38,8 +38,10 @@ public:
     int      insertPage(int index, QWidget *page);
     int      insertPage(int index, QWidget *page, const QString &title);
     int      insertPage(int index, QWidget *page, const QString &title, const QIcon &icon);
+    bool     isPageEnabled(int index);
     QIcon    pageIcon(int index) const;
     QString  pageTitle(int index) const;
+    void     setPageEnabled(int index, bool enabled);
     void     setPageIcon(int index, const QIcon &icon);
     void     setPageTitle(int index, const QString &title);
     void     removePage(int index);

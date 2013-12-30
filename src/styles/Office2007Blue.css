@@ -43,6 +43,9 @@ NavBar QToolButton:pressed {
 	background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 217, 170, 255), stop:0.4 rgba(255, 187, 110, 255), stop:0.42 rgba(255, 171, 63, 255), stop:1 rgba(254, 225, 122, 255));
     color: #000000;
 }
+NavBar QToolButton:disabled {
+    color: rgba(128, 128, 128);
+}
 NavBar QToolBar {
 	border-top: 1px solid rgba(101, 147, 207, 255);
     background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(227, 239, 255, 255), stop:0.4 rgba(196, 221, 255, 255), stop:0.42 rgba(173, 209, 255, 255), stop:1 rgba(192, 219, 255, 255));
