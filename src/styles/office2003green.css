@@ -18,41 +18,41 @@ NavBarSplitter:handle {
 NavBarSplitter:handle:vertical {
 	height: 6px;
 }
-NavBar QToolButton {
+NavBarButton {
     border-top: 1px solid rgba(96, 128, 88, 255);
     background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(234, 240, 207, 255), stop:1 rgba(178, 193, 140, 255));
 	font-weight: bold; 
 }
-NavBar QToolButton:hover {
+NavBarButton:hover {
 	background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 220, 255), stop:1 rgba(247, 192, 91, 255));
 }
-NavBar QToolButton:hover:checked {
+NavBarButton:hover:checked {
     background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(232, 127, 8, 255), stop:1 rgba(248, 219, 124, 255));
 }
-NavBar QToolButton:checked {
+NavBarButton:checked {
     background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(251, 230, 148, 255), stop:1 rgba(239, 150, 21, 255));
 }
-NavBar QToolButton:pressed {
+NavBarButton:pressed {
     background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(232, 127, 8, 255), stop:1 rgba(248, 219, 124, 255));
 }
-NavBar QToolBar {
+NavBarToolBar {
     border-top: 1px solid rgba(96, 128, 88, 255);
     background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(234, 240, 207, 255), stop:1 rgba(178, 193, 140, 255));
 }
-NavBar QToolBar QToolButton {
+NavBarToolBar QToolButton {
 	background-color: none;
 	border: 0px;
 }
-NavBar QToolBar QToolButton:hover {
+NavBarToolBar QToolButton:hover {
     background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(255, 255, 220, 255), stop:1 rgba(247, 192, 91, 255));
 }
-NavBar QToolBar QToolButton:hover:checked {
+NavBarToolBar QToolButton:hover:checked {
     background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(232, 127, 8, 255), stop:1 rgba(248, 219, 124, 255));
 }
-NavBar QToolBar QToolButton:checked {
+NavBarToolBar QToolButton:checked {
     background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(251, 230, 148, 255), stop:1 rgba(239, 150, 21, 255));
 }
-NavBar QToolBar QToolButton:pressed {
+NavBarToolBar QToolButton:pressed {
     background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(232, 127, 8, 255), stop:1 rgba(248, 219, 124, 255));
 }
 NavBar QStackedWidget {

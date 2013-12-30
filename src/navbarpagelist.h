@@ -5,6 +5,14 @@
 #include <QList>
 #include <QToolButton>
 
+class NavBarButton: public QToolButton
+{
+    Q_OBJECT
+
+public:
+    explicit NavBarButton(QWidget *parent = 0);
+};
+
 class NavBarPageList : public QWidget
 {
     Q_OBJECT

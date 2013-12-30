@@ -78,7 +78,7 @@ void NavBarPageList::resizeEvent(QResizeEvent *e)
 
 QAbstractButton *NavBarPageList::createPageButton(QAction *action)
 {
-    QToolButton *btn = new QToolButton(this);
+    NavBarButton *btn = new NavBarButton(this);
     btn->setDefaultAction(action);
     btn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     btn->setToolTip("");
@@ -87,4 +87,10 @@ QAbstractButton *NavBarPageList::createPageButton(QAction *action)
     btn->setGeometry(0, buttons.size() * pageButtonHeight, width(), pageButtonHeight);
 
     return btn;
+}
+
+
+NavBarButton::NavBarButton(QWidget *parent):
+    QToolButton(parent)
+{
 }

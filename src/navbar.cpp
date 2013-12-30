@@ -80,7 +80,7 @@ NavBar::NavBar(QWidget *parent):
     header->setFrameStyle(QFrame::Panel | QFrame::Raised);
     stackedWidget = new QStackedWidget(this);
     pageList = new NavBarPageList(this);
-    pageToolBar = new QToolBar(this);  
+    pageToolBar = new NavBarToolBar(this);
     pageToolBar->setMinimumHeight(pageList->rowHeight());
 
     splitter = new NavBarSplitter(this);
@@ -462,5 +462,11 @@ QString NavBar::loadStyle(const QString &filename)
 
 NavBarHeader::NavBarHeader(QWidget *parent):
     QLabel(parent)
+{
+}
+
+
+NavBarToolBar::NavBarToolBar(QWidget *parent):
+    QToolBar(parent)
 {
 }

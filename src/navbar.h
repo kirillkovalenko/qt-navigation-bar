@@ -17,6 +17,14 @@ public:
     explicit NavBarHeader(QWidget *parent = 0);
 };
 
+class NavBarToolBar: public QToolBar
+{
+    Q_OBJECT
+
+public:
+    explicit NavBarToolBar(QWidget *parent = 0);
+};
+
 class NavBar : public QFrame
 {
     Q_OBJECT
@@ -86,7 +94,7 @@ private:
     QStackedWidget  *stackedWidget;
     NavBarSplitter  *splitter;
     NavBarPageList  *pageList;
-    QToolBar        *pageToolBar;
+    NavBarToolBar   *pageToolBar;
     QList<QAction *> pageActions;
     QActionGroup    *actionGroup;
 
