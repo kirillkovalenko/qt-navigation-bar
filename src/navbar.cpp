@@ -17,7 +17,9 @@
  * @brief Outlook-like navigation bar.
  *
  * @image html navbar.png
- * Description...
+ * The NavBar class provides a stack of pages where only one page is visible at a time,
+ * and page list in lower part of widget, which can be fully or partially folded to toolbar at the bottom.
+ * Example:
  * @code
    NavBar *navBar = new NavBar(this);
    navBar->setStyleSheet(NavBar::loadStyle(":/styles/office2003gray.css"));
@@ -286,7 +288,6 @@ bool NavBar::isPageEnabled(int index)
 }
 
 /**
- * @internal
  * Creates and inserts new page at given position. If index is -1, page wil be added.
  * @param index Page index
  * @param page Widget
@@ -443,6 +444,22 @@ void NavBar::onButtonVisibilityChanged(int visCount)
 
 /**
  * Helper function, which loads text file and returns it content as QString.
+ * There are some style sheets, included in resources under <tt>:/styles/</tt> path:
+ *   - office2003gray.css
+ *   - office2003blue.css
+ *   - office2003green.css
+ *   - office2003silver.css
+ *   - office2007blue.css
+ *   - office2007blue.css
+ *   - office2007blue.css
+ *
+ * Example:
+ * @code
+   navBar->setStyleSheet(NavBar::loadStyle(":/styles/office2003gray.css"));
+   @endcode
+ *
+ * @note If you plan to use style sheets from navbar resource file, you should call Q_INIT_RESOURCE(navbar).
+ *
  * @param filename Style sheet file name
  * @return Style sheet
  */

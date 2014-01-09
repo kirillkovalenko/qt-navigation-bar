@@ -1,6 +1,19 @@
 #include <QMouseEvent>
 #include "navbarsplitter.h"
 
+/**
+ * @class NavBarSplitter
+ * @brief Splitter, used inside navigation bar.
+ */
+/**
+ * @property NavBarSplitter::increment
+ * This property holds increment, used to move splitter handle. This value must be equal to NavBar::rowHeight property.
+ */
+
+/**
+ * Constructs new splitter with the parent argument passed on to the QFrame constructor.
+ * @param parent Parent widget
+ */
 NavBarSplitter::NavBarSplitter(QWidget *parent):
     QSplitter(parent)
 {
