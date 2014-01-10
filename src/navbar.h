@@ -43,6 +43,8 @@ public:
     int      addPage(QWidget *page);
     int      addPage(QWidget *page, const QString &title);
     int      addPage(QWidget *page, const QString &title, const QIcon &icon);
+    QWidget *currentWidget() const;
+    int      indexOf(QWidget *widget) const;
     int      insertPage(int index, QWidget *page);
     int      insertPage(int index, QWidget *page, const QString &title);
     int      insertPage(int index, QWidget *page, const QString &title, const QIcon &icon);
@@ -75,6 +77,7 @@ signals:
 
 public slots:
     void setCurrentIndex(int index);
+    void setCurrentWidget(QWidget *widget);
     void setRowHeight(int height);
     void setShowHeader(bool show);
     void setVisibleRows(int rows);

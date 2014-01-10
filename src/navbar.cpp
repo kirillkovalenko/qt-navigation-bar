@@ -119,6 +119,25 @@ int NavBar::currentIndex() const
     return stackedWidget->currentIndex();
 }
 
+/**
+ * Returns a pointer to the current widget, or 0 if there is no such page.
+ * @return Current widget
+ */
+QWidget *NavBar::currentWidget() const
+{
+    return stackedWidget->currentWidget();
+}
+
+/**
+ * Returns the index of widget, or -1 if the page does not exist.
+ * @param widget Widget
+ * @return Widget's index
+ */
+int NavBar::indexOf(QWidget *widget) const
+{
+    return stackedWidget->indexOf(widget);
+}
+
 bool NavBar::showHeader() const
 {
     return headerVisible;
@@ -408,6 +427,19 @@ QSize NavBar::sizeHint() const
 void NavBar::setCurrentIndex(int index)
 {
     stackedWidget->setCurrentIndex(index);
+    header->setText(pageActions[index]->text());
+    pageActions[index]->setChecked(true);
+    emit currentChanged(index);
+}
+
+/**
+ * Makes widget the current widget. The widget must be an item in this tool box.
+ * @param widget Pointer to widget
+ */
+void NavBar::setCurrentWidget(QWidget *widget)
+{
+    stackedWidget->setCurrentWidget(widget);
+    int index = stackedWidget->currentIndex();
     header->setText(pageActions[index]->text());
     pageActions[index]->setChecked(true);
     emit currentChanged(index);
