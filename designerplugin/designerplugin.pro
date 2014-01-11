@@ -1,6 +1,9 @@
 TARGET = navbarplugin
 TEMPLATE = lib
-CONFIG  += designer plugin
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += designer
+lessThan(QT_MAJOR_VERSION, 5): CONFIG  += designer plugin
+
 TARGET = $$qtLibraryTarget($$TARGET)
 DESTDIR = $$[QT_INSTALL_PLUGINS]/designer
 

@@ -7,6 +7,9 @@
 class NavBarPlugin : public QObject, public QDesignerCustomWidgetInterface
 {
     Q_OBJECT
+#if QT_VERSION >= 0x050000
+    Q_PLUGIN_METADATA(IID "com.MitrichSoftware.NavBarDesignerPlugin")
+#endif
     Q_INTERFACES(QDesignerCustomWidgetInterface)
 
 public:

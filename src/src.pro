@@ -3,6 +3,7 @@ TEMPLATE = lib
 CONFIG += staticlib
 DESTDIR = ../lib
 TARGET = $$qtLibraryTarget($$TARGET)
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 SOURCES += navbar.cpp \
     navbarpagelist.cpp \
