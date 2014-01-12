@@ -18,8 +18,8 @@
  *
  * @image html navbar.png
  * The NavBar class provides a stack of pages where only one page is visible at a time,
- * and page list in lower part of widget, which can be fully or partially folded to toolbar at the bottom.
- * Example:
+ * and page list in lower part of widget, which can be fully or partially folded into toolbar at the bottom.
+ * @par Example:
  * @code
    NavBar *navBar = new NavBar(this);
    navBar->setStyleSheet(NavBar::loadStyle(":/styles/office2003gray.css"));
@@ -34,27 +34,35 @@
 /**
  * @property NavBar::currentIndex
  * This property holds the index of the current page.
+ * @accessors int currentIndex() const\n void setCurrentIndex(int)
+ * @signals currentChanged(int)
  */
 /**
  * @property NavBar::rowHeight
  * This property holds height of a row in a page list.
+ * @accessors int rowHeight() const\n void setRowHeight(int)
  */
 /**
  * @property NavBar::visibleRows
  * This property holds number of currently visible rows.
  * It's value changed when splitter is moved.
+ * @accessors int visibleRows() const\n void setVisibleRows(int)
+ * @signals visibleRowsChanged(int)
  */
 /**
  * @property NavBar::showHeader
  * This property controls visibility of NavBar header.
+ * @accessors bool showHeader() const\n void setShowHeader(bool)
  */
 /**
  * @property NavBar::smallIconSize
  * This property holds size of icons in the bottom toolbar.
+ * @accessors int smallIconSize() const\n void setSmallIconSize(int)
  */
 /**
  * @property NavBar::largeIconSize
  * This property holds size of icons in the page list.
+ * @accessors int smallIconSize() const\n void setSmallIconSize(int)
  */
 /**
  * @fn NavBar::currentChanged
@@ -482,15 +490,16 @@ void NavBar::onButtonVisibilityChanged(int visCount)
  *   - office2003green.css
  *   - office2003silver.css
  *   - office2007blue.css
- *   - office2007blue.css
- *   - office2007blue.css
+ *   - office2007black.css
+ *   - office2007silver.css
  *
- * Example:
+ * @par Example:
  * @code
    navBar->setStyleSheet(NavBar::loadStyle(":/styles/office2003gray.css"));
    @endcode
  *
- * @note If you plan to use style sheets from navbar resource file, you should call Q_INIT_RESOURCE(navbar).
+ * @note If you want to use style sheets from navbar resource file, you should call <TT>Q_INIT_RESOURCE(navbar)</TT> in your application,
+ * see <A HREF="http://qt-project.org/doc/qt-4.8/qdir.html#Q_INIT_RESOURCE">Q_INIT_RESOURCE</A> for more information.
  *
  * @param filename Style sheet file name
  * @return Style sheet
