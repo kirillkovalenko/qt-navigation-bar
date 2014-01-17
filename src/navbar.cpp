@@ -99,6 +99,7 @@ NavBar::NavBar(QWidget *parent):
     splitter->addWidget(pageList);
     splitter->setStretchFactor(0, 1);
     splitter->setStretchFactor(1, 0);
+    splitter->setCollapsible(0, false);
 
     resizeContent(size(), rowHeight());
 
@@ -184,6 +185,11 @@ int NavBar::visibleRows() const
 
 void NavBar::setVisibleRows(int rows)
 {
+    if(rows < 0)
+        rows = 0;
+    if(rows > pageActions.size())
+        rows = pageActions.size();
+
     int listHeight = rows * rowHeight();
     int pageHeight = splitter->height() - listHeight;
     QList<int> sizes;
