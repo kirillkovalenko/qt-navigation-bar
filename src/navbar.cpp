@@ -13,6 +13,13 @@
 #include "navbar.h"
 
 /**
+ * @class NavBarHeader
+ * @brief Navigation bar header.
+ *
+ * This class derived from QLabel to have different class name (for use with style sheets) and has no additional features.
+ */
+
+/**
  * @class NavBar
  * @brief Outlook-like navigation bar.
  *
@@ -78,9 +85,10 @@
 /**
  * Constructs new NavBar
  * @param parent Parent widget
+ * @param f WindowFlags, passed to QFrame constructor
  */
-NavBar::NavBar(QWidget *parent):
-    QFrame(parent)
+NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
+    QFrame(parent, f)
 {
     headerVisible = true;
     headerHeight  = 26;
@@ -524,8 +532,24 @@ QString NavBar::loadStyle(const QString &filename)
 }
 
 
-NavBarHeader::NavBarHeader(QWidget *parent):
-    QLabel(parent)
+/**
+ * Constructs new NavBarHeader
+ * @param parent Parent widget, passes to QLabel constructor
+ * @param f WindowFlags, passes to QLabel constructor
+ */
+NavBarHeader::NavBarHeader(QWidget *parent, Qt::WindowFlags f):
+    QLabel(parent, f)
+{
+}
+
+/**
+ * Constructs new NavBarHeader
+ * @param text Header text
+ * @param parent Parent widget, passes to QLabel constructor
+ * @param f WindowFlags, passes to QLabel constructor
+ */
+NavBarHeader::NavBarHeader(const QString &text, QWidget *parent, Qt::WindowFlags f):
+    QLabel(text, parent, f)
 {
 }
 

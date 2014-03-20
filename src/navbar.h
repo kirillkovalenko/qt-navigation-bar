@@ -14,7 +14,8 @@ class NavBarHeader: public QLabel
     Q_OBJECT
 
 public:
-    explicit NavBarHeader(QWidget *parent = 0);
+    explicit NavBarHeader(QWidget *parent = 0, Qt::WindowFlags f = 0);
+    explicit NavBarHeader(const QString & text, QWidget *parent = 0, Qt::WindowFlags f = 0);
 };
 
 class NavBarToolBar: public QToolBar
@@ -37,7 +38,7 @@ class NavBar : public QFrame
     Q_PROPERTY(QSize largeIconSize READ largeIconSize WRITE setLargeIconSize)
 
 public:
-    explicit NavBar(QWidget *parent = 0);
+    explicit NavBar(QWidget *parent = 0, Qt::WindowFlags f = 0);
     ~NavBar();
 
     int      addPage(QWidget *page);
