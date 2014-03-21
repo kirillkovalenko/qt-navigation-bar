@@ -5,8 +5,7 @@ NavBarPageList::NavBarPageList(QWidget *parent) :
     QWidget(parent)
 {
     pageButtonHeight = 32;
-    QToolButton tmp;
-    pageIconSize = tmp.iconSize();
+    pageIconSize = QSize(24, 24);
 }
 
 NavBarPageList::~NavBarPageList()

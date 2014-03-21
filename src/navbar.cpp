@@ -37,6 +37,7 @@
 /**
  * @property NavBar::count
  * Number of pages in navigation bar.
+ * @accessors int count() const
  */
 /**
  * @property NavBar::currentIndex
@@ -177,6 +178,9 @@ int NavBar::rowHeight() const
 
 void NavBar::setRowHeight(int height)
 {
+    if(height < 3)
+        height = 3;
+
     int rows = visibleRows();
 
     pageList->setRowHeight(height);
@@ -512,8 +516,9 @@ void NavBar::onButtonVisibilityChanged(int visCount)
    navBar->setStyleSheet(NavBar::loadStyle(":/styles/office2003gray.css"));
    @endcode
  *
- * @note If you want to use style sheets from navbar resource file, you should call <TT>Q_INIT_RESOURCE(navbar)</TT> in your application,
- * see <A HREF="http://qt-project.org/doc/qt-4.8/qdir.html#Q_INIT_RESOURCE">Q_INIT_RESOURCE</A> for more information.
+ * @note If you want to use style sheets from navbar resource file, when navbar compiled as static library,
+ * you should call <TT>Q_INIT_RESOURCE(navbar)</TT> in your application, see
+ * <A HREF="http://qt-project.org/doc/qt-4.8/qdir.html#Q_INIT_RESOURCE">Q_INIT_RESOURCE</A>.
  *
  * @param filename Style sheet file name
  * @return Style sheet
@@ -534,8 +539,8 @@ QString NavBar::loadStyle(const QString &filename)
 
 /**
  * Constructs new NavBarHeader
- * @param parent Parent widget, passes to QLabel constructor
- * @param f WindowFlags, passes to QLabel constructor
+ * @param parent Parent widget, passed to QLabel constructor
+ * @param f WindowFlags, passed to QLabel constructor
  */
 NavBarHeader::NavBarHeader(QWidget *parent, Qt::WindowFlags f):
     QLabel(parent, f)
@@ -545,8 +550,8 @@ NavBarHeader::NavBarHeader(QWidget *parent, Qt::WindowFlags f):
 /**
  * Constructs new NavBarHeader
  * @param text Header text
- * @param parent Parent widget, passes to QLabel constructor
- * @param f WindowFlags, passes to QLabel constructor
+ * @param parent Parent widget, passed to QLabel constructor
+ * @param f WindowFlags, passed to QLabel constructor
  */
 NavBarHeader::NavBarHeader(const QString &text, QWidget *parent, Qt::WindowFlags f):
     QLabel(text, parent, f)

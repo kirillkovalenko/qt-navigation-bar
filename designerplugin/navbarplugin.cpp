@@ -55,6 +55,7 @@ bool NavBarPlugin::isContainer() const
 QWidget *NavBarPlugin::createWidget(QWidget *parent)
 {
     NavBar *widget = new NavBar(parent);
+    widget->setVisibleRows(0);
     connect(widget, SIGNAL(currentChanged(int)), SLOT(currentIndexChanged(int)));
     return widget;
 }
