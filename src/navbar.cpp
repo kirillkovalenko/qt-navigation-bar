@@ -385,6 +385,7 @@ int NavBar::createPage(int index, QWidget *page, const QString &title, const QIc
 
     pageActions[stackedWidget->currentIndex()]->setChecked(true);
     header->setText(pageActions[stackedWidget->currentIndex()]->text());
+    refillPagesMenu();
 
     return idx;
 }
@@ -400,6 +401,7 @@ void NavBar::removePage(int index)
     actionGroup->removeAction(pageActions[index]);
     delete pageActions[index];
     pageActions.removeAt(index);
+    refillPagesMenu();
 }
 
 /**
@@ -521,6 +523,21 @@ void NavBar::refillToolBar(int visCount)
         menuBtn->setPopupMode(QToolButton::InstantPopup);
         menuBtn->setMenu(pagesMenu);
         pageToolBar->addWidget(menuBtn);
+    }
+}
+
+void NavBar::refillPagesMenu()
+{
+    pagesMenu->clear();
+
+    for(int i = 0; i < pageActions.size(); i++)
+    {
+        QAction *changeVis = new QAction(pagesMenu);
+        changeVis->setText(pageActions[i]->text());
+        changeVis->setCheckable(true);
+        changeVis->setChecked(true);
+        changeVis->setData(i);
+        pagesMenu->addAction(changeVis);
     }
 }
 
