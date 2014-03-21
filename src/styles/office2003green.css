@@ -55,6 +55,11 @@ NavBarToolBar QToolButton:checked {
 NavBarToolBar QToolButton:pressed {
     background-color: QLinearGradient(spread:pad, x1:0, y1:0, x2:0, y2:1, stop:0 rgba(232, 127, 8, 255), stop:1 rgba(248, 219, 124, 255));
 }
+NavBarToolBar QToolButton::menu-indicator {
+    image: url(:/styles/downarrowblue.png);
+    subcontrol-origin: content;
+    subcontrol-position: center;
+}
 NavBar QStackedWidget {
     background-color: #ffffff;
 }

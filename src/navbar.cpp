@@ -118,6 +118,8 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
 
     connect(actionGroup, SIGNAL(triggered(QAction*)),          SLOT(onClickPageButton(QAction*)));
     connect(pageList,    SIGNAL(buttonVisibilityChanged(int)), SLOT(onButtonVisibilityChanged(int)));
+
+    pagesMenu = new QMenu(this);
 }
 
 NavBar::~NavBar()
@@ -515,8 +517,9 @@ void NavBar::refillToolBar(int visCount)
     {
         QToolButton *menuBtn = new QToolButton;
         menuBtn->setMaximumWidth(16);
-        menuBtn->setIcon(QIcon(":/images/dropdownarrow.png"));
         menuBtn->setAutoRaise(true);
+        menuBtn->setPopupMode(QToolButton::InstantPopup);
+        menuBtn->setMenu(pagesMenu);
         pageToolBar->addWidget(menuBtn);
     }
 }
@@ -524,8 +527,7 @@ void NavBar::refillToolBar(int visCount)
 void NavBar::onButtonVisibilityChanged(int visCount)
 {
     refillToolBar(visCount);
-    //TODO: do not emit this, when rowHeight is changed.
-    emit visibleRowsChanged(visCount);
+    emit visibleRowsChanged(visCount); //TODO: do not emit this, when rowHeight is changed.
 }
 
 /**

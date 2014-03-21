@@ -57,6 +57,11 @@ NavBarToolBar QToolButton:checked {
 NavBarToolBar QToolButton:pressed {
     background-color: rgba(133, 146, 181, 255);
 }
+NavBarToolBar QToolButton::menu-indicator {
+    image: url(:/styles/downarrowblue.png);
+    subcontrol-origin: content;
+    subcontrol-position: center;
+}
 NavBar QStackedWidget {
     background-color: #ffffff;
 }

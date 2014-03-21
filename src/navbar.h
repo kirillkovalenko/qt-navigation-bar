@@ -6,6 +6,7 @@
 #include <QToolBar>
 #include <QList>
 #include <QActionGroup>
+#include <QMenu>
 #include "navbarsplitter.h"
 #include "navbarpagelist.h"
 
@@ -105,6 +106,7 @@ private:
     NavBarToolBar   *pageToolBar;
     QList<QAction *> pageActions;
     QActionGroup    *actionGroup;
+    QMenu           *pagesMenu;
 
     bool optMenuVisible;
     bool headerVisible;
