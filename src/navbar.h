@@ -33,6 +33,7 @@ class NavBar : public QFrame
     Q_PROPERTY(int   currentIndex  READ currentIndex  WRITE setCurrentIndex NOTIFY currentChanged)
     Q_PROPERTY(int   rowHeight     READ rowHeight     WRITE setRowHeight)
     Q_PROPERTY(bool  showHeader    READ showHeader    WRITE setShowHeader)
+    Q_PROPERTY(bool  showOptionsMenu READ showOptionsMenu WRITE setShowOptionsMenu)
     Q_PROPERTY(int   visibleRows   READ visibleRows   WRITE setVisibleRows  NOTIFY visibleRowsChanged)
     Q_PROPERTY(QSize smallIconSize READ smallIconSize WRITE setSmallIconSize)
     Q_PROPERTY(QSize largeIconSize READ largeIconSize WRITE setLargeIconSize)
@@ -62,6 +63,7 @@ public:
     int      currentIndex() const;
     int      rowHeight() const;
     bool     showHeader() const;
+    bool     showOptionsMenu() const;
     int      visibleRows() const;
     QSize    smallIconSize() const;
     QSize    largeIconSize() const;
@@ -81,6 +83,7 @@ public slots:
     void setCurrentWidget(QWidget *widget);
     void setRowHeight(int height);
     void setShowHeader(bool show);
+    void setShowOptionsMenu(bool show);
     void setVisibleRows(int rows);
 
 protected:
@@ -93,6 +96,7 @@ private slots:
 private:
     int  createPage(int index, QWidget *page, const QString &title, const QIcon &icon);
     void resizeContent(const QSize &size, int rowheight);
+    void refillToolBar(int visCount);
 
     NavBarHeader    *header;
     QStackedWidget  *stackedWidget;
@@ -102,6 +106,7 @@ private:
     QList<QAction *> pageActions;
     QActionGroup    *actionGroup;
 
+    bool optMenuVisible;
     bool headerVisible;
     int  headerHeight;
 };

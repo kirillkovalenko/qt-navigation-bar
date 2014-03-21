@@ -25,6 +25,11 @@ Wnd::Wnd(QWidget *parent)
     showHeaderBox->setChecked(true);
     connect(showHeaderBox, SIGNAL(toggled(bool)), navBar, SLOT(setShowHeader(bool)));
 
+    showOptMenuBox = new QCheckBox;
+    showOptMenuBox->setText("Show options menu button");
+    showOptMenuBox->setChecked(false);
+    connect(showOptMenuBox, SIGNAL(toggled(bool)), navBar, SLOT(setShowOptionsMenu(bool)));
+
     styleBox = new QComboBox;
     styleBox->addItem("Office 2003 Gray",   ":/styles/office2003gray.css");
     styleBox->addItem("Office 2003 Blue",   ":/styles/office2003blue.css");
@@ -42,6 +47,7 @@ Wnd::Wnd(QWidget *parent)
     QHBoxLayout *hLayout = new QHBoxLayout;
     vLayout->addWidget(styleBox);
     vLayout->addWidget(showHeaderBox);
+    vLayout->addWidget(showOptMenuBox);
     vLayout->addWidget(signalWidget);
     hLayout->addWidget(navBar);
     hLayout->addLayout(vLayout);

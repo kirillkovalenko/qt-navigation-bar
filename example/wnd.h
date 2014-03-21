@@ -25,6 +25,7 @@ protected:
     QListWidget *signalWidget;
     QComboBox *styleBox;
     QCheckBox *showHeaderBox;
+    QCheckBox *showOptMenuBox;
 };
 
 #endif // WND_H

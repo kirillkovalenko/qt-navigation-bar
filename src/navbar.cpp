@@ -92,6 +92,7 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     QFrame(parent, f)
 {
     headerVisible = true;
+    optMenuVisible = false;
     headerHeight  = 26;
     setFrameStyle(QFrame::Panel | QFrame::Sunken);
 
@@ -161,6 +162,11 @@ bool NavBar::showHeader() const
     return headerVisible;
 }
 
+bool NavBar::showOptionsMenu() const
+{
+    return optMenuVisible;
+}
+
 void NavBar::setShowHeader(bool show)
 {
     if(show != headerVisible)
@@ -168,6 +174,15 @@ void NavBar::setShowHeader(bool show)
         headerVisible = show;
         header->setVisible(show);
         resizeContent(size(), rowHeight());
+    }
+}
+
+void NavBar::setShowOptionsMenu(bool show)
+{
+    if(show != optMenuVisible)
+    {
+        optMenuVisible = show;
+        refillToolBar(visibleRows());
     }
 }
 
@@ -484,7 +499,7 @@ void NavBar::onClickPageButton(QAction *action)
     }
 }
 
-void NavBar::onButtonVisibilityChanged(int visCount)
+void NavBar::refillToolBar(int visCount)
 {
     pageToolBar->clear();
     QWidget *spacerWidget = new QWidget(this);
@@ -496,6 +511,19 @@ void NavBar::onButtonVisibilityChanged(int visCount)
         if(i > visCount-1)
             pageToolBar->addAction(pageActions[i]);
 
+    if(optMenuVisible)
+    {
+        QToolButton *menuBtn = new QToolButton;
+        menuBtn->setMaximumWidth(16);
+        menuBtn->setIcon(QIcon(":/images/dropdownarrow.png"));
+        menuBtn->setAutoRaise(true);
+        pageToolBar->addWidget(menuBtn);
+    }
+}
+
+void NavBar::onButtonVisibilityChanged(int visCount)
+{
+    refillToolBar(visCount);
     //TODO: do not emit this, when rowHeight is changed.
     emit visibleRowsChanged(visCount);
 }

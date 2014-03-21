@@ -14,5 +14,6 @@
         <file>styles/splitter2007blue.png</file>
         <file>styles/splitter2007black.png</file>
         <file>styles/splitter2007silver.png</file>
+        <file>images/dropdownarrow.png</file>
     </qresource>
 </RCC>
