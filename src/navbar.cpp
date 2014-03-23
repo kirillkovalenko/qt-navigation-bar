@@ -63,6 +63,11 @@
  * @accessors bool showHeader() const\n void setShowHeader(bool)
  */
 /**
+ * @property NavBar::showOptionsMenu
+ * This property controls visibility of options menu button in NavBar toolbar.
+ * @accessors bool showOptionsMenu() const\n void setShowOptionsMenu(bool)
+ */
+/**
  * @property NavBar::smallIconSize
  * This property holds size of icons in the bottom toolbar.
  * @accessors int smallIconSize() const\n void setSmallIconSize(int)
@@ -84,6 +89,12 @@
  **/
 
 /**
+ * @struct NavBar::Page
+ * Internal page container
+ * @internal
+ */
+
+/**
  * Constructs new NavBar
  * @param parent Parent widget
  * @param f WindowFlags, passed to QFrame constructor
@@ -91,10 +102,10 @@
 NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     QFrame(parent, f)
 {
-    headerVisible = true;
+    headerVisible  = true;
     optMenuVisible = false;
-    headerHeight  = 26;
-    pageIconSize = QSize(24, 24);
+    headerHeight   = 26;
+    pageIconSize   = QSize(24, 24);
     setFrameStyle(QFrame::Panel | QFrame::Sunken);
 
     header = new NavBarHeader(this);
@@ -510,7 +521,7 @@ void NavBar::setCurrentIndex(int index)
 }
 
 /**
- * Makes widget the current widget. The widget must be an item in this tool box.
+ * Makes widget the current widget. The widget must be an item in this navbar.
  * @param widget Pointer to widget
  */
 void NavBar::setCurrentWidget(QWidget *widget)

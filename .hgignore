@@ -34,3 +34,5 @@ Makefile
 *.hhk
 *.hhp
 *.log
+*.zip
+*.db

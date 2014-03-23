@@ -11,7 +11,7 @@ class NavBarSplitter : public QSplitter
 public:
     explicit NavBarSplitter(QWidget *parent = 0);
 
-    int increment() const;
+    int  increment() const;
     void setIncrement(int inc);
 
 protected:

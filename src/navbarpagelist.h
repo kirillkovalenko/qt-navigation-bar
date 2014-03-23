@@ -24,8 +24,8 @@ public:
     explicit NavBarPageList(NavBar *parent);
     ~NavBarPageList();
 
-    int   rowHeight() const;
-    void  setRowHeight(int newHeight);
+    int  rowHeight() const;
+    void setRowHeight(int newHeight);
 
 signals:
     void buttonVisibilityChanged(int visCount);

@@ -30,21 +30,20 @@ public:
 class NavBar : public QFrame
 {
     Q_OBJECT
-    Q_PROPERTY(int   count         READ count)
-    Q_PROPERTY(int   currentIndex  READ currentIndex  WRITE setCurrentIndex NOTIFY currentChanged)
-    Q_PROPERTY(int   rowHeight     READ rowHeight     WRITE setRowHeight)
-    Q_PROPERTY(bool  showHeader    READ showHeader    WRITE setShowHeader)
+    Q_PROPERTY(int   count           READ count)
+    Q_PROPERTY(int   currentIndex    READ currentIndex    WRITE setCurrentIndex NOTIFY currentChanged)
+    Q_PROPERTY(int   rowHeight       READ rowHeight       WRITE setRowHeight)
+    Q_PROPERTY(bool  showHeader      READ showHeader      WRITE setShowHeader)
     Q_PROPERTY(bool  showOptionsMenu READ showOptionsMenu WRITE setShowOptionsMenu)
-    Q_PROPERTY(int   visibleRows   READ visibleRows   WRITE setVisibleRows  NOTIFY visibleRowsChanged)
-    Q_PROPERTY(QSize smallIconSize READ smallIconSize WRITE setSmallIconSize)
-    Q_PROPERTY(QSize largeIconSize READ largeIconSize WRITE setLargeIconSize)
+    Q_PROPERTY(int   visibleRows     READ visibleRows     WRITE setVisibleRows  NOTIFY visibleRowsChanged)
+    Q_PROPERTY(QSize smallIconSize   READ smallIconSize   WRITE setSmallIconSize)
+    Q_PROPERTY(QSize largeIconSize   READ largeIconSize   WRITE setLargeIconSize)
 
 public:
     struct Page
     {
         QToolButton *button;
         QAction     *action;
-        //QAction   *showAction;
         //TODO: text & icon inline accessors, to replace page.action->text/icon
     };
 
@@ -97,7 +96,6 @@ public slots:
 
 protected:
     void resizeEvent(QResizeEvent *e);
-    QList<Page> pages;
 
 private slots:
     void onClickPageButton(QAction *action);
@@ -116,10 +114,11 @@ private:
     NavBarToolBar   *pageToolBar;
     QActionGroup    *actionGroup;
     QMenu           *pagesMenu;
+    QList<Page>      pages;
 
-    bool optMenuVisible;
-    bool headerVisible;
-    int  headerHeight;
+    bool  optMenuVisible;
+    bool  headerVisible;
+    int   headerHeight;
     QSize pageIconSize;
 
     friend class NavBarPageList;
