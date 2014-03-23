@@ -94,6 +94,7 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     headerVisible = true;
     optMenuVisible = false;
     headerHeight  = 26;
+    pageIconSize = QSize(24, 24);
     setFrameStyle(QFrame::Panel | QFrame::Sunken);
 
     header = new NavBarHeader(this);
@@ -124,10 +125,6 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
 
 NavBar::~NavBar()
 {
-    for(int i = 0; i < pageActions.size(); i++)
-        delete pageActions[i];
-
-    pageActions.clear();
 }
 
 int NavBar::count() const
@@ -216,8 +213,8 @@ void NavBar::setVisibleRows(int rows)
 {
     if(rows < 0)
         rows = 0;
-    if(rows > pageActions.size())
-        rows = pageActions.size();
+    if(rows > pages.size())
+        rows = pages.size();
 
     int listHeight = rows * rowHeight();
     int pageHeight = splitter->height() - listHeight;
@@ -262,12 +259,15 @@ void NavBar::setSmallIconSize(const QSize &size)
 
 QSize NavBar::largeIconSize() const
 {
-    return pageList->iconSize();
+    return pageIconSize;
 }
 
 void NavBar::setLargeIconSize(const QSize &size)
 {
-    pageList->setIconSize(size);
+    pageIconSize = size;
+
+    for(int i = 0; i < pages.size(); i++)
+        pages[i].button->setIconSize(size);
 }
 
 /**
@@ -346,7 +346,7 @@ int NavBar::insertPage(int index, QWidget *page, const QString &title, const QIc
  */
 bool NavBar::isPageEnabled(int index)
 {
-    return pageActions[index]->isEnabled();
+    return pages[index].action->isEnabled();
 }
 
 /**
@@ -359,32 +359,43 @@ bool NavBar::isPageEnabled(int index)
  */
 int NavBar::createPage(int index, QWidget *page, const QString &title, const QIcon &icon)
 {
-    QAction *action = new QAction(this);
-    action->setCheckable(true);
-    action->setText(title);
-    action->setIcon(icon);
-    actionGroup->addAction(action);
+    Page p;
+
+    p.action = new QAction(this);
+    p.action->setCheckable(true);
+    p.action->setText(title);
+    p.action->setIcon(icon);
+
+    p.button = new NavBarButton(pageList);
+    p.button->setDefaultAction(p.action);
+    p.button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    p.button->setToolTip("");
+    p.button->setAutoRaise(true);
+    p.button->setIconSize(pageIconSize);
+    p.button->setGeometry(0, pages.size() * rowHeight(), pageList->width(), rowHeight()); //TODO: move to NavBarPageList
+    p.button->setVisible(true);
 
     int idx;
     if(index < 0) // add page
     {
-        action->setData(pageActions.size());
-        pageList->addItem(action);
+        p.action->setData(pages.size());
         idx = stackedWidget->addWidget(page);
-        pageActions.append(action);
+        pages.append(p);
     }
     else // insert page
     {
-        pageList->insertItem(index, action);
         idx = stackedWidget->insertWidget(index, page);
-        pageActions.insert(index, action);
+        pages.insert(index, p);
 
-        for(int i = 0; i < pageActions.size(); i++)
-            pageActions[i]->setData(i);
+        for(int i = 0; i < pages.size(); i++)
+            pages[i].action->setData(i);
     }
 
-    pageActions[stackedWidget->currentIndex()]->setChecked(true);
-    header->setText(pageActions[stackedWidget->currentIndex()]->text());
+    pages[stackedWidget->currentIndex()].action->setChecked(true);
+    actionGroup->addAction(p.action);
+    header->setText(pages[stackedWidget->currentIndex()].action->text());
+    pageList->setMaximumHeight(pages.size() * rowHeight()); //TODO: move to NavBarPageList
+    refillToolBar(visibleRows());
     refillPagesMenu();
 
     return idx;
@@ -396,11 +407,29 @@ int NavBar::createPage(int index, QWidget *page, const QString &title, const QIc
  */
 void NavBar::removePage(int index)
 {
+    if((index < 0) || (index > (pages.size()-1)))
+        return;
+
+    int rows = visibleRows();
+
     stackedWidget->removeWidget(stackedWidget->widget(index));
-    pageList->removeItem(index);
-    actionGroup->removeAction(pageActions[index]);
-    delete pageActions[index];
-    pageActions.removeAt(index);
+    actionGroup->removeAction(pages[index].action);
+    delete pages[index].button;
+    delete pages[index].action;
+    pages.removeAt(index);
+    pageList->setMaximumHeight(pages.size() * rowHeight()); //TODO: move to NavBarPageList
+
+    if(!pages.isEmpty())
+    {
+        header->setText(pages[stackedWidget->currentIndex()].action->text());
+        pages[stackedWidget->currentIndex()].action->setChecked(true);
+    }
+    else
+        header->setText("");
+
+    if(rows > pages.size())
+        setVisibleRows(pages.size());
+
     refillPagesMenu();
 }
 
@@ -411,7 +440,7 @@ void NavBar::removePage(int index)
  */
 QString NavBar::pageTitle(int index) const
 {
-    return pageActions[index]->text();
+    return pages[index].action->text();
 }
 
 /**
@@ -421,7 +450,7 @@ QString NavBar::pageTitle(int index) const
  */
 void NavBar::setPageEnabled(int index, bool enabled)
 {
-    pageActions[index]->setEnabled(enabled);
+    pages[index].action->setEnabled(enabled);
 }
 
 /**
@@ -431,7 +460,7 @@ void NavBar::setPageEnabled(int index, bool enabled)
  */
 QIcon NavBar::pageIcon(int index) const
 {
-    return pageActions[index]->icon();
+    return pages[index].action->icon();
 }
 
 /**
@@ -441,7 +470,7 @@ QIcon NavBar::pageIcon(int index) const
  */
 void NavBar::setPageTitle(int index, const QString &title)
 {
-    pageActions[index]->setText(title);
+    pages[index].action->setText(title);
 }
 
 /**
@@ -451,7 +480,7 @@ void NavBar::setPageTitle(int index, const QString &title)
  */
 void NavBar::setPageIcon(int index, const QIcon &icon)
 {
-    pageActions[index]->setIcon(icon);
+    pages[index].action->setIcon(icon);
 }
 
 /**
@@ -471,9 +500,12 @@ QSize NavBar::sizeHint() const
 
 void NavBar::setCurrentIndex(int index)
 {
+    if((index < 0) || (index > (pages.size()-1)))
+        return;
+
     stackedWidget->setCurrentIndex(index);
-    header->setText(pageActions[index]->text());
-    pageActions[index]->setChecked(true);
+    header->setText(pages[index].action->text());
+    pages[index].action->setChecked(true);
     emit currentChanged(index);
 }
 
@@ -483,10 +515,13 @@ void NavBar::setCurrentIndex(int index)
  */
 void NavBar::setCurrentWidget(QWidget *widget)
 {
+    if(pages.isEmpty())
+        return;
+
     stackedWidget->setCurrentWidget(widget);
     int index = stackedWidget->currentIndex();
-    header->setText(pageActions[index]->text());
-    pageActions[index]->setChecked(true);
+    header->setText(pages[index].action->text());
+    pages[index].action->setChecked(true);
     emit currentChanged(index);
 }
 
@@ -511,9 +546,9 @@ void NavBar::refillToolBar(int visCount)
     spacerWidget->setVisible(true);
     pageToolBar->addWidget(spacerWidget);
 
-    for(int i = 0; i < pageActions.size(); i++)
+    for(int i = 0; i < pages.size(); i++)
         if(i > visCount-1)
-            pageToolBar->addAction(pageActions[i]);
+            pageToolBar->addAction(pages[i].action);
 
     if(optMenuVisible)
     {
@@ -530,10 +565,10 @@ void NavBar::refillPagesMenu()
 {
     pagesMenu->clear();
 
-    for(int i = 0; i < pageActions.size(); i++)
+    for(int i = 0; i < pages.size(); i++)
     {
         QAction *changeVis = new QAction(pagesMenu);
-        changeVis->setText(pageActions[i]->text());
+        changeVis->setText(pages[i].action->text());
         changeVis->setCheckable(true);
         changeVis->setChecked(true);
         changeVis->setData(i);

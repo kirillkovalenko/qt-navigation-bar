@@ -1,38 +1,17 @@
 #include <QResizeEvent>
+#include <QDebug>
+#include "navbar.h"
 #include "navbarpagelist.h"
 
-NavBarPageList::NavBarPageList(QWidget *parent) :
+NavBarPageList::NavBarPageList(NavBar *parent) :
     QWidget(parent)
 {
+    navBar = parent;
     pageButtonHeight = 32;
-    pageIconSize = QSize(24, 24);
 }
 
 NavBarPageList::~NavBarPageList()
 {
-    for(int i = 0; i < buttons.size(); i++)
-    {
-        delete buttons[i];
-        buttons.removeAt(i);
-    }
-}
-
-void NavBarPageList::addItem(QAction *action)
-{
-    buttons.append(createPageButton(action));
-    setMaximumHeight(buttons.size() * pageButtonHeight);
-}
-
-void NavBarPageList::insertItem(int index, QAction *action)
-{
-    buttons.insert(index, createPageButton(action));
-    setMaximumHeight(buttons.size() * pageButtonHeight);
-}
-
-void NavBarPageList::removeItem(int index)
-{
-    delete buttons[index];
-    buttons.removeAt(index);
 }
 
 int NavBarPageList::rowHeight() const
@@ -43,30 +22,17 @@ int NavBarPageList::rowHeight() const
 void NavBarPageList::setRowHeight(int newHeight)
 {
     pageButtonHeight = newHeight;
-    setMaximumHeight(buttons.size() * pageButtonHeight);
-}
-
-QSize NavBarPageList::iconSize() const
-{
-    return pageIconSize;
-}
-
-void NavBarPageList::setIconSize(const QSize &size)
-{
-    pageIconSize = size;
-
-    for(int i = 0; i < buttons.size(); i++)
-        buttons[i]->setIconSize(size);
+    setMaximumHeight(navBar->pages.size() * pageButtonHeight);
 }
 
 void NavBarPageList::resizeEvent(QResizeEvent *e)
 {
     int rows = e->size().height() / pageButtonHeight;
 
-    for(int i = 0; i < buttons.size(); i++)
+    for(int i = 0; i < navBar->pages.size(); i++)
     {
-        buttons[i]->setGeometry(0, i * pageButtonHeight, e->size().width(), pageButtonHeight);
-        buttons[i]->setToolTip("");
+        navBar->pages[i].button->setGeometry(0, i * pageButtonHeight, e->size().width(), pageButtonHeight);
+        navBar->pages[i].button->setToolTip("");
     }
 
     if(e->oldSize().height() != e->size().height())
@@ -74,20 +40,6 @@ void NavBarPageList::resizeEvent(QResizeEvent *e)
 
     QWidget::resizeEvent(e);
 }
-
-QAbstractButton *NavBarPageList::createPageButton(QAction *action)
-{
-    NavBarButton *btn = new NavBarButton(this);
-    btn->setDefaultAction(action);
-    btn->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
-    btn->setToolTip("");
-    btn->setAutoRaise(true);
-    btn->setIconSize(pageIconSize);
-    btn->setGeometry(0, buttons.size() * pageButtonHeight, width(), pageButtonHeight);
-
-    return btn;
-}
-
 
 NavBarButton::NavBarButton(QWidget *parent):
     QToolButton(parent)

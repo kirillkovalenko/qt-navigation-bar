@@ -6,6 +6,8 @@
 Wnd::Wnd(QWidget *parent)
     : QWidget(parent)
 {
+    //Creating NavBar
+
     navBar = new NavBar;
     navBar->setStyleSheet(NavBar::loadStyle(":/styles/office2003gray.css"));
 
@@ -19,6 +21,18 @@ Wnd::Wnd(QWidget *parent)
 
     connect(navBar, SIGNAL(currentChanged(int)),     SLOT(navBarCurrentChanged(int)));
     connect(navBar, SIGNAL(visibleRowsChanged(int)), SLOT(navBarVisibleRowsChanged(int)));
+
+    //Creating other stuff
+
+    addPageButton = new QPushButton;
+    addPageButton->setText("Add page");
+    addPageButton->setIcon(QIcon(":/images/add.png"));
+    connect(addPageButton, SIGNAL(clicked()), SLOT(addPage()));
+
+    removePageButton = new QPushButton;
+    removePageButton->setText("Remove page");
+    removePageButton->setIcon(QIcon(":/images/delete.png"));
+    connect(removePageButton, SIGNAL(clicked()), SLOT(removePage()));
 
     showHeaderBox = new QCheckBox;
     showHeaderBox->setText("Show header");
@@ -43,8 +57,14 @@ Wnd::Wnd(QWidget *parent)
 
     signalWidget = new QListWidget;
 
+    //Laying out widgets
+
     QVBoxLayout *vLayout = new QVBoxLayout;
     QHBoxLayout *hLayout = new QHBoxLayout;
+    QHBoxLayout *bLayout = new QHBoxLayout;
+    bLayout->addWidget(addPageButton);
+    bLayout->addWidget(removePageButton);
+    vLayout->addLayout(bLayout);
     vLayout->addWidget(styleBox);
     vLayout->addWidget(showHeaderBox);
     vLayout->addWidget(showOptMenuBox);
@@ -56,6 +76,18 @@ Wnd::Wnd(QWidget *parent)
 
 Wnd::~Wnd()
 {    
+}
+
+void Wnd::addPage()
+{
+    int n = navBar->count() + 1;
+    navBar->addPage(new QLabel(QString("This is page %1").arg(n)), QString("Page %1").arg(n), QIcon(":/images/page_white.png"));
+}
+
+void Wnd::removePage()
+{
+    int n = navBar->count();
+    navBar->removePage(n-1);
 }
 
 void Wnd::changeStylesheet(int index)

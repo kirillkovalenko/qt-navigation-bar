@@ -40,6 +40,14 @@ class NavBar : public QFrame
     Q_PROPERTY(QSize largeIconSize READ largeIconSize WRITE setLargeIconSize)
 
 public:
+    struct Page
+    {
+        QToolButton *button;
+        QAction     *action;
+        //QAction   *showAction;
+        //TODO: text & icon inline accessors, to replace page.action->text/icon
+    };
+
     explicit NavBar(QWidget *parent = 0, Qt::WindowFlags f = 0);
     ~NavBar();
 
@@ -89,6 +97,7 @@ public slots:
 
 protected:
     void resizeEvent(QResizeEvent *e);
+    QList<Page> pages;
 
 private slots:
     void onClickPageButton(QAction *action);
@@ -105,13 +114,15 @@ private:
     NavBarSplitter  *splitter;
     NavBarPageList  *pageList;
     NavBarToolBar   *pageToolBar;
-    QList<QAction *> pageActions;
     QActionGroup    *actionGroup;
     QMenu           *pagesMenu;
 
     bool optMenuVisible;
     bool headerVisible;
     int  headerHeight;
+    QSize pageIconSize;
+
+    friend class NavBarPageList;
 };
 
 #endif // NAVBAR_H

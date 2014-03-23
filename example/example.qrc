@@ -5,5 +5,8 @@
         <file>images/date_task.png</file>
         <file>images/mail_yellow.png</file>
         <file>images/note.png</file>
+        <file>images/page_white.png</file>
+        <file>images/add.png</file>
+        <file>images/delete.png</file>
     </qresource>
 </RCC>
