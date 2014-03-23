@@ -374,16 +374,6 @@ int NavBar::insertPage(int index, QWidget *page, const QString &title, const QIc
 }
 
 /**
- * Returns true if the page at given position is enabled; otherwise returns false.
- * @param index Page index
- * @return Enabled or disabled
- */
-bool NavBar::isPageEnabled(int index)
-{
-    return pages[index].action->isEnabled();
-}
-
-/**
  * Creates and inserts new page at given position. If index is -1, page wil be added.
  * @param index Page index
  * @param page Widget
@@ -427,7 +417,7 @@ int NavBar::createPage(int index, QWidget *page, const QString &title, const QIc
 
     pages[stackedWidget->currentIndex()].action->setChecked(true);
     actionGroup->addAction(p.action);
-    header->setText(pages[stackedWidget->currentIndex()].action->text());
+    header->setText(pages[stackedWidget->currentIndex()].title());
     pageList->setMaximumHeight(pages.size() * rowHeight()); //TODO: move to NavBarPageList
     refillToolBar(visibleRows());
     refillPagesMenu();
@@ -455,7 +445,7 @@ void NavBar::removePage(int index)
 
     if(!pages.isEmpty())
     {
-        header->setText(pages[stackedWidget->currentIndex()].action->text());
+        header->setText(pages[stackedWidget->currentIndex()].title());
         pages[stackedWidget->currentIndex()].action->setChecked(true);
     }
     else
@@ -474,7 +464,17 @@ void NavBar::removePage(int index)
  */
 QString NavBar::pageTitle(int index) const
 {
-    return pages[index].action->text();
+    return pages[index].title();
+}
+
+/**
+ * Returns true if the page at given position is enabled; otherwise returns false.
+ * @param index Page index
+ * @return Enabled or disabled
+ */
+bool NavBar::isPageEnabled(int index)
+{
+    return pages[index].isEnabled();
 }
 
 /**
@@ -484,7 +484,7 @@ QString NavBar::pageTitle(int index) const
  */
 void NavBar::setPageEnabled(int index, bool enabled)
 {
-    pages[index].action->setEnabled(enabled);
+    pages[index].setEnabled(enabled);
 }
 
 /**
@@ -494,7 +494,7 @@ void NavBar::setPageEnabled(int index, bool enabled)
  */
 QIcon NavBar::pageIcon(int index) const
 {
-    return pages[index].action->icon();
+    return pages[index].icon();
 }
 
 /**
@@ -504,7 +504,7 @@ QIcon NavBar::pageIcon(int index) const
  */
 void NavBar::setPageTitle(int index, const QString &title)
 {
-    pages[index].action->setText(title);
+    pages[index].setTitle(title);
 }
 
 /**
@@ -514,7 +514,7 @@ void NavBar::setPageTitle(int index, const QString &title)
  */
 void NavBar::setPageIcon(int index, const QIcon &icon)
 {
-    pages[index].action->setIcon(icon);
+    pages[index].setIcon(icon);
 }
 
 /**
@@ -542,7 +542,7 @@ void NavBar::setCurrentIndex(int index)
         return;
 
     stackedWidget->setCurrentIndex(index);
-    header->setText(pages[index].action->text());
+    header->setText(pages[index].title());
     pages[index].action->setChecked(true);
     emit currentChanged(index);
 }
@@ -558,7 +558,7 @@ void NavBar::setCurrentWidget(QWidget *widget)
 
     stackedWidget->setCurrentWidget(widget);
     int index = stackedWidget->currentIndex();
-    header->setText(pages[index].action->text());
+    header->setText(pages[index].title());
     pages[index].action->setChecked(true);
     emit currentChanged(index);
 }
@@ -606,7 +606,7 @@ void NavBar::refillPagesMenu()
     for(int i = 0; i < pages.size(); i++)
     {
         QAction *changeVis = new QAction(pagesMenu);
-        changeVis->setText(pages[i].action->text());
+        changeVis->setText(pages[i].title());
         changeVis->setCheckable(true);
         changeVis->setChecked(true);
         changeVis->setData(i);

@@ -44,7 +44,15 @@ public:
     {
         QToolButton *button;
         QAction     *action;
-        //TODO: text & icon inline accessors, to replace page.action->text/icon
+
+        inline void    setTitle(const QString &title) { action->setText(title);      }
+        inline void    setIcon(const QIcon &icon)     { action->setIcon(icon);       }
+        inline void    setEnabled(bool enabled)       { action->setEnabled(enabled); }
+        inline void    setVisible(bool visible)       { action->setVisible(visible); }
+        inline QString title() const                  { return action->text();       }
+        inline QIcon   icon() const                   { return action->icon();       }
+        inline bool    isEnabled() const              { return action->isEnabled();  }
+        inline bool    isVisible() const              { return action->isVisible();  }
     };
 
     explicit NavBar(QWidget *parent = 0, Qt::WindowFlags f = 0);
@@ -59,14 +67,14 @@ public:
 
     void     removePage(int index);
 
-    void     setPageEnabled(int index, bool enabled);
-    bool     isPageEnabled(int index);
+    void     setPageTitle(int index, const QString &title);
+    QString  pageTitle(int index) const;
 
     void     setPageIcon(int index, const QIcon &icon);
     QIcon    pageIcon(int index) const;
 
-    void     setPageTitle(int index, const QString &title);
-    QString  pageTitle(int index) const;
+    void     setPageEnabled(int index, bool enabled);
+    bool     isPageEnabled(int index);
 
     int      currentIndex() const;
     QWidget *currentWidget() const;
