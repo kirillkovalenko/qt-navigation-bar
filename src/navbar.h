@@ -53,30 +53,37 @@ public:
     int      addPage(QWidget *page);
     int      addPage(QWidget *page, const QString &title);
     int      addPage(QWidget *page, const QString &title, const QIcon &icon);
-    QWidget *currentWidget() const;
-    int      indexOf(QWidget *widget) const;
     int      insertPage(int index, QWidget *page);
     int      insertPage(int index, QWidget *page, const QString &title);
     int      insertPage(int index, QWidget *page, const QString &title, const QIcon &icon);
-    bool     isPageEnabled(int index);
-    QIcon    pageIcon(int index) const;
-    QString  pageTitle(int index) const;
-    void     setPageEnabled(int index, bool enabled);
-    void     setPageIcon(int index, const QIcon &icon);
-    void     setPageTitle(int index, const QString &title);
-    void     removePage(int index);
-    QWidget *widget(int index) const;
 
-    int      count() const;
+    void     removePage(int index);
+
+    void     setPageEnabled(int index, bool enabled);
+    bool     isPageEnabled(int index);
+
+    void     setPageIcon(int index, const QIcon &icon);
+    QIcon    pageIcon(int index) const;
+
+    void     setPageTitle(int index, const QString &title);
+    QString  pageTitle(int index) const;
+
     int      currentIndex() const;
+    QWidget *currentWidget() const;
+    QWidget *widget(int index) const;
+    int      indexOf(QWidget *widget) const;
+    int      count() const;
+
+    void     setSmallIconSize(const QSize &size);
+    QSize    smallIconSize() const;
+
+    void     setLargeIconSize(const QSize &size);
+    QSize    largeIconSize() const;
+
     int      rowHeight() const;
     bool     showHeader() const;
     bool     showOptionsMenu() const;
     int      visibleRows() const;
-    QSize    smallIconSize() const;
-    QSize    largeIconSize() const;
-    void     setSmallIconSize(const QSize &size);
-    void     setLargeIconSize(const QSize &size);
 
     QSize    sizeHint() const;
 

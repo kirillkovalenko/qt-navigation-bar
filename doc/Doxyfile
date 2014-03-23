@@ -52,7 +52,7 @@ PROJECT_LOGO           =
 # If a relative path is entered, it will be relative to the location 
 # where doxygen was started. If left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = ./doc
+OUTPUT_DIRECTORY       = .
 
 # If the CREATE_SUBDIRS tag is set to YES, then doxygen will create 
 # 4096 sub-directories (in 2 levels) under the output directory of each output 
@@ -205,7 +205,7 @@ TAB_SIZE               = 4
 # will result in a user-defined paragraph with heading "Side Effects:". 
 # You can put \n's in the value part of an alias to insert newlines.
 
-ALIASES                = "accessors=\par Access functions:\n"\
+ALIASES                = "access=\par Access functions:\n"\
                          "signals=\par Signals:\n"
 
 # This tag can be used to specify a number of word-keyword mappings (TCL only). 
@@ -493,7 +493,7 @@ SORT_MEMBER_DOCS       = YES
 # by member name. If set to NO (the default) the members will appear in 
 # declaration order.
 
-SORT_BRIEF_DOCS        = NO
+SORT_BRIEF_DOCS        = YES
 
 # If the SORT_MEMBERS_CTORS_1ST tag is set to YES then doxygen 
 # will sort the (brief and detailed) documentation of class members so that 
@@ -503,7 +503,7 @@ SORT_BRIEF_DOCS        = NO
 # This tag will be ignored for brief docs if SORT_BRIEF_DOCS is set to NO 
 # and ignored for detailed docs if SORT_MEMBER_DOCS is set to NO.
 
-SORT_MEMBERS_CTORS_1ST = NO
+SORT_MEMBERS_CTORS_1ST = YES
 
 # If the SORT_GROUP_NAMES tag is set to YES then doxygen will sort the 
 # hierarchy of group names into alphabetical order. If set to NO (the default) 
@@ -676,7 +676,8 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories 
 # with spaces.
 
-INPUT                  = ./src
+INPUT                  = ../src \
+                         .
 
 # This tag can be used to specify the character encoding of the source files 
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is 
@@ -789,7 +790,7 @@ EXAMPLE_RECURSIVE      = NO
 # directories that contain image that are included in the documentation (see 
 # the \image command).
 
-IMAGE_PATH             = ./doc
+IMAGE_PATH             = .
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should 
 # invoke to filter for each input file. Doxygen will invoke the filter program 

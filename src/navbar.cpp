@@ -35,49 +35,6 @@
    @endcode
  */
 /**
- * @property NavBar::count
- * Number of pages in navigation bar.
- * @accessors int count() const
- */
-/**
- * @property NavBar::currentIndex
- * This property holds the index of the current page.
- * @accessors int currentIndex() const\n void setCurrentIndex(int)
- * @signals currentChanged(int)
- */
-/**
- * @property NavBar::rowHeight
- * This property holds height of a row in a page list.
- * @accessors int rowHeight() const\n void setRowHeight(int)
- */
-/**
- * @property NavBar::visibleRows
- * This property holds number of currently visible rows.
- * It's value changed when splitter is moved.
- * @accessors int visibleRows() const\n void setVisibleRows(int)
- * @signals visibleRowsChanged(int)
- */
-/**
- * @property NavBar::showHeader
- * This property controls visibility of NavBar header.
- * @accessors bool showHeader() const\n void setShowHeader(bool)
- */
-/**
- * @property NavBar::showOptionsMenu
- * This property controls visibility of options menu button in NavBar toolbar.
- * @accessors bool showOptionsMenu() const\n void setShowOptionsMenu(bool)
- */
-/**
- * @property NavBar::smallIconSize
- * This property holds size of icons in the bottom toolbar.
- * @accessors int smallIconSize() const\n void setSmallIconSize(int)
- */
-/**
- * @property NavBar::largeIconSize
- * This property holds size of icons in the page list.
- * @accessors int smallIconSize() const\n void setSmallIconSize(int)
- */
-/**
  * @fn NavBar::currentChanged
  * This signal is emitted when the current item is changed.
  * @param index Index of selected page
@@ -90,8 +47,7 @@
 
 /**
  * @struct NavBar::Page
- * Internal page container
- * @internal
+ * Internal page structure
  */
 
 /**
@@ -138,11 +94,22 @@ NavBar::~NavBar()
 {
 }
 
+/**
+ * @property NavBar::count
+ * Number of pages in navigation bar.
+ * @access int count() const
+ */
 int NavBar::count() const
 {
     return stackedWidget->count();
 }
 
+/**
+ * @property NavBar::currentIndex
+ * This property holds the index of the current page.
+ * @access int currentIndex() const\n void setCurrentIndex(int)
+ * @signals currentChanged(int)
+ */
 int NavBar::currentIndex() const
 {
     return stackedWidget->currentIndex();
@@ -167,16 +134,30 @@ int NavBar::indexOf(QWidget *widget) const
     return stackedWidget->indexOf(widget);
 }
 
+/**
+ * @property NavBar::showHeader
+ * This property controls visibility of NavBar header.
+ * @access bool showHeader() const\n void setShowHeader(bool)
+ */
 bool NavBar::showHeader() const
 {
     return headerVisible;
 }
 
+/**
+ * @property NavBar::showOptionsMenu
+ * This property controls visibility of options menu button in NavBar toolbar.
+ * @access bool showOptionsMenu() const\n void setShowOptionsMenu(bool)
+ */
 bool NavBar::showOptionsMenu() const
 {
     return optMenuVisible;
 }
 
+/**
+ * Toggles visibility of navbar header
+ * @param show Show or hide
+ */
 void NavBar::setShowHeader(bool show)
 {
     if(show != headerVisible)
@@ -187,6 +168,10 @@ void NavBar::setShowHeader(bool show)
     }
 }
 
+/**
+ * Toggles visibility of options menu button in NavBar toolbar.
+ * @param show Show or hide
+ */
 void NavBar::setShowOptionsMenu(bool show)
 {
     if(show != optMenuVisible)
@@ -196,11 +181,20 @@ void NavBar::setShowOptionsMenu(bool show)
     }
 }
 
+/**
+ * @property NavBar::rowHeight
+ * This property holds height of a row in a page list.
+ * @access int rowHeight() const\n void setRowHeight(int)
+ */
 int NavBar::rowHeight() const
 {
     return pageList->rowHeight();
 }
 
+/**
+ * Set height of a row in a page list.
+ * @param height Row height
+ */
 void NavBar::setRowHeight(int height)
 {
     if(height < 3)
@@ -215,11 +209,22 @@ void NavBar::setRowHeight(int height)
     setVisibleRows(rows);
 }
 
+/**
+ * @property NavBar::visibleRows
+ * This property holds number of currently visible rows.
+ * It's value changed when splitter is moved.
+ * @access int visibleRows() const\n void setVisibleRows(int)
+ * @signals visibleRowsChanged(int)
+ */
 int NavBar::visibleRows() const
 {
     return pageList->height() / rowHeight();
 }
 
+/**
+ * Set number of currently visible rows.
+ * @param rows Number of rows
+ */
 void NavBar::setVisibleRows(int rows)
 {
     if(rows < 0)
@@ -257,22 +262,40 @@ void NavBar::resizeContent(const QSize &size, int rowheight)
     pageToolBar->setGeometry(left, size.height()-(rowheight+bottom), size.width()-left-right, rowheight);
 }
 
+/**
+ * @property NavBar::smallIconSize
+ * This property holds size of icons in the bottom toolbar.
+ * @access int smallIconSize() const\n void setSmallIconSize(int)
+ */
 QSize NavBar::smallIconSize() const
 {
     return pageToolBar->iconSize();
 }
 
+/**
+ * Sets size of icons in the page list.
+ * @param size Icon size
+ */
 void NavBar::setSmallIconSize(const QSize &size)
 {
     pageToolBar->setIconSize(size);
     pageToolBar->setMinimumHeight(pageList->rowHeight());
 }
 
+/**
+ * @property NavBar::largeIconSize
+ * This property holds size of icons in the page list.
+ * @access int smallIconSize() const\n void setSmallIconSize(int)
+ */
 QSize NavBar::largeIconSize() const
 {
     return pageIconSize;
 }
 
+/**
+ * Sets size of icons in the bottom toolbar.
+ * @param size Icon size
+ */
 void NavBar::setLargeIconSize(const QSize &size)
 {
     pageIconSize = size;
@@ -509,6 +532,10 @@ QSize NavBar::sizeHint() const
     return QSize(180, 300);
 }
 
+/**
+ * Changes active page.
+ * @param index Page index
+ */
 void NavBar::setCurrentIndex(int index)
 {
     if((index < 0) || (index > (pages.size()-1)))
