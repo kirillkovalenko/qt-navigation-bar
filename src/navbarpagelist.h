@@ -26,6 +26,8 @@ public:
 
     int  rowHeight() const;
     void setRowHeight(int newHeight);
+    void layoutButtons(int width);
+    void layoutButtons();
 
 signals:
     void buttonVisibilityChanged(int visCount);

@@ -413,6 +413,8 @@ int NavBar::createPage(int index, QWidget *page, const QString &text, const QIco
 
         for(int i = 0; i < pages.size(); i++)
             pages[i].action->setData(i);
+
+        pageList->layoutButtons();
     }
 
     pages[stackedWidget->currentIndex()].action->setChecked(true);
@@ -442,6 +444,10 @@ void NavBar::removePage(int index)
     delete pages[index].action;
     pages.removeAt(index);
     pageList->setMaximumHeight(pages.size() * rowHeight()); //TODO: move to NavBarPageList
+    pageList->layoutButtons();
+
+    for(int i = 0; i < pages.size(); i++)
+        pages[i].action->setData(i);
 
     if(!pages.isEmpty())
     {
@@ -454,6 +460,7 @@ void NavBar::removePage(int index)
     if(rows > pages.size())
         setVisibleRows(pages.size());
 
+    refillToolBar(visibleRows());
     refillPagesMenu();
 }
 

@@ -25,15 +25,25 @@ void NavBarPageList::setRowHeight(int newHeight)
     setMaximumHeight(navBar->pages.size() * pageButtonHeight);
 }
 
+void NavBarPageList::layoutButtons(int width)
+{
+    for(int i = 0; i < navBar->pages.size(); i++)
+    {
+        navBar->pages[i].button->setGeometry(0, i * pageButtonHeight, width, pageButtonHeight);
+        navBar->pages[i].button->setToolTip("");
+    }
+}
+
+void NavBarPageList::layoutButtons()
+{
+    layoutButtons(width());
+}
+
 void NavBarPageList::resizeEvent(QResizeEvent *e)
 {
     int rows = e->size().height() / pageButtonHeight;
 
-    for(int i = 0; i < navBar->pages.size(); i++)
-    {
-        navBar->pages[i].button->setGeometry(0, i * pageButtonHeight, e->size().width(), pageButtonHeight);
-        navBar->pages[i].button->setToolTip("");
-    }
+    layoutButtons(e->size().width());
 
     if(e->oldSize().height() != e->size().height())
         emit buttonVisibilityChanged(rows);
