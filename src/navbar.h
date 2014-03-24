@@ -45,11 +45,11 @@ public:
         QToolButton *button;
         QAction     *action;
 
-        inline void    setTitle(const QString &title) { action->setText(title);      }
+        inline void    setText(const QString &text)   { action->setText(text);      }
         inline void    setIcon(const QIcon &icon)     { action->setIcon(icon);       }
         inline void    setEnabled(bool enabled)       { action->setEnabled(enabled); }
         inline void    setVisible(bool visible)       { action->setVisible(visible); }
-        inline QString title() const                  { return action->text();       }
+        inline QString text() const                   { return action->text();       }
         inline QIcon   icon() const                   { return action->icon();       }
         inline bool    isEnabled() const              { return action->isEnabled();  }
         inline bool    isVisible() const              { return action->isVisible();  }
@@ -59,16 +59,16 @@ public:
     ~NavBar();
 
     int      addPage(QWidget *page);
-    int      addPage(QWidget *page, const QString &title);
-    int      addPage(QWidget *page, const QString &title, const QIcon &icon);
+    int      addPage(QWidget *page, const QString &text);
+    int      addPage(QWidget *page, const QString &text, const QIcon &icon);
     int      insertPage(int index, QWidget *page);
-    int      insertPage(int index, QWidget *page, const QString &title);
-    int      insertPage(int index, QWidget *page, const QString &title, const QIcon &icon);
+    int      insertPage(int index, QWidget *page, const QString &text);
+    int      insertPage(int index, QWidget *page, const QString &text, const QIcon &icon);
 
     void     removePage(int index);
 
-    void     setPageTitle(int index, const QString &title);
-    QString  pageTitle(int index) const;
+    void     setPageText(int index, const QString &text);
+    QString  pageText(int index) const;
 
     void     setPageIcon(int index, const QIcon &icon);
     QIcon    pageIcon(int index) const;
@@ -117,7 +117,7 @@ private slots:
     void onButtonVisibilityChanged(int visCount);
 
 private:
-    int  createPage(int index, QWidget *page, const QString &title, const QIcon &icon);
+    int  createPage(int index, QWidget *page, const QString &text, const QIcon &icon);
     void resizeContent(const QSize &size, int rowheight);
     void refillToolBar(int visCount);
     void refillPagesMenu();

@@ -317,24 +317,24 @@ int NavBar::addPage(QWidget *page)
 /**
  * Adds widget as new page to navigation bar
  * @param page Widget to be added as new page
- * @param title Page title
+ * @param text Page text
  * @return The new page's index
  */
-int NavBar::addPage(QWidget *page, const QString &title)
+int NavBar::addPage(QWidget *page, const QString &text)
 {
-    return addPage(page, title, QIcon());
+    return addPage(page, text, QIcon());
 }
 
 /**
  * Adds widget as new page to navigation bar
  * @param page Widget to be added as new page
- * @param title Page title
+ * @param text Page text
  * @param icon Page icon
  * @return The new page's index
  */
-int NavBar::addPage(QWidget *page, const QString &title, const QIcon &icon)
+int NavBar::addPage(QWidget *page, const QString &text, const QIcon &icon)
 {
-    return createPage(-1, page, title, icon);
+    return createPage(-1, page, text, icon);
 }
 
 /**
@@ -352,42 +352,42 @@ int NavBar::insertPage(int index, QWidget *page)
  * Inserts new page at given position, or at the bottom of the navigation bar if index is out of range.
  * @param index Page position
  * @param page Widget
- * @param title Page title
+ * @param text Page text
  * @return The new page's index
  */
-int NavBar::insertPage(int index, QWidget *page, const QString &title)
+int NavBar::insertPage(int index, QWidget *page, const QString &text)
 {
-    return insertPage(index, page, title, QIcon());
+    return insertPage(index, page, text, QIcon());
 }
 
 /**
  * Inserts new page at given position, or at the bottom of the navigation bar if index is out of range.
  * @param index Page position
  * @param page Widget
- * @param title Page title
+ * @param text Page text
  * @param icon Page icon
  * @return The new page's index
  */
-int NavBar::insertPage(int index, QWidget *page, const QString &title, const QIcon &icon)
+int NavBar::insertPage(int index, QWidget *page, const QString &text, const QIcon &icon)
 {
-    return createPage(index, page, title, icon);
+    return createPage(index, page, text, icon);
 }
 
 /**
  * Creates and inserts new page at given position. If index is -1, page wil be added.
  * @param index Page index
  * @param page Widget
- * @param title Page title
+ * @param text Page text
  * @param icon Page icon
  * @return The new page's index
  */
-int NavBar::createPage(int index, QWidget *page, const QString &title, const QIcon &icon)
+int NavBar::createPage(int index, QWidget *page, const QString &text, const QIcon &icon)
 {
     Page p;
 
     p.action = new QAction(this);
     p.action->setCheckable(true);
-    p.action->setText(title);
+    p.action->setText(text);
     p.action->setIcon(icon);
 
     p.button = new NavBarButton(pageList);
@@ -417,7 +417,7 @@ int NavBar::createPage(int index, QWidget *page, const QString &title, const QIc
 
     pages[stackedWidget->currentIndex()].action->setChecked(true);
     actionGroup->addAction(p.action);
-    header->setText(pages[stackedWidget->currentIndex()].title());
+    header->setText(pages[stackedWidget->currentIndex()].text());
     pageList->setMaximumHeight(pages.size() * rowHeight()); //TODO: move to NavBarPageList
     refillToolBar(visibleRows());
     refillPagesMenu();
@@ -445,7 +445,7 @@ void NavBar::removePage(int index)
 
     if(!pages.isEmpty())
     {
-        header->setText(pages[stackedWidget->currentIndex()].title());
+        header->setText(pages[stackedWidget->currentIndex()].text());
         pages[stackedWidget->currentIndex()].action->setChecked(true);
     }
     else
@@ -458,13 +458,13 @@ void NavBar::removePage(int index)
 }
 
 /**
- * Returns the title of the page at given position, or an empty string if index is out of range.
+ * Returns the text of the page at given position, or an empty string if index is out of range.
  * @param index Page index
- * @return Page title
+ * @return Page text
  */
-QString NavBar::pageTitle(int index) const
+QString NavBar::pageText(int index) const
 {
-    return pages[index].title();
+    return pages[index].text();
 }
 
 /**
@@ -498,13 +498,13 @@ QIcon NavBar::pageIcon(int index) const
 }
 
 /**
- * Sets the title of the page at given position.
+ * Sets the text of the page at given position.
  * @param index Page index
- * @param title New title
+ * @param text New text
  */
-void NavBar::setPageTitle(int index, const QString &title)
+void NavBar::setPageText(int index, const QString &text)
 {
-    pages[index].setTitle(title);
+    pages[index].setText(text);
 }
 
 /**
@@ -542,7 +542,7 @@ void NavBar::setCurrentIndex(int index)
         return;
 
     stackedWidget->setCurrentIndex(index);
-    header->setText(pages[index].title());
+    header->setText(pages[index].text());
     pages[index].action->setChecked(true);
     emit currentChanged(index);
 }
@@ -558,7 +558,7 @@ void NavBar::setCurrentWidget(QWidget *widget)
 
     stackedWidget->setCurrentWidget(widget);
     int index = stackedWidget->currentIndex();
-    header->setText(pages[index].title());
+    header->setText(pages[index].text());
     pages[index].action->setChecked(true);
     emit currentChanged(index);
 }
@@ -606,7 +606,7 @@ void NavBar::refillPagesMenu()
     for(int i = 0; i < pages.size(); i++)
     {
         QAction *changeVis = new QAction(pagesMenu);
-        changeVis->setText(pages[i].title());
+        changeVis->setText(pages[i].text());
         changeVis->setCheckable(true);
         changeVis->setChecked(true);
         changeVis->setData(i);
