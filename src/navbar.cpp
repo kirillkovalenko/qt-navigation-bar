@@ -264,7 +264,7 @@ void NavBar::resizeContent(const QSize &size, int rowheight)
 
 void NavBar::recalcPageList()
 {
-    pageList->setMaximumHeight(pages.size() * rowHeight());
+    pageList->setMaximumHeight(visiblePages().size() * rowHeight());
     pageList->layoutButtons(pageList->width());
 
     for(int i = 0; i < pages.size(); i++)
@@ -485,7 +485,29 @@ bool NavBar::isPageEnabled(int index)
 }
 
 /**
- * If enabled is true then the page at given position; otherwise the item at position index is disabled.
+ * If visible is true then the page at given position is visible; otherwise the page at position index is invisible.
+ * @param index Page index
+ * @param enabled Enable or disable
+ */
+void NavBar::setPageVisible(int index, bool visible)
+{
+    pages[index].setVisible(visible);
+    recalcPageList();
+    refillToolBar(visibleRows());
+}
+
+/**
+ * Returns true if the page at given position is visible; otherwise returns false.
+ * @param index Page index
+ * @return Visible or not
+ */
+bool NavBar::isPageVisible(int index)
+{
+    return pages[index].isVisible();
+}
+
+/**
+ * If enabled is true then the page at given position is enabled; otherwise the page at position index is disabled.
  * @param index Page index
  * @param enabled Enable or disable
  */
@@ -591,9 +613,9 @@ void NavBar::refillToolBar(int visCount)
     spacerWidget->setVisible(true);
     pageToolBar->addWidget(spacerWidget);
 
-    for(int i = 0; i < pages.size(); i++)
+    for(int i = 0; i < visiblePages().size(); i++)
         if(i > visCount-1)
-            pageToolBar->addAction(pages[i].action);
+            pageToolBar->addAction(visiblePages()[i].action);
 
     if(optMenuVisible)
     {
@@ -615,16 +637,33 @@ void NavBar::refillPagesMenu()
         QAction *changeVis = new QAction(pagesMenu);
         changeVis->setText(pages[i].text());
         changeVis->setCheckable(true);
-        changeVis->setChecked(true);
+        changeVis->setChecked(pages[i].isVisible());
         changeVis->setData(i);
         pagesMenu->addAction(changeVis);
+        connect(pagesMenu, SIGNAL(triggered(QAction*)), SLOT(changePageVisibility(QAction*)));
     }
+}
+
+QList<NavBar::Page> NavBar::visiblePages()
+{
+    QList<Page> l;
+
+    for(int i = 0; i < pages.size(); i++)
+        if(pages[i].isVisible())
+            l.append(pages[i]);
+
+    return l;
 }
 
 void NavBar::onButtonVisibilityChanged(int visCount)
 {
     refillToolBar(visCount);
     emit visibleRowsChanged(visCount); //TODO: do not emit this, when rowHeight is changed.
+}
+
+void NavBar::changePageVisibility(QAction *action)
+{
+    setPageVisible(action->data().toInt(), action->isChecked());
 }
 
 /**

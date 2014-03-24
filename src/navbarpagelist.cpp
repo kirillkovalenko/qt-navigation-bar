@@ -22,15 +22,15 @@ int NavBarPageList::rowHeight() const
 void NavBarPageList::setRowHeight(int newHeight)
 {
     pageButtonHeight = newHeight;
-    setMaximumHeight(navBar->pages.size() * pageButtonHeight);
+    setMaximumHeight(navBar->visiblePages().size() * pageButtonHeight);
 }
 
 void NavBarPageList::layoutButtons(int width)
 {
-    for(int i = 0; i < navBar->pages.size(); i++)
+    for(int i = 0; i < navBar->visiblePages().size(); i++)
     {
-        navBar->pages[i].button->setGeometry(0, i * pageButtonHeight, width, pageButtonHeight);
-        navBar->pages[i].button->setToolTip("");
+        navBar->visiblePages()[i].button->setGeometry(0, i * pageButtonHeight, width, pageButtonHeight);
+        navBar->visiblePages()[i].button->setToolTip("");
     }
 }
 

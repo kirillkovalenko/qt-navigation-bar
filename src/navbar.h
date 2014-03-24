@@ -76,6 +76,9 @@ public:
     void     setPageEnabled(int index, bool enabled);
     bool     isPageEnabled(int index);
 
+    void     setPageVisible(int index, bool visible);
+    bool     isPageVisible(int index);
+
     int      currentIndex() const;
     QWidget *currentWidget() const;
     QWidget *widget(int index) const;
@@ -115,6 +118,7 @@ protected:
 private slots:
     void onClickPageButton(QAction *action);
     void onButtonVisibilityChanged(int visCount);
+    void changePageVisibility(QAction *action);
 
 private:
     int  createPage(int index, QWidget *page, const QString &text, const QIcon &icon);
@@ -122,6 +126,8 @@ private:
     void recalcPageList();
     void refillToolBar(int visCount);
     void refillPagesMenu();
+
+    QList<Page> visiblePages();
 
     NavBarHeader    *header;
     QStackedWidget  *stackedWidget;
