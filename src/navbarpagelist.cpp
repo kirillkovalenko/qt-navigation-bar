@@ -34,11 +34,6 @@ void NavBarPageList::layoutButtons(int width)
     }
 }
 
-void NavBarPageList::layoutButtons()
-{
-    layoutButtons(width());
-}
-
 void NavBarPageList::resizeEvent(QResizeEvent *e)
 {
     int rows = e->size().height() / pageButtonHeight;

@@ -262,6 +262,15 @@ void NavBar::resizeContent(const QSize &size, int rowheight)
     pageToolBar->setGeometry(left, size.height()-(rowheight+bottom), size.width()-left-right, rowheight);
 }
 
+void NavBar::recalcPageList()
+{
+    pageList->setMaximumHeight(pages.size() * rowHeight());
+    pageList->layoutButtons(pageList->width());
+
+    for(int i = 0; i < pages.size(); i++)
+        pages[i].action->setData(i);
+}
+
 /**
  * @property NavBar::smallIconSize
  * This property holds size of icons in the bottom toolbar.
@@ -410,17 +419,12 @@ int NavBar::createPage(int index, QWidget *page, const QString &text, const QIco
     {
         idx = stackedWidget->insertWidget(index, page);
         pages.insert(index, p);
-
-        for(int i = 0; i < pages.size(); i++)
-            pages[i].action->setData(i);
-
-        pageList->layoutButtons();
     }
 
     pages[stackedWidget->currentIndex()].action->setChecked(true);
     actionGroup->addAction(p.action);
     header->setText(pages[stackedWidget->currentIndex()].text());
-    pageList->setMaximumHeight(pages.size() * rowHeight()); //TODO: move to NavBarPageList
+    recalcPageList();
     refillToolBar(visibleRows());
     refillPagesMenu();
 
@@ -443,11 +447,7 @@ void NavBar::removePage(int index)
     delete pages[index].button;
     delete pages[index].action;
     pages.removeAt(index);
-    pageList->setMaximumHeight(pages.size() * rowHeight()); //TODO: move to NavBarPageList
-    pageList->layoutButtons();
-
-    for(int i = 0; i < pages.size(); i++)
-        pages[i].action->setData(i);
+    recalcPageList();
 
     if(!pages.isEmpty())
     {

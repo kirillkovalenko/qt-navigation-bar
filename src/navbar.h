@@ -119,6 +119,7 @@ private slots:
 private:
     int  createPage(int index, QWidget *page, const QString &text, const QIcon &icon);
     void resizeContent(const QSize &size, int rowheight);
+    void recalcPageList();
     void refillToolBar(int visCount);
     void refillPagesMenu();
 
