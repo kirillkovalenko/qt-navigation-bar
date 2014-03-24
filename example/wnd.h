@@ -18,6 +18,7 @@ public:
 
 private slots:
     void addPage();
+    void insertPage();
     void removePage();
     void changeStylesheet(int index);
     void navBarCurrentChanged(int index);
@@ -31,6 +32,7 @@ protected:
     QCheckBox *showOptMenuBox;
     QPushButton *addPageButton;
     QPushButton *removePageButton;
+    QPushButton *insertPageButton;
 };
 
 #endif // WND_H

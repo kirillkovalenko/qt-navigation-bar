@@ -1,6 +1,7 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QLabel>
+#include <QInputDialog>
 #include "wnd.h"
 
 Wnd::Wnd(QWidget *parent)
@@ -26,12 +27,17 @@ Wnd::Wnd(QWidget *parent)
 
     addPageButton = new QPushButton;
     addPageButton->setText("Add page");
-    addPageButton->setIcon(QIcon(":/images/add.png"));
+    addPageButton->setIcon(QIcon(":/images/page_white_add.png"));
     connect(addPageButton, SIGNAL(clicked()), SLOT(addPage()));
+
+    insertPageButton = new QPushButton;
+    insertPageButton->setText("Insert page");
+    insertPageButton->setIcon(QIcon(":/images/page_white_put.png"));
+    connect(insertPageButton, SIGNAL(clicked()), SLOT(insertPage()));
 
     removePageButton = new QPushButton;
     removePageButton->setText("Remove page");
-    removePageButton->setIcon(QIcon(":/images/delete.png"));
+    removePageButton->setIcon(QIcon(":/images/page_white_delete.png"));
     connect(removePageButton, SIGNAL(clicked()), SLOT(removePage()));
 
     showHeaderBox = new QCheckBox;
@@ -63,6 +69,7 @@ Wnd::Wnd(QWidget *parent)
     QHBoxLayout *hLayout = new QHBoxLayout;
     QHBoxLayout *bLayout = new QHBoxLayout;
     bLayout->addWidget(addPageButton);
+    bLayout->addWidget(insertPageButton);
     bLayout->addWidget(removePageButton);
     vLayout->addLayout(bLayout);
     vLayout->addWidget(styleBox);
@@ -80,14 +87,27 @@ Wnd::~Wnd()
 
 void Wnd::addPage()
 {
-    int n = navBar->count() + 1;
-    navBar->addPage(new QLabel(QString("This is page %1").arg(n)), QString("Page %1").arg(n), QIcon(":/images/page_white.png"));
+    bool ok;
+    QString text = QInputDialog::getText(this, "Add new page",
+                                         "Page text:", QLineEdit::Normal,
+                                         "New Page", &ok);
+    if (ok && !text.isEmpty())
+        navBar->addPage(new QLabel(QString("This is %1").arg(text)), text, QIcon(":/images/page_white.png"));
+}
+
+void Wnd::insertPage()
+{
+    bool ok;
+    QString text = QInputDialog::getText(this, "Insert new page",
+                                         "Page text:", QLineEdit::Normal,
+                                         "New Page", &ok);
+    if (ok && !text.isEmpty())
+        navBar->insertPage(navBar->currentIndex(), new QLabel(QString("This is %1").arg(text)), text, QIcon(":/images/page_white.png"));
 }
 
 void Wnd::removePage()
 {
-    int n = navBar->count();
-    navBar->removePage(n-1);
+    navBar->removePage(navBar->currentIndex());
 }
 
 void Wnd::changeStylesheet(int index)

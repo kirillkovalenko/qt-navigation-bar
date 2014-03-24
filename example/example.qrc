@@ -6,7 +6,8 @@
         <file>images/mail_yellow.png</file>
         <file>images/note.png</file>
         <file>images/page_white.png</file>
-        <file>images/add.png</file>
-        <file>images/delete.png</file>
+        <file>images/page_white_add.png</file>
+        <file>images/page_white_put.png</file>
+        <file>images/page_white_delete.png</file>
     </qresource>
 </RCC>
