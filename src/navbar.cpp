@@ -1,3 +1,4 @@
+#include <QDebug>
 #include <QWidget>
 #include <QStackedWidget>
 #include <QToolBar>
@@ -84,10 +85,11 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     actionGroup = new QActionGroup(this);
     actionGroup->setExclusive(true);
 
+    pagesMenu = new QMenu(this);
+
     connect(actionGroup, SIGNAL(triggered(QAction*)),          SLOT(onClickPageButton(QAction*)));
     connect(pageList,    SIGNAL(buttonVisibilityChanged(int)), SLOT(onButtonVisibilityChanged(int)));
-
-    pagesMenu = new QMenu(this);
+    connect(pagesMenu,   SIGNAL(triggered(QAction*)),          SLOT(changePageVisibility(QAction*)));
 }
 
 NavBar::~NavBar()
@@ -229,8 +231,8 @@ void NavBar::setVisibleRows(int rows)
 {
     if(rows < 0)
         rows = 0;
-    if(rows > pages.size())
-        rows = pages.size();
+    if(rows > visiblePages().size())
+        rows = visiblePages().size();
 
     int listHeight = rows * rowHeight();
     int pageHeight = splitter->height() - listHeight;
@@ -264,11 +266,11 @@ void NavBar::resizeContent(const QSize &size, int rowheight)
 
 void NavBar::recalcPageList()
 {
-    pageList->setMaximumHeight(visiblePages().size() * rowHeight());
-    pageList->layoutButtons(pageList->width());
-
     for(int i = 0; i < pages.size(); i++)
         pages[i].action->setData(i);
+
+    pageList->setMaximumHeight(visiblePages().size() * rowHeight());
+    pageList->layoutButtons(pageList->width());
 }
 
 /**
@@ -405,8 +407,10 @@ int NavBar::createPage(int index, QWidget *page, const QString &text, const QIco
     p.button->setToolTip("");
     p.button->setAutoRaise(true);
     p.button->setIconSize(pageIconSize);
-    p.button->setGeometry(0, pages.size() * rowHeight(), pageList->width(), rowHeight()); //TODO: move to NavBarPageList
+    p.button->setGeometry(0, visiblePages().size() * rowHeight(), pageList->width(), rowHeight()); //TODO: move to NavBarPageList
     p.button->setVisible(true);
+
+    int oldIdx = stackedWidget->currentIndex();
 
     int idx;
     if(index < 0) // add page
@@ -427,6 +431,11 @@ int NavBar::createPage(int index, QWidget *page, const QString &text, const QIco
     recalcPageList();
     refillToolBar(visibleRows());
     refillPagesMenu();
+
+    int newIdx = stackedWidget->currentIndex();
+
+    if(oldIdx != newIdx)
+        emit currentChanged(newIdx);
 
     return idx;
 }
@@ -457,8 +466,8 @@ void NavBar::removePage(int index)
     else
         header->setText("");
 
-    if(rows > pages.size())
-        setVisibleRows(pages.size());
+    if(rows > visiblePages().size())
+        setVisibleRows(visiblePages().size());
 
     refillToolBar(visibleRows());
     refillPagesMenu();
@@ -491,9 +500,14 @@ bool NavBar::isPageEnabled(int index)
  */
 void NavBar::setPageVisible(int index, bool visible)
 {
+    int rows = visibleRows();
+
     pages[index].setVisible(visible);
     recalcPageList();
     refillToolBar(visibleRows());
+
+    if(rows > visiblePages().size())
+        setVisibleRows(visiblePages().size());
 }
 
 /**
@@ -634,13 +648,11 @@ void NavBar::refillPagesMenu()
 
     for(int i = 0; i < pages.size(); i++)
     {
-        QAction *changeVis = new QAction(pagesMenu);
-        changeVis->setText(pages[i].text());
+        QAction *changeVis = pagesMenu->addAction(pages[i].text());
         changeVis->setCheckable(true);
         changeVis->setChecked(pages[i].isVisible());
         changeVis->setData(i);
         pagesMenu->addAction(changeVis);
-        connect(pagesMenu, SIGNAL(triggered(QAction*)), SLOT(changePageVisibility(QAction*)));
     }
 }
 

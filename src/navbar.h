@@ -45,10 +45,11 @@ public:
         QToolButton *button;
         QAction     *action;
 
-        inline void    setText(const QString &text)   { action->setText(text);      }
+        inline void    setText(const QString &text)   { action->setText(text);       }
         inline void    setIcon(const QIcon &icon)     { action->setIcon(icon);       }
         inline void    setEnabled(bool enabled)       { action->setEnabled(enabled); }
-        inline void    setVisible(bool visible)       { action->setVisible(visible); }
+        inline void    setVisible(bool visible)       { action->setVisible(visible);
+                                                        button->setVisible(visible); }
         inline QString text() const                   { return action->text();       }
         inline QIcon   icon() const                   { return action->icon();       }
         inline bool    isEnabled() const              { return action->isEnabled();  }
