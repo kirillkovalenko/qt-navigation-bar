@@ -7,11 +7,14 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 SOURCES += navbar.cpp \
     navbarpagelist.cpp \
-    navbarsplitter.cpp
+    navbarsplitter.cpp \
+    navbaroptionsdialog.cpp
 
 HEADERS += navbar.h \
     navbarpagelist.h \
-    navbarsplitter.h
+    navbarsplitter.h \
+    navbaroptionsdialog.h \
+    navbarpage.h
 
 unix:!symbian {
     maemo5 {
@@ -24,3 +27,6 @@ unix:!symbian {
 
 RESOURCES += \
     navbar.qrc
+
+FORMS += \
+    navbaroptionsdialog.ui

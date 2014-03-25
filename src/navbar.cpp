@@ -12,6 +12,7 @@
 #include <QFile>
 #include <QTextStream>
 #include "navbar.h"
+#include "navbaroptionsdialog.h"
 
 /**
  * @class NavBarHeader
@@ -45,11 +46,6 @@
  * This signal is emitted when number of visible rows in navigation bar page list changed, e.g. when splitter is moved.
  * @param rows Number of visible rows
  **/
-
-/**
- * @struct NavBar::Page
- * Internal page structure
- */
 
 /**
  * Constructs new NavBar
@@ -86,6 +82,8 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     actionGroup->setExclusive(true);
 
     pagesMenu = new QMenu(this);
+    actionOptions = new QAction(this);
+    actionOptions->setText(tr("Options..."));
 
     connect(actionGroup, SIGNAL(triggered(QAction*)),          SLOT(onClickPageButton(QAction*)));
     connect(pageList,    SIGNAL(buttonVisibilityChanged(int)), SLOT(onButtonVisibilityChanged(int)));
@@ -394,7 +392,7 @@ int NavBar::insertPage(int index, QWidget *page, const QString &text, const QIco
  */
 int NavBar::createPage(int index, QWidget *page, const QString &text, const QIcon &icon)
 {
-    Page p;
+    NavBarPage p;
 
     p.action = new QAction(this);
     p.action->setCheckable(true);
@@ -606,6 +604,27 @@ void NavBar::setCurrentWidget(QWidget *widget)
     emit currentChanged(index);
 }
 
+/**
+ * Shows navigation bar options dialog, allowing user to change page order and visibility.
+ * @return DialogCode result.
+ */
+int NavBar::showOptionsDialog()
+{
+    NavBarOptionsDialog optionsDlg(this);
+    optionsDlg.setPageList(pages);
+    int ret = optionsDlg.exec();
+
+    if(ret == QDialog::Accepted)
+    {
+        pages = optionsDlg.pageList();
+        recalcPageList();
+        refillToolBar(visibleRows());
+        refillPagesMenu();
+    }
+
+    return ret;
+}
+
 void NavBar::onClickPageButton(QAction *action)
 {
     int current = stackedWidget->currentIndex();
@@ -645,6 +664,8 @@ void NavBar::refillToolBar(int visCount)
 void NavBar::refillPagesMenu()
 {
     pagesMenu->clear();
+    pagesMenu->addAction(actionOptions);
+    pagesMenu->addSeparator();
 
     for(int i = 0; i < pages.size(); i++)
     {
@@ -656,9 +677,9 @@ void NavBar::refillPagesMenu()
     }
 }
 
-QList<NavBar::Page> NavBar::visiblePages()
+QList<NavBarPage> NavBar::visiblePages()
 {
-    QList<Page> l;
+    QList<NavBarPage> l;
 
     for(int i = 0; i < pages.size(); i++)
         if(pages[i].isVisible())
@@ -675,8 +696,12 @@ void NavBar::onButtonVisibilityChanged(int visCount)
 
 void NavBar::changePageVisibility(QAction *action)
 {
-    setPageVisible(action->data().toInt(), action->isChecked());
+    if(action == actionOptions)
+        showOptionsDialog();
+    else
+        setPageVisible(action->data().toInt(), action->isChecked());
 }
+
 
 /**
  * Helper function, which loads text file and returns it content as QString.

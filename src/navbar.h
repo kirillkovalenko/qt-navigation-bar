@@ -7,6 +7,7 @@
 #include <QList>
 #include <QActionGroup>
 #include <QMenu>
+#include "navbarpage.h"
 #include "navbarsplitter.h"
 #include "navbarpagelist.h"
 
@@ -40,22 +41,6 @@ class NavBar : public QFrame
     Q_PROPERTY(QSize largeIconSize   READ largeIconSize   WRITE setLargeIconSize)
 
 public:
-    struct Page
-    {
-        QToolButton *button;
-        QAction     *action;
-
-        inline void    setText(const QString &text)   { action->setText(text);       }
-        inline void    setIcon(const QIcon &icon)     { action->setIcon(icon);       }
-        inline void    setEnabled(bool enabled)       { action->setEnabled(enabled); }
-        inline void    setVisible(bool visible)       { action->setVisible(visible);
-                                                        button->setVisible(visible); }
-        inline QString text() const                   { return action->text();       }
-        inline QIcon   icon() const                   { return action->icon();       }
-        inline bool    isEnabled() const              { return action->isEnabled();  }
-        inline bool    isVisible() const              { return action->isVisible();  }
-    };
-
     explicit NavBar(QWidget *parent = 0, Qt::WindowFlags f = 0);
     ~NavBar();
 
@@ -112,6 +97,7 @@ public slots:
     void setShowHeader(bool show);
     void setShowOptionsMenu(bool show);
     void setVisibleRows(int rows);
+    int  showOptionsDialog();
 
 protected:
     void resizeEvent(QResizeEvent *e);
@@ -128,7 +114,7 @@ private:
     void refillToolBar(int visCount);
     void refillPagesMenu();
 
-    QList<Page> visiblePages();
+    QList<NavBarPage> visiblePages();
 
     NavBarHeader    *header;
     QStackedWidget  *stackedWidget;
@@ -137,7 +123,8 @@ private:
     NavBarToolBar   *pageToolBar;
     QActionGroup    *actionGroup;
     QMenu           *pagesMenu;
-    QList<Page>      pages;
+    QAction         *actionOptions;
+    QList<NavBarPage> pages;
 
     bool  optMenuVisible;
     bool  headerVisible;
