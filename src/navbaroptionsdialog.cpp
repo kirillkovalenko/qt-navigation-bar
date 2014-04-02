@@ -29,9 +29,9 @@ QList<NavBarPage> NavBarOptionsDialog::pageList()
     return pages;
 }
 
-void NavBarOptionsDialog::setDefaultPageOrder(QList<QWidget *> order)
+void NavBarOptionsDialog::setDefaultPageOrder(QStringList order)
 {
-    //TODO: default page order
+    pageOrder = order;
     resetButton->setEnabled(true);
 }
 
@@ -73,6 +73,8 @@ void NavBarOptionsDialog::movePageDown()
 
 void NavBarOptionsDialog::resetPages()
 {
+    pages = sortNavBarPageList(pages, pageOrder);
+    fillListWidget();
 }
 
 void NavBarOptionsDialog::onCurrentRowChanged(int row)

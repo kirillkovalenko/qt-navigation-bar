@@ -59,6 +59,8 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     optMenuVisible = false;
     headerHeight   = 26;
     pageIconSize   = QSize(24, 24);
+    uniquePageCount = 0;
+
     setFrameStyle(QFrame::Panel | QFrame::Sunken);
 
     header = new NavBarHeader(this);
@@ -395,6 +397,7 @@ int NavBar::createPage(int index, QWidget *page, const QString &text, const QIco
     NavBarPage p;
 
     p.action = new QAction(this);
+    p.action->setObjectName(QString("page-%1").arg(uniquePageCount));
     p.action->setCheckable(true);
     p.action->setText(text);
     p.action->setIcon(icon);
@@ -416,12 +419,16 @@ int NavBar::createPage(int index, QWidget *page, const QString &text, const QIco
         p.action->setData(pages.size());
         idx = stackedWidget->addWidget(page);
         pages.append(p);
+        pageOrder.append(p.name());
     }
     else // insert page
     {
         idx = stackedWidget->insertWidget(index, page);
         pages.insert(index, p);
+        pageOrder.insert(index, p.name());
     }
+
+    uniquePageCount++;
 
     pages[stackedWidget->currentIndex()].action->setChecked(true);
     actionGroup->addAction(p.action);
@@ -454,6 +461,7 @@ void NavBar::removePage(int index)
     delete pages[index].button;
     delete pages[index].action;
     pages.removeAt(index);
+    pageOrder.removeAt(index);
     recalcPageList();
 
     if(!pages.isEmpty())
@@ -612,6 +620,8 @@ int NavBar::showOptionsDialog()
 {
     NavBarOptionsDialog optionsDlg(this);
     optionsDlg.setPageList(pages);
+    optionsDlg.setDefaultPageOrder(pageOrder);
+
     int ret = optionsDlg.exec();
 
     if(ret == QDialog::Accepted)
@@ -673,7 +683,6 @@ void NavBar::refillPagesMenu()
         changeVis->setCheckable(true);
         changeVis->setChecked(pages[i].isVisible());
         changeVis->setData(i);
-        pagesMenu->addAction(changeVis);
     }
 }
 
@@ -700,6 +709,32 @@ void NavBar::changePageVisibility(QAction *action)
         showOptionsDialog();
     else
         setPageVisible(action->data().toInt(), action->isChecked());
+}
+
+QList<NavBarPage> sortNavBarPageList(QList<NavBarPage> pages, QStringList order)
+{
+    QList<NavBarPage> sortedPages;
+
+    for(int i = 0; i < order.size(); i++)
+    {
+        qDebug() << order[i];
+
+        int idx = -1;
+
+        for(int j = 0; j < pages.size(); j++)
+        {
+            if(order[i] == pages[j].name())
+            {
+                idx = j;
+                break;
+            }
+        }
+
+        if(idx >= 0)
+            sortedPages.append(pages[idx]);
+    }
+
+    return sortedPages;
 }
 
 

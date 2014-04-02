@@ -125,11 +125,13 @@ private:
     QMenu           *pagesMenu;
     QAction         *actionOptions;
     QList<NavBarPage> pages;
+    QStringList      pageOrder;
 
     bool  optMenuVisible;
     bool  headerVisible;
     int   headerHeight;
     QSize pageIconSize;
+    int   uniquePageCount;
 
     friend class NavBarPageList;
 };

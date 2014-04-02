@@ -14,7 +14,7 @@ public:
     void setPageList(QList<NavBarPage> plist);
     QList<NavBarPage> pageList();
 
-    void setDefaultPageOrder(QList<QWidget *> order);
+    void setDefaultPageOrder(QStringList order);
 
 private slots:
     void movePageUp();
@@ -24,7 +24,9 @@ private slots:
 
 private:
     void fillListWidget();
+
     QList<NavBarPage> pages;
+    QStringList       pageOrder;
 };
 
 #endif // NAVBAROPTIONSDLG_H
