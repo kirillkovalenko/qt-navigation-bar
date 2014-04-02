@@ -15,7 +15,7 @@ NavBarOptionsDialog::NavBarOptionsDialog(QWidget *parent) :
     connect(pageListWidget, SIGNAL(currentRowChanged(int)), SLOT(onCurrentRowChanged(int)));
 }
 
-void NavBarOptionsDialog::setPageList(QList<NavBarPage> plist)
+void NavBarOptionsDialog::setPageList(const QList<NavBarPage> &plist)
 {
     pages = plist;
     fillListWidget();
@@ -29,7 +29,7 @@ QList<NavBarPage> NavBarOptionsDialog::pageList()
     return pages;
 }
 
-void NavBarOptionsDialog::setDefaultPageOrder(QStringList order)
+void NavBarOptionsDialog::setDefaultPageOrder(const QStringList &order)
 {
     pageOrder = order;
     resetButton->setEnabled(true);

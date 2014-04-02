@@ -15,14 +15,14 @@ public:
     explicit NavBarButton(QWidget *parent);
 };
 
-class NavBarPageList : public QWidget
+class NavBarPageListWidget : public QWidget
 {
     Q_OBJECT
     Q_PROPERTY(int rowHeight READ rowHeight WRITE setRowHeight)
 
 public:
-    explicit NavBarPageList(NavBar *parent);
-    ~NavBarPageList();
+    explicit NavBarPageListWidget(NavBar *parent);
+    ~NavBarPageListWidget();
 
     int  rowHeight() const;
     void setRowHeight(int newHeight);

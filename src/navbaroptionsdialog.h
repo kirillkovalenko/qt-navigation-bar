@@ -11,10 +11,10 @@ class NavBarOptionsDialog : public QDialog, private Ui::NavBarOptionsDialog
 public:
     explicit NavBarOptionsDialog(QWidget *parent = 0);
 
-    void setPageList(QList<NavBarPage> plist);
+    void setPageList(const QList<NavBarPage> &plist);
     QList<NavBarPage> pageList();
 
-    void setDefaultPageOrder(QStringList order);
+    void setDefaultPageOrder(const QStringList &order);
 
 private slots:
     void movePageUp();

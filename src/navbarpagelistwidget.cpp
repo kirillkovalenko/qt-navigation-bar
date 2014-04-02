@@ -1,31 +1,31 @@
 #include <QResizeEvent>
 #include <QDebug>
 #include "navbar.h"
-#include "navbarpagelist.h"
+#include "navbarpagelistwidget.h"
 
-NavBarPageList::NavBarPageList(NavBar *parent) :
+NavBarPageListWidget::NavBarPageListWidget(NavBar *parent) :
     QWidget(parent)
 {
     navBar = parent;
     pageButtonHeight = 32;
 }
 
-NavBarPageList::~NavBarPageList()
+NavBarPageListWidget::~NavBarPageListWidget()
 {
 }
 
-int NavBarPageList::rowHeight() const
+int NavBarPageListWidget::rowHeight() const
 {
     return pageButtonHeight;
 }
 
-void NavBarPageList::setRowHeight(int newHeight)
+void NavBarPageListWidget::setRowHeight(int newHeight)
 {
     pageButtonHeight = newHeight;
     setMaximumHeight(navBar->visiblePages().size() * pageButtonHeight);
 }
 
-void NavBarPageList::layoutButtons(int width)
+void NavBarPageListWidget::layoutButtons(int width)
 {
     for(int i = 0; i < navBar->visiblePages().size(); i++)
     {
@@ -34,7 +34,7 @@ void NavBarPageList::layoutButtons(int width)
     }
 }
 
-void NavBarPageList::resizeEvent(QResizeEvent *e)
+void NavBarPageListWidget::resizeEvent(QResizeEvent *e)
 {
     int rows = e->size().height() / pageButtonHeight;
 

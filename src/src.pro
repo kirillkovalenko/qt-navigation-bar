@@ -6,12 +6,12 @@ TARGET = $$qtLibraryTarget($$TARGET)
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 SOURCES += navbar.cpp \
-    navbarpagelist.cpp \
+    navbarpagelistwidget.cpp \
     navbarsplitter.cpp \
     navbaroptionsdialog.cpp
 
 HEADERS += navbar.h \
-    navbarpagelist.h \
+    navbarpagelistwidget.h \
     navbarsplitter.h \
     navbaroptionsdialog.h \
     navbarpage.h

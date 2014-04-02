@@ -9,7 +9,7 @@
 #include <QMenu>
 #include "navbarpage.h"
 #include "navbarsplitter.h"
-#include "navbarpagelist.h"
+#include "navbarpagelistwidget.h"
 
 class NavBarHeader: public QLabel
 {
@@ -116,16 +116,16 @@ private:
 
     QList<NavBarPage> visiblePages();
 
-    NavBarHeader    *header;
-    QStackedWidget  *stackedWidget;
-    NavBarSplitter  *splitter;
-    NavBarPageList  *pageList;
-    NavBarToolBar   *pageToolBar;
-    QActionGroup    *actionGroup;
-    QMenu           *pagesMenu;
-    QAction         *actionOptions;
-    QList<NavBarPage> pages;
-    QStringList      pageOrder;
+    NavBarHeader         *header;
+    QStackedWidget       *stackedWidget;
+    NavBarSplitter       *splitter;
+    NavBarPageListWidget *pageListWidget;
+    NavBarToolBar        *pageToolBar;
+    QActionGroup         *actionGroup;
+    QMenu                *pagesMenu;
+    QAction              *actionOptions;
+    QList<NavBarPage>     pages;
+    QStringList           pageOrder;
 
     bool  optMenuVisible;
     bool  headerVisible;
@@ -133,7 +133,7 @@ private:
     QSize pageIconSize;
     int   uniquePageCount;
 
-    friend class NavBarPageList;
+    friend class NavBarPageListWidget;
 };
 
 #endif // NAVBAR_H

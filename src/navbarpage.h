@@ -22,6 +22,6 @@ struct NavBarPage
     inline bool    isVisible() const              { return action->isVisible();  }
 };
 
-QList<NavBarPage> sortNavBarPageList(QList<NavBarPage> pages, QStringList order);
+QList<NavBarPage> sortNavBarPageList(const QList<NavBarPage> &pages, const QStringList &order);
 
 #endif // NAVBARPAGE_H

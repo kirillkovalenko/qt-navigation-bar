@@ -55,10 +55,10 @@
 NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     QFrame(parent, f)
 {
-    headerVisible  = true;
-    optMenuVisible = false;
-    headerHeight   = 26;
-    pageIconSize   = QSize(24, 24);
+    headerVisible   = true;
+    optMenuVisible  = false;
+    headerHeight    = 26;
+    pageIconSize    = QSize(24, 24);
     uniquePageCount = 0;
 
     setFrameStyle(QFrame::Panel | QFrame::Sunken);
@@ -66,14 +66,14 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     header = new NavBarHeader(this);
     header->setFrameStyle(QFrame::Panel | QFrame::Raised);
     stackedWidget = new QStackedWidget(this);
-    pageList = new NavBarPageList(this);
+    pageListWidget = new NavBarPageListWidget(this);
     pageToolBar = new NavBarToolBar(this);
-    pageToolBar->setMinimumHeight(pageList->rowHeight());
+    pageToolBar->setMinimumHeight(pageListWidget->rowHeight());
 
     splitter = new NavBarSplitter(this);
     splitter->setOrientation(Qt::Vertical);
     splitter->addWidget(stackedWidget);
-    splitter->addWidget(pageList);
+    splitter->addWidget(pageListWidget);
     splitter->setStretchFactor(0, 1);
     splitter->setStretchFactor(1, 0);
     splitter->setCollapsible(0, false);
@@ -88,7 +88,7 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     actionOptions->setText(tr("Options..."));
 
     connect(actionGroup, SIGNAL(triggered(QAction*)),          SLOT(onClickPageButton(QAction*)));
-    connect(pageList,    SIGNAL(buttonVisibilityChanged(int)), SLOT(onButtonVisibilityChanged(int)));
+    connect(pageListWidget,    SIGNAL(buttonVisibilityChanged(int)), SLOT(onButtonVisibilityChanged(int)));
     connect(pagesMenu,   SIGNAL(triggered(QAction*)),          SLOT(changePageVisibility(QAction*)));
 }
 
@@ -190,7 +190,7 @@ void NavBar::setShowOptionsMenu(bool show)
  */
 int NavBar::rowHeight() const
 {
-    return pageList->rowHeight();
+    return pageListWidget->rowHeight();
 }
 
 /**
@@ -204,7 +204,7 @@ void NavBar::setRowHeight(int height)
 
     int rows = visibleRows();
 
-    pageList->setRowHeight(height);
+    pageListWidget->setRowHeight(height);
     pageToolBar->setMinimumHeight(height);
     splitter->setIncrement(height);
     resizeContent(size(), height);
@@ -220,7 +220,7 @@ void NavBar::setRowHeight(int height)
  */
 int NavBar::visibleRows() const
 {
-    return pageList->height() / rowHeight();
+    return pageListWidget->height() / rowHeight();
 }
 
 /**
@@ -269,8 +269,8 @@ void NavBar::recalcPageList()
     for(int i = 0; i < pages.size(); i++)
         pages[i].action->setData(i);
 
-    pageList->setMaximumHeight(visiblePages().size() * rowHeight());
-    pageList->layoutButtons(pageList->width());
+    pageListWidget->setMaximumHeight(visiblePages().size() * rowHeight());
+    pageListWidget->layoutButtons(pageListWidget->width());
 }
 
 /**
@@ -290,7 +290,7 @@ QSize NavBar::smallIconSize() const
 void NavBar::setSmallIconSize(const QSize &size)
 {
     pageToolBar->setIconSize(size);
-    pageToolBar->setMinimumHeight(pageList->rowHeight());
+    pageToolBar->setMinimumHeight(pageListWidget->rowHeight());
 }
 
 /**
@@ -402,13 +402,13 @@ int NavBar::createPage(int index, QWidget *page, const QString &text, const QIco
     p.action->setText(text);
     p.action->setIcon(icon);
 
-    p.button = new NavBarButton(pageList);
+    p.button = new NavBarButton(pageListWidget);
     p.button->setDefaultAction(p.action);
     p.button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
     p.button->setToolTip("");
     p.button->setAutoRaise(true);
     p.button->setIconSize(pageIconSize);
-    p.button->setGeometry(0, visiblePages().size() * rowHeight(), pageList->width(), rowHeight()); //TODO: move to NavBarPageList
+    p.button->setGeometry(0, visiblePages().size() * rowHeight(), pageListWidget->width(), rowHeight()); //TODO: move to NavBarPageListWidget
     p.button->setVisible(true);
 
     int oldIdx = stackedWidget->currentIndex();
@@ -711,14 +711,12 @@ void NavBar::changePageVisibility(QAction *action)
         setPageVisible(action->data().toInt(), action->isChecked());
 }
 
-QList<NavBarPage> sortNavBarPageList(QList<NavBarPage> pages, QStringList order)
+QList<NavBarPage> sortNavBarPageList(const QList<NavBarPage> &pages, const QStringList &order)
 {
     QList<NavBarPage> sortedPages;
 
     for(int i = 0; i < order.size(); i++)
     {
-        qDebug() << order[i];
-
         int idx = -1;
 
         for(int j = 0; j < pages.size(); j++)
