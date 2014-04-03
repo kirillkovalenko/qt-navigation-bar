@@ -7,6 +7,7 @@
 #include <QList>
 #include <QActionGroup>
 #include <QMenu>
+#include <QByteArray>
 #include "navbarpage.h"
 #include "navbarsplitter.h"
 #include "navbarpagelistwidget.h"
@@ -41,6 +42,8 @@ class NavBar : public QFrame
     Q_PROPERTY(QSize largeIconSize   READ largeIconSize   WRITE setLargeIconSize)
 
 public:
+    enum { NavBarMarker = 0x4e426172 };
+
     explicit NavBar(QWidget *parent = 0, Qt::WindowFlags f = 0);
     ~NavBar();
 
@@ -82,6 +85,9 @@ public:
     bool     showOptionsMenu() const;
     int      visibleRows() const;
 
+    QByteArray saveState(int version = 0) const;
+    bool       restoreState(const QByteArray & state, int version = 0);
+
     QSize    sizeHint() const;
 
     static QString loadStyle(const QString &filename);
@@ -110,7 +116,8 @@ private slots:
 private:
     int  createPage(int index, QWidget *page, const QString &text, const QIcon &icon);
     void resizeContent(const QSize &size, int rowheight);
-    void recalcPageList();
+    void reorderStackedWidget();
+    void recalcPageList(bool reorder);
     void refillToolBar(int visCount);
     void refillPagesMenu();
 

@@ -47,6 +47,7 @@
  * @param rows Number of visible rows
  **/
 
+
 /**
  * Constructs new NavBar
  * @param parent Parent widget
@@ -56,7 +57,7 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     QFrame(parent, f)
 {
     headerVisible   = true;
-    optMenuVisible  = false;
+    optMenuVisible  = true;
     headerHeight    = 26;
     pageIconSize    = QSize(24, 24);
     uniquePageCount = 0;
@@ -264,8 +265,28 @@ void NavBar::resizeContent(const QSize &size, int rowheight)
     pageToolBar->setGeometry(left, size.height()-(rowheight+bottom), size.width()-left-right, rowheight);
 }
 
-void NavBar::recalcPageList()
+void NavBar::reorderStackedWidget()
 {
+    QList<QWidget *> widgets;
+    QWidget *current = stackedWidget->currentWidget();
+
+    for(int i = 0; i < stackedWidget->count(); i++)
+        widgets.append(stackedWidget->widget(i));
+
+    for(int i = 0; i < stackedWidget->count(); i++)
+        stackedWidget->removeWidget(stackedWidget->widget(0));
+
+    for(int i = 0; i < pages.size(); i++)
+        stackedWidget->addWidget(widgets[pages[i].action->data().toInt()]);
+
+    stackedWidget->setCurrentWidget(current);
+}
+
+void NavBar::recalcPageList(bool reorder)
+{
+    if(reorder)
+        reorderStackedWidget();
+
     for(int i = 0; i < pages.size(); i++)
         pages[i].action->setData(i);
 
@@ -433,7 +454,7 @@ int NavBar::createPage(int index, QWidget *page, const QString &text, const QIco
     pages[stackedWidget->currentIndex()].action->setChecked(true);
     actionGroup->addAction(p.action);
     header->setText(pages[stackedWidget->currentIndex()].text());
-    recalcPageList();
+    recalcPageList(false);
     refillToolBar(visibleRows());
     refillPagesMenu();
 
@@ -462,7 +483,7 @@ void NavBar::removePage(int index)
     delete pages[index].action;
     pages.removeAt(index);
     pageOrder.removeAt(index);
-    recalcPageList();
+    recalcPageList(false);
 
     if(!pages.isEmpty())
     {
@@ -509,7 +530,7 @@ void NavBar::setPageVisible(int index, bool visible)
     int rows = visibleRows();
 
     pages[index].setVisible(visible);
-    recalcPageList();
+    recalcPageList(false);
     refillToolBar(visibleRows());
 
     if(rows > visiblePages().size())
@@ -627,7 +648,7 @@ int NavBar::showOptionsDialog()
     if(ret == QDialog::Accepted)
     {
         pages = optionsDlg.pageList();
-        recalcPageList();
+        recalcPageList(true);
         refillToolBar(visibleRows());
         refillPagesMenu();
     }
@@ -709,6 +730,83 @@ void NavBar::changePageVisibility(QAction *action)
         showOptionsDialog();
     else
         setPageVisible(action->data().toInt(), action->isChecked());
+}
+
+/**
+ * Saves the current state of navigation bar.
+ * @param version Version number, which be stored as part of the data
+ * @return State data
+ */
+QByteArray NavBar::saveState(int version) const
+{
+    QByteArray data;
+    QDataStream stream(&data, QIODevice::WriteOnly);
+
+    stream << NavBarMarker;
+    stream << version;
+    stream << visibleRows();
+    stream << currentIndex();
+    stream << pages.size();
+
+    foreach(const NavBarPage &page, pages)
+    {
+        stream << page.name();
+        stream << page.isVisible();
+    }
+
+    return data;
+}
+
+/**
+ * Restores the state of navigation bar.
+ * @param state State data
+ * @param version Version number
+ * @return True if successfull
+ */
+bool NavBar::restoreState(const QByteArray &state, int version)
+{
+    QByteArray data = state;
+    QDataStream stream(&data, QIODevice::ReadOnly);
+
+    int magic, ver, rows, cur, size;
+
+    stream >> magic;
+    stream >> ver;
+    stream >> rows;
+    stream >> cur;
+
+    if((magic != NavBarMarker) || (ver != version))
+        return false;
+
+    stream >> size;
+
+    QStringList order;
+    QList<bool> visibility;
+
+    for(int i = 0; i < size; i++)
+    {
+        QString name;
+        bool visible;
+
+        stream >> name;
+        stream >> visible;
+
+        order.append(name);
+        visibility.append(visible);
+    }
+
+    pages = sortNavBarPageList(pages, order);
+    for(int i = 0; i < visibility.size(); i++)
+        pages[i].setVisible(visibility[i]);
+
+    recalcPageList(true);
+    refillToolBar(visibleRows());
+    refillPagesMenu();
+
+    setVisibleRows(rows);
+    setCurrentIndex(cur);
+
+    return true;
 }
 
 QList<NavBarPage> sortNavBarPageList(const QList<NavBarPage> &pages, const QStringList &order)

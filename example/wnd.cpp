@@ -2,6 +2,7 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QInputDialog>
+#include <QSettings>
 #include "wnd.h"
 
 Wnd::Wnd(QWidget *parent)
@@ -47,7 +48,7 @@ Wnd::Wnd(QWidget *parent)
 
     showOptMenuBox = new QCheckBox;
     showOptMenuBox->setText("Show options menu button");
-    showOptMenuBox->setChecked(false);
+    showOptMenuBox->setChecked(true);
     connect(showOptMenuBox, SIGNAL(toggled(bool)), navBar, SLOT(setShowOptionsMenu(bool)));
 
     styleBox = new QComboBox;
@@ -79,6 +80,11 @@ Wnd::Wnd(QWidget *parent)
     hLayout->addWidget(navBar);
     hLayout->addLayout(vLayout);
     setLayout(hLayout);
+
+    //Restoring NavBar state
+
+    QSettings settings("Mitrich Software", "NavBar example");
+    navBar->restoreState(settings.value("navBarState").toByteArray());
 }
 
 Wnd::~Wnd()
@@ -125,4 +131,14 @@ void Wnd::navBarVisibleRowsChanged(int rows)
 {
     signalWidget->addItem(QString("visibleRowsChanged(%1)").arg(rows));
     signalWidget->scrollToBottom();
+}
+
+//Saving NavBar state
+
+void Wnd::closeEvent(QCloseEvent *e)
+{
+    QSettings settings("Mitrich Software", "NavBar example");
+    settings.setValue("navBarState", navBar->saveState());
+
+    QWidget::closeEvent(e);
 }

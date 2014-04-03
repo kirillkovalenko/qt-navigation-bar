@@ -6,6 +6,7 @@
 #include <QComboBox>
 #include <QCheckBox>
 #include <QPushButton>
+#include <QCloseEvent>
 #include "navbar.h"
 
 class Wnd : public QWidget
@@ -25,6 +26,8 @@ private slots:
     void navBarVisibleRowsChanged(int rows);
 
 protected:
+    void closeEvent(QCloseEvent *e);
+
     NavBar *navBar;
     QListWidget *signalWidget;
     QComboBox *styleBox;
