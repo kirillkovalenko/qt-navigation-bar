@@ -84,7 +84,8 @@ Wnd::Wnd(QWidget *parent)
     //Restoring NavBar state
 
     QSettings settings("Mitrich Software", "NavBar example");
-    navBar->restoreState(settings.value("navBarState").toByteArray());
+    if(!navBar->restoreState(settings.value("navBarState").toByteArray()))
+        qDebug("Cannot restore state. Saved pages doesn't match pages, present in navigation bar.");
 }
 
 Wnd::~Wnd()
@@ -133,10 +134,10 @@ void Wnd::navBarVisibleRowsChanged(int rows)
     signalWidget->scrollToBottom();
 }
 
-//Saving NavBar state
-
 void Wnd::closeEvent(QCloseEvent *e)
 {
+    //Saving NavBar state
+
     QSettings settings("Mitrich Software", "NavBar example");
     settings.setValue("navBarState", navBar->saveState());
 

@@ -772,13 +772,16 @@ bool NavBar::restoreState(const QByteArray &state, int version)
 
     stream >> magic;
     stream >> ver;
-    stream >> rows;
-    stream >> cur;
 
     if((magic != NavBarMarker) || (ver != version))
         return false;
 
+    stream >> rows;
+    stream >> cur;
     stream >> size;
+
+    if((rows > pages.size()) || (cur > pages.size()-1) || (size > pages.size()))
+        return false;
 
     QStringList order;
     QList<bool> visibility;
@@ -793,6 +796,18 @@ bool NavBar::restoreState(const QByteArray &state, int version)
 
         order.append(name);
         visibility.append(visible);
+    }
+
+    foreach(const QString &name, order)
+    {
+        bool found = false;
+
+        for(int i = 0; i < pages.size(); i++)
+            if(name == pages[i].name())
+                found = true;
+
+        if(!found)
+            return false;
     }
 
     pages = sortNavBarPageList(pages, order);
