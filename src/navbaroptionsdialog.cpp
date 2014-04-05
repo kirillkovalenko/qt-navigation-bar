@@ -79,6 +79,13 @@ void NavBarOptionsDialog::resetPages()
 
 void NavBarOptionsDialog::onCurrentRowChanged(int row)
 {
+    if(row < 0)
+    {
+        upButton->setEnabled(false);
+        downButton->setEnabled(false);
+        return;
+    }
+
     if(row == 0)
         upButton->setEnabled(false);
     else
