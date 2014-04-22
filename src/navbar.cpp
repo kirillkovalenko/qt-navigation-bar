@@ -88,9 +88,9 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     actionOptions = new QAction(this);
     actionOptions->setText(tr("Options..."));
 
-    connect(actionGroup, SIGNAL(triggered(QAction*)),          SLOT(onClickPageButton(QAction*)));
-    connect(pageListWidget,    SIGNAL(buttonVisibilityChanged(int)), SLOT(onButtonVisibilityChanged(int)));
-    connect(pagesMenu,   SIGNAL(triggered(QAction*)),          SLOT(changePageVisibility(QAction*)));
+    connect(actionGroup,    SIGNAL(triggered(QAction*)),          SLOT(onClickPageButton(QAction*)));
+    connect(pageListWidget, SIGNAL(buttonVisibilityChanged(int)), SLOT(onButtonVisibilityChanged(int)));
+    connect(pagesMenu,      SIGNAL(triggered(QAction*)),          SLOT(changePageVisibility(QAction*)));
 }
 
 NavBar::~NavBar()
@@ -366,7 +366,7 @@ int NavBar::addPage(QWidget *page, const QString &text)
  */
 int NavBar::addPage(QWidget *page, const QString &text, const QIcon &icon)
 {
-    return createPage(-1, page, text, icon);
+    return insertPage(-1, page, text, icon);
 }
 
 /**
@@ -401,19 +401,6 @@ int NavBar::insertPage(int index, QWidget *page, const QString &text)
  * @return The new page's index
  */
 int NavBar::insertPage(int index, QWidget *page, const QString &text, const QIcon &icon)
-{
-    return createPage(index, page, text, icon);
-}
-
-/**
- * Creates and inserts new page at given position. If index is -1, page wil be added.
- * @param index Page index
- * @param page Widget
- * @param text Page text
- * @param icon Page icon
- * @return The new page's index
- */
-int NavBar::createPage(int index, QWidget *page, const QString &text, const QIcon &icon)
 {
     NavBarPage p;
 

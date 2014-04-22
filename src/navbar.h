@@ -1,4 +1,4 @@
-#ifndef NAVBAR_H
+﻿#ifndef NAVBAR_H
 #define NAVBAR_H
 
 #include <QLabel>
@@ -114,7 +114,6 @@ private slots:
     void changePageVisibility(QAction *action);
 
 private:
-    int  createPage(int index, QWidget *page, const QString &text, const QIcon &icon);
     void resizeContent(const QSize &size, int rowheight);
     void reorderStackedWidget();
     void recalcPageList(bool reorder);
