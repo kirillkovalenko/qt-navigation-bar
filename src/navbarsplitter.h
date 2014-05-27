@@ -6,10 +6,12 @@
 class NavBarSplitter : public QSplitter
 {
     Q_OBJECT
-    Q_PROPERTY(int increment READ increment WRITE setIncrement)
+    //NOTE: this property somehow causes insertWidget() to work incorrectly
+    //Q_PROPERTY(int increment READ increment WRITE setIncrement)
 
 public:
     explicit NavBarSplitter(QWidget *parent = 0);
+    explicit NavBarSplitter(Qt::Orientation orientation, QWidget * parent = 0);
 
     int  increment() const;
     void setIncrement(int inc);

@@ -2,7 +2,6 @@
 #include <QWidget>
 #include <QStackedWidget>
 #include <QToolBar>
-#include <QVBoxLayout>
 #include <QList>
 #include <QAction>
 #include <QActionGroup>
@@ -11,6 +10,8 @@
 #include <QList>
 #include <QFile>
 #include <QTextStream>
+#include <QSizeGrip>
+#include <QWidgetAction>
 #include "navbar.h"
 #include "navbaroptionsdialog.h"
 
@@ -56,6 +57,7 @@
 NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     QFrame(parent, f)
 {
+    collapsedState  = false;
     headerVisible   = true;
     optMenuVisible  = true;
     headerHeight    = 26;
@@ -66,6 +68,7 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
 
     header = new NavBarHeader(this);
     header->setFrameStyle(QFrame::Panel | QFrame::Raised);
+    header->setMinimumHeight(headerHeight);
     stackedWidget = new QStackedWidget(this);
     pageListWidget = new NavBarPageListWidget(this);
     pageToolBar = new NavBarToolBar(this);
@@ -88,9 +91,20 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     actionOptions = new QAction(this);
     actionOptions->setText(tr("Options..."));
 
+    contentsPopup = new QWidget(this, Qt::Popup);
+    contentsPopup->setVisible(false);
+    QVBoxLayout *l = new QVBoxLayout;
+    l->setSpacing(0);
+    l->setContentsMargins(0, 0, 0, 0);
+    contentsPopup->setLayout(l);
+
+    pageTitleButton = new NavBarTitleButton(this);
+    pageTitleButton->setVisible(false);
+
     connect(actionGroup,    SIGNAL(triggered(QAction*)),          SLOT(onClickPageButton(QAction*)));
     connect(pageListWidget, SIGNAL(buttonVisibilityChanged(int)), SLOT(onButtonVisibilityChanged(int)));
     connect(pagesMenu,      SIGNAL(triggered(QAction*)),          SLOT(changePageVisibility(QAction*)));
+    connect(pageTitleButton, SIGNAL(clicked()),                   SLOT(showContentsPopup()));
 }
 
 NavBar::~NavBar()
@@ -195,6 +209,16 @@ int NavBar::rowHeight() const
 }
 
 /**
+ * @property NavBar::collapsed
+ * This property controls NavBar state.
+ * @access bool isCollaped() const\n void setCollapsed(bool)
+ */
+bool NavBar::isCollapsed() const
+{
+    return collapsedState;
+}
+
+/**
  * Set height of a row in a page list.
  * @param height Row height
  */
@@ -209,6 +233,52 @@ void NavBar::setRowHeight(int height)
     pageToolBar->setMinimumHeight(height);
     splitter->setIncrement(height);
     resizeContent(size(), height);
+    setVisibleRows(rows);
+}
+
+void NavBar::setCollapsed(bool collapse)
+{
+    if(collapse == collapsedState)
+        return;
+
+    collapsedState = collapse;
+    int rows = visibleRows();
+
+    if(collapse)
+    {
+        for(int i = 0; i < pages.size(); i++)
+            pages[i].button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+
+        moveContentsToPopup(true);
+
+        splitter->insertWidget(0, pageTitleButton);
+        pageTitleButton->setVisible(true);
+        splitter->setStretchFactor(0, 1);
+        splitter->setStretchFactor(1, 0);
+        splitter->setCollapsible(0, false);
+
+        expandedWidth = width();
+        resize(40, height());
+        setMaximumWidth(40);
+    }
+    else
+    {
+        for(int i = 0; i < pages.size(); i++)
+            pages[i].button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+
+        setMaximumWidth(QWIDGETSIZE_MAX);
+        resize(expandedWidth, height());
+
+        pageTitleButton->setParent(this);
+        pageTitleButton->setVisible(false);
+
+        moveContentsToPopup(false);
+    }
+
+    splitter->setVisible(false);
+    splitter->setVisible(true);
+    resizeContent(size(), rowHeight());
+    setVisibleRows(0);
     setVisibleRows(rows);
 }
 
@@ -254,7 +324,7 @@ void NavBar::resizeContent(const QSize &size, int rowheight)
     int left, top, right, bottom;
     getContentsMargins(&left, &top, &right, &bottom);
 
-    if(headerVisible)
+    if(headerVisible && (!collapsedState))
     {
         header->setGeometry(left, top, size.width()-right-left, headerHeight);
         splitter->setGeometry(left, top + headerHeight, size.width()-right-left, size.height()-(rowheight+top+bottom+headerHeight));
@@ -412,7 +482,7 @@ int NavBar::insertPage(int index, QWidget *page, const QString &text, const QIco
 
     p.button = new NavBarButton(pageListWidget);
     p.button->setDefaultAction(p.action);
-    p.button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+    p.button->setToolButtonStyle(collapsedState ? Qt::ToolButtonIconOnly : Qt::ToolButtonTextBesideIcon);
     p.button->setToolTip("");
     p.button->setAutoRaise(true);
     p.button->setIconSize(pageIconSize);
@@ -440,7 +510,7 @@ int NavBar::insertPage(int index, QWidget *page, const QString &text, const QIco
 
     pages[stackedWidget->currentIndex()].action->setChecked(true);
     actionGroup->addAction(p.action);
-    header->setText(pages[stackedWidget->currentIndex()].text());
+    setHeaderText(pages[stackedWidget->currentIndex()].text());
     recalcPageList(false);
     refillToolBar(visibleRows());
     refillPagesMenu();
@@ -474,11 +544,11 @@ void NavBar::removePage(int index)
 
     if(!pages.isEmpty())
     {
-        header->setText(pages[stackedWidget->currentIndex()].text());
+        setHeaderText(pages[stackedWidget->currentIndex()].text());
         pages[stackedWidget->currentIndex()].action->setChecked(true);
     }
     else
-        header->setText("");
+        setHeaderText("");
 
     if(rows > visiblePages().size())
         setVisibleRows(visiblePages().size());
@@ -599,7 +669,7 @@ void NavBar::setCurrentIndex(int index)
         return;
 
     stackedWidget->setCurrentIndex(index);
-    header->setText(pages[index].text());
+    setHeaderText(pages[index].text());
     pages[index].action->setChecked(true);
     emit currentChanged(index);
 }
@@ -615,7 +685,7 @@ void NavBar::setCurrentWidget(QWidget *widget)
 
     stackedWidget->setCurrentWidget(widget);
     int index = stackedWidget->currentIndex();
-    header->setText(pages[index].text());
+    setHeaderText(pages[index].text());
     pages[index].action->setChecked(true);
     emit currentChanged(index);
 }
@@ -651,7 +721,7 @@ void NavBar::onClickPageButton(QAction *action)
     if(index != current)
     {
         stackedWidget->setCurrentIndex(index);
-        header->setText(action->text());
+        setHeaderText(action->text());
         emit currentChanged(index);
     }
 }
@@ -694,6 +764,31 @@ void NavBar::refillPagesMenu()
     }
 }
 
+void NavBar::moveContentsToPopup(bool popup)
+{
+    if(popup)
+    {
+        contentsPopup->layout()->addWidget(header);
+        contentsPopup->layout()->addWidget(stackedWidget);
+    }
+    else
+    {
+        contentsPopup->layout()->removeWidget(stackedWidget);
+        contentsPopup->layout()->removeWidget(header);
+
+        splitter->insertWidget(0, stackedWidget);
+        stackedWidget->setVisible(true);
+        header->setParent(this, Qt::Widget);
+        header->setVisible(headerVisible);
+    }
+}
+
+void NavBar::setHeaderText(const QString &text)
+{
+    header->setText(text);
+    pageTitleButton->setText(text);
+}
+
 QList<NavBarPage> NavBar::visiblePages()
 {
     QList<NavBarPage> l;
@@ -717,6 +812,13 @@ void NavBar::changePageVisibility(QAction *action)
         showOptionsDialog();
     else
         setPageVisible(action->data().toInt(), action->isChecked());
+}
+
+void NavBar::showContentsPopup()
+{
+    contentsPopup->resize(expandedWidth, height());
+    contentsPopup->move(mapToGlobal(QPoint(width(), 0)));
+    contentsPopup->show();
 }
 
 /**
@@ -898,4 +1000,21 @@ NavBarHeader::NavBarHeader(const QString &text, QWidget *parent, Qt::WindowFlags
 NavBarToolBar::NavBarToolBar(QWidget *parent):
     QToolBar(parent)
 {
+}
+
+
+NavBarTitleButton::NavBarTitleButton(QWidget *parent):
+    QToolButton(parent)
+{
+
+}
+
+QSize NavBarTitleButton::sizeHint() const
+{
+    return QSize(-1, -1);
+}
+
+QSize NavBarTitleButton::minimumSizeHint() const
+{
+    return QSize(-1, -1);
 }

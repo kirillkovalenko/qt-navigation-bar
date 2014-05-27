@@ -51,6 +51,11 @@ Wnd::Wnd(QWidget *parent)
     showOptMenuBox->setChecked(true);
     connect(showOptMenuBox, SIGNAL(toggled(bool)), navBar, SLOT(setShowOptionsMenu(bool)));
 
+    collapsedBox = new QCheckBox;
+    collapsedBox->setText("Collapsed");
+    collapsedBox->setChecked(false);
+    connect(collapsedBox, SIGNAL(toggled(bool)), navBar, SLOT(setCollapsed(bool)));
+
     styleBox = new QComboBox;
     styleBox->addItem("Office 2003 Gray",   ":/styles/office2003gray.css");
     styleBox->addItem("Office 2003 Blue",   ":/styles/office2003blue.css");
@@ -76,6 +81,7 @@ Wnd::Wnd(QWidget *parent)
     vLayout->addWidget(styleBox);
     vLayout->addWidget(showHeaderBox);
     vLayout->addWidget(showOptMenuBox);
+    vLayout->addWidget(collapsedBox);
     vLayout->addWidget(signalWidget);
     hLayout->addWidget(navBar);
     hLayout->addLayout(vLayout);

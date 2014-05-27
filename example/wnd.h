@@ -33,6 +33,7 @@ protected:
     QComboBox *styleBox;
     QCheckBox *showHeaderBox;
     QCheckBox *showOptMenuBox;
+    QCheckBox *collapsedBox;
     QPushButton *addPageButton;
     QPushButton *removePageButton;
     QPushButton *insertPageButton;
