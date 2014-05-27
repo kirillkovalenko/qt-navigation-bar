@@ -10,6 +10,7 @@
 #include <QList>
 #include <QFile>
 #include <QTextStream>
+#include <QGridLayout>
 #include <QSizeGrip>
 #include <QWidgetAction>
 #include "navbar.h"
@@ -92,13 +93,16 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     actionOptions->setText(tr("Options..."));
 
     contentsPopup = new QWidget(this, Qt::Popup);
+    contentsPopup->setObjectName("navBarPopup"); //for stylesheets
     contentsPopup->setVisible(false);
-    QVBoxLayout *l = new QVBoxLayout;
+    QGridLayout *l = new QGridLayout;
     l->setSpacing(0);
     l->setContentsMargins(0, 0, 0, 0);
+    l->addWidget(new QSizeGrip(contentsPopup), 2, 0, Qt::AlignRight);
     contentsPopup->setLayout(l);
 
     pageTitleButton = new NavBarTitleButton(this);
+    pageTitleButton->setAutoRaise(true);
     pageTitleButton->setVisible(false);
 
     connect(actionGroup,    SIGNAL(triggered(QAction*)),          SLOT(onClickPageButton(QAction*)));
@@ -768,8 +772,8 @@ void NavBar::moveContentsToPopup(bool popup)
 {
     if(popup)
     {
-        contentsPopup->layout()->addWidget(header);
-        contentsPopup->layout()->addWidget(stackedWidget);
+        qobject_cast<QGridLayout *>(contentsPopup->layout())->addWidget(header, 0, 0);
+        qobject_cast<QGridLayout *>(contentsPopup->layout())->addWidget(stackedWidget, 1, 0);
     }
     else
     {

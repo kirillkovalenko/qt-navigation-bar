@@ -8,7 +8,6 @@
 #include <QActionGroup>
 #include <QMenu>
 #include <QByteArray>
-#include <QVBoxLayout>
 #include "navbarpage.h"
 #include "navbarsplitter.h"
 #include "navbarpagelistwidget.h"
