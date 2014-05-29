@@ -16,12 +16,6 @@
 #include "navbar.h"
 #include "navbaroptionsdialog.h"
 
-/**
- * @class NavBarHeader
- * @brief Navigation bar header.
- *
- * This class derived from QLabel to have different class name (for use with style sheets) and has no additional features.
- */
 
 /**
  * @class NavBar
@@ -59,6 +53,7 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     QFrame(parent, f)
 {
     collapsedState  = false;
+    autoPopupMode   = false;
     headerVisible   = true;
     optMenuVisible  = true;
     headerHeight    = 26;
@@ -92,8 +87,10 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     actionOptions = new QAction(this);
     actionOptions->setText(tr("Options..."));
 
-    contentsPopup = new QWidget(this, Qt::Popup);
+    contentsPopup = new QFrame(this, Qt::Popup);
     contentsPopup->setObjectName("navBarPopup"); //for stylesheets
+    contentsPopup->setFrameStyle(QFrame::Panel | QFrame::Plain);
+    contentsPopup->resize(0, 0);
     contentsPopup->setVisible(false);
     QGridLayout *l = new QGridLayout;
     l->setSpacing(0);
@@ -102,13 +99,13 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     contentsPopup->setLayout(l);
 
     pageTitleButton = new NavBarTitleButton(this);
-    pageTitleButton->setAutoRaise(true);
     pageTitleButton->setVisible(false);
 
     connect(actionGroup,    SIGNAL(triggered(QAction*)),          SLOT(onClickPageButton(QAction*)));
     connect(pageListWidget, SIGNAL(buttonVisibilityChanged(int)), SLOT(onButtonVisibilityChanged(int)));
     connect(pagesMenu,      SIGNAL(triggered(QAction*)),          SLOT(changePageVisibility(QAction*)));
     connect(pageTitleButton, SIGNAL(clicked()),                   SLOT(showContentsPopup()));
+    connect(header,         SIGNAL(buttonClicked(bool)),          SLOT(setCollapsed(bool)));
 }
 
 NavBar::~NavBar()
@@ -222,6 +219,11 @@ bool NavBar::isCollapsed() const
     return collapsedState;
 }
 
+bool NavBar::autoPopup() const
+{
+    return autoPopupMode;
+}
+
 /**
  * Set height of a row in a page list.
  * @param height Row height
@@ -267,6 +269,8 @@ void NavBar::setCollapsed(bool collapse)
     }
     else
     {
+        contentsPopup->setVisible(false);
+
         for(int i = 0; i < pages.size(); i++)
             pages[i].button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
 
@@ -279,11 +283,18 @@ void NavBar::setCollapsed(bool collapse)
         moveContentsToPopup(false);
     }
 
+    header->button->setChecked(collapse);
+
     splitter->setVisible(false);
     splitter->setVisible(true);
     resizeContent(size(), rowHeight());
     setVisibleRows(0);
     setVisibleRows(rows);
+}
+
+void NavBar::setAutoPopup(bool enable)
+{
+    autoPopupMode = enable;
 }
 
 /**
@@ -321,6 +332,14 @@ void NavBar::resizeEvent(QResizeEvent *e)
 {
     resizeContent(e->size(), rowHeight());
     QFrame::resizeEvent(e);
+}
+
+void NavBar::changeEvent(QEvent *e)
+{
+    if(e->type() == QEvent::StyleChange)
+        contentsPopup->setStyleSheet(styleSheet());
+
+    QFrame::changeEvent(e);
 }
 
 void NavBar::resizeContent(const QSize &size, int rowheight)
@@ -728,6 +747,9 @@ void NavBar::onClickPageButton(QAction *action)
         setHeaderText(action->text());
         emit currentChanged(index);
     }
+
+    if(autoPopupMode && collapsedState)
+        showContentsPopup();
 }
 
 void NavBar::refillToolBar(int visCount)
@@ -820,7 +842,9 @@ void NavBar::changePageVisibility(QAction *action)
 
 void NavBar::showContentsPopup()
 {
-    contentsPopup->resize(expandedWidth, height());
+    if(contentsPopup->size().isEmpty())
+        contentsPopup->resize(expandedWidth, height());
+
     contentsPopup->move(mapToGlobal(QPoint(width(), 0)));
     contentsPopup->show();
 }
@@ -979,46 +1003,7 @@ QString NavBar::loadStyle(const QString &filename)
 }
 
 
-/**
- * Constructs new NavBarHeader
- * @param parent Parent widget, passed to QLabel constructor
- * @param f WindowFlags, passed to QLabel constructor
- */
-NavBarHeader::NavBarHeader(QWidget *parent, Qt::WindowFlags f):
-    QLabel(parent, f)
-{
-}
-
-/**
- * Constructs new NavBarHeader
- * @param text Header text
- * @param parent Parent widget, passed to QLabel constructor
- * @param f WindowFlags, passed to QLabel constructor
- */
-NavBarHeader::NavBarHeader(const QString &text, QWidget *parent, Qt::WindowFlags f):
-    QLabel(text, parent, f)
-{
-}
-
-
 NavBarToolBar::NavBarToolBar(QWidget *parent):
     QToolBar(parent)
 {
-}
-
-
-NavBarTitleButton::NavBarTitleButton(QWidget *parent):
-    QToolButton(parent)
-{
-
-}
-
-QSize NavBarTitleButton::sizeHint() const
-{
-    return QSize(-1, -1);
-}
-
-QSize NavBarTitleButton::minimumSizeHint() const
-{
-    return QSize(-1, -1);
 }

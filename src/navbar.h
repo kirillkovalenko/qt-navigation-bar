@@ -1,7 +1,6 @@
 ﻿#ifndef NAVBAR_H
 #define NAVBAR_H
 
-#include <QLabel>
 #include <QStackedWidget>
 #include <QToolBar>
 #include <QList>
@@ -9,17 +8,10 @@
 #include <QMenu>
 #include <QByteArray>
 #include "navbarpage.h"
+#include "navbarheader.h"
 #include "navbarsplitter.h"
 #include "navbarpagelistwidget.h"
 
-class NavBarHeader: public QLabel
-{
-    Q_OBJECT
-
-public:
-    explicit NavBarHeader(QWidget *parent = 0, Qt::WindowFlags f = 0);
-    explicit NavBarHeader(const QString & text, QWidget *parent = 0, Qt::WindowFlags f = 0);
-};
 
 class NavBarToolBar: public QToolBar
 {
@@ -29,17 +21,6 @@ public:
     explicit NavBarToolBar(QWidget *parent = 0);
 };
 
-class NavBarTitleButton: public QToolButton //TODO: vertical text
-{
-    Q_OBJECT
-
-public:
-    explicit NavBarTitleButton(QWidget *parent = 0);
-
-    QSize sizeHint() const;
-    QSize minimumSizeHint() const;
-};
-
 class NavBar : public QFrame
 {
     Q_OBJECT
@@ -47,6 +28,7 @@ class NavBar : public QFrame
     Q_PROPERTY(int   currentIndex    READ currentIndex    WRITE setCurrentIndex NOTIFY currentChanged)
     Q_PROPERTY(int   rowHeight       READ rowHeight       WRITE setRowHeight)
     Q_PROPERTY(bool  collapsed       READ isCollapsed     WRITE setCollapsed)
+    Q_PROPERTY(bool  autoPopup       READ autoPopup       WRITE setAutoPopup)
     Q_PROPERTY(bool  showHeader      READ showHeader      WRITE setShowHeader)
     Q_PROPERTY(bool  showOptionsMenu READ showOptionsMenu WRITE setShowOptionsMenu)
     Q_PROPERTY(int   visibleRows     READ visibleRows     WRITE setVisibleRows  NOTIFY visibleRowsChanged)
@@ -94,6 +76,7 @@ public:
 
     int      rowHeight() const;
     bool     isCollapsed() const;
+    bool     autoPopup() const;
     bool     showHeader() const;
     bool     showOptionsMenu() const;
     int      visibleRows() const;
@@ -114,6 +97,7 @@ public slots:
     void setCurrentWidget(QWidget *widget);
     void setRowHeight(int height);
     void setCollapsed(bool collapse);
+    void setAutoPopup(bool enable);
     void setShowHeader(bool show);
     void setShowOptionsMenu(bool show);
     void setVisibleRows(int rows);
@@ -121,6 +105,7 @@ public slots:
 
 protected:
     void resizeEvent(QResizeEvent *e);
+    void changeEvent(QEvent *e);
 
 private slots:
     void onClickPageButton(QAction *action);
@@ -146,13 +131,14 @@ private:
     NavBarToolBar        *pageToolBar;
     QActionGroup         *actionGroup;
     QMenu                *pagesMenu;
-    QWidget              *contentsPopup;
+    QFrame               *contentsPopup;
     NavBarTitleButton    *pageTitleButton;
     QAction              *actionOptions;
     QList<NavBarPage>     pages;
     QStringList           pageOrder;
 
     bool  collapsedState;
+    bool  autoPopupMode;
     int   expandedWidth;
     bool  optMenuVisible;
     bool  headerVisible;
