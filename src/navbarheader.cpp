@@ -1,4 +1,4 @@
-#include <QStylePainter>
+﻿#include <QStylePainter>
 #include <QStyleOptionButton>
 #include <QFontMetrics>
 #include "navbarheader.h"
@@ -36,7 +36,7 @@ NavBarHeader::NavBarHeader(const QString &text, QWidget *parent, Qt::WindowFlags
 
 void NavBarHeader::resizeEvent(QResizeEvent *e)
 {
-    button->setGeometry(width()-24, 2, 22, 22);
+    button->setGeometry(width()-23, 3, 20, 20);
     QLabel::resizeEvent(e);
 }
 
@@ -44,6 +44,8 @@ void NavBarHeader::createButton()
 {
     button = new QToolButton(this);
     button->setCheckable(true);
+    button->setAutoRaise(true);
+    button->setText(QString::fromUtf8("\xC2\xAB"));
     connect(button, SIGNAL(clicked(bool)), SIGNAL(buttonClicked(bool)));
 }
 

@@ -57,6 +57,7 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     headerVisible   = true;
     optMenuVisible  = true;
     headerHeight    = 26;
+    collapsedWidth  = 32;
     pageIconSize    = QSize(24, 24);
     uniquePageCount = 0;
 
@@ -99,13 +100,14 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     contentsPopup->setLayout(l);
 
     pageTitleButton = new NavBarTitleButton(this);
+    pageTitleButton->setFlat(true);
     pageTitleButton->setVisible(false);
 
-    connect(actionGroup,    SIGNAL(triggered(QAction*)),          SLOT(onClickPageButton(QAction*)));
-    connect(pageListWidget, SIGNAL(buttonVisibilityChanged(int)), SLOT(onButtonVisibilityChanged(int)));
-    connect(pagesMenu,      SIGNAL(triggered(QAction*)),          SLOT(changePageVisibility(QAction*)));
-    connect(pageTitleButton, SIGNAL(clicked()),                   SLOT(showContentsPopup()));
-    connect(header,         SIGNAL(buttonClicked(bool)),          SLOT(setCollapsed(bool)));
+    connect(actionGroup,     SIGNAL(triggered(QAction*)),          SLOT(onClickPageButton(QAction*)));
+    connect(pageListWidget,  SIGNAL(buttonVisibilityChanged(int)), SLOT(onButtonVisibilityChanged(int)));
+    connect(pagesMenu,       SIGNAL(triggered(QAction*)),          SLOT(changePageVisibility(QAction*)));
+    connect(pageTitleButton, SIGNAL(clicked()),                    SLOT(showContentsPopup()));
+    connect(header,          SIGNAL(buttonClicked(bool)),          SLOT(setCollapsed(bool)));
 }
 
 NavBar::~NavBar()
@@ -211,7 +213,7 @@ int NavBar::rowHeight() const
 
 /**
  * @property NavBar::collapsed
- * This property controls NavBar state.
+ * Sets navigation bar collapsed state on/off
  * @access bool isCollaped() const\n void setCollapsed(bool)
  */
 bool NavBar::isCollapsed() const
@@ -219,9 +221,24 @@ bool NavBar::isCollapsed() const
     return collapsedState;
 }
 
+/**
+ * @property NavBar::autoPopup
+ * If turned on, navigation bar popup window will appear on page select (when collapsed).
+ * @access bool autoPopup() const\n void setAutoPopup(bool)
+ */
 bool NavBar::autoPopup() const
 {
     return autoPopupMode;
+}
+
+/**
+ * @property NavBar::showCollapseButton
+ * Show or hide navigation bar collapse button
+ * @access bool showCollapseButton() const\n void setShowCollapseButton(bool)
+ */
+bool NavBar::showCollapseButton() const
+{
+    return header->button->isVisible();
 }
 
 /**
@@ -242,6 +259,10 @@ void NavBar::setRowHeight(int height)
     setVisibleRows(rows);
 }
 
+/**
+ * Toggles navigation bar collapsed state.
+ * @param collapse Collapsed/Normal
+ */
 void NavBar::setCollapsed(bool collapse)
 {
     if(collapse == collapsedState)
@@ -253,7 +274,10 @@ void NavBar::setCollapsed(bool collapse)
     if(collapse)
     {
         for(int i = 0; i < pages.size(); i++)
+        {
             pages[i].button->setToolButtonStyle(Qt::ToolButtonIconOnly);
+            pages[i].button->setToolTip(pages[i].text());
+        }
 
         moveContentsToPopup(true);
 
@@ -264,15 +288,18 @@ void NavBar::setCollapsed(bool collapse)
         splitter->setCollapsible(0, false);
 
         expandedWidth = width();
-        resize(40, height());
-        setMaximumWidth(40);
+        resize(collapsedWidth, height());
+        setMaximumWidth(collapsedWidth);
     }
     else
     {
         contentsPopup->setVisible(false);
 
         for(int i = 0; i < pages.size(); i++)
+        {
             pages[i].button->setToolButtonStyle(Qt::ToolButtonTextBesideIcon);
+            pages[i].button->setToolTip("");
+        }
 
         setMaximumWidth(QWIDGETSIZE_MAX);
         resize(expandedWidth, height());
@@ -283,7 +310,7 @@ void NavBar::setCollapsed(bool collapse)
         moveContentsToPopup(false);
     }
 
-    header->button->setChecked(collapse);
+    header->button->setText(QString::fromUtf8(collapse ? "\xC2\xBB" : "\xC2\xAB"));
 
     splitter->setVisible(false);
     splitter->setVisible(true);
@@ -292,9 +319,22 @@ void NavBar::setCollapsed(bool collapse)
     setVisibleRows(rows);
 }
 
+/**
+ * If turned on, navigation bar popup window will appear on page select (when collapsed).
+ * @param enable Enable/Disable
+ */
 void NavBar::setAutoPopup(bool enable)
 {
     autoPopupMode = enable;
+}
+
+/**
+ * Show or hide navigation bar collapse button
+ * @param show
+ */
+void NavBar::setShowCollapseButton(bool show)
+{
+    header->button->setVisible(show);
 }
 
 /**
