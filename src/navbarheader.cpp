@@ -8,7 +8,16 @@
  * @class NavBarHeader
  * @brief Navigation bar header.
  *
- * Navigation bar header
+ * Navigation bar header.
+ */
+/**
+ * @fn NavBarHeader::buttonClicked
+ * Emitted when header button is clicked.
+ * @param checked Button check state (false by default)
+ */
+/**
+ * @var NavBarHeader::button
+ * Header button.
  */
 
 /**
@@ -78,8 +87,7 @@ void NavBarTitleButton::paintEvent(QPaintEvent *e)
 
     p.setFont(font());
     QFontMetrics fm(font());
-    QRect r = fm.boundingRect(text());
-    p.translate(width()/2 + r.height()/2, height()/2 + r.width()/2);
+    p.translate(width()/2 + fm.ascent()/2, height()/2 + fm.width(text())/2);
     p.rotate(270);
     p.drawText(0, 0, text());
 }

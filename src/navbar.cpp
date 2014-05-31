@@ -62,9 +62,10 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     headerVisible   = true;
     optMenuVisible  = true;
     headerHeight    = 26;
-    collapsedWidth  = 32;
+    collapsedWidth  = 33;
     pageIconSize    = QSize(24, 24);
     uniquePageCount = 0;
+    proceedCollapse = false;
 
     setFrameStyle(QFrame::Panel | QFrame::Sunken);
 
@@ -105,7 +106,6 @@ NavBar::NavBar(QWidget *parent, Qt::WindowFlags f):
     contentsPopup->setLayout(l);
 
     pageTitleButton = new NavBarTitleButton(this);
-    pageTitleButton->setFlat(true);
     pageTitleButton->setVisible(false);
 
     connect(actionGroup,     SIGNAL(triggered(QAction*)),          SLOT(onClickPageButton(QAction*)));
@@ -258,10 +258,19 @@ void NavBar::setRowHeight(int height)
 
     int rows = visibleRows();
 
+    collapsedWidth = height + 1;
     pageListWidget->setRowHeight(height);
     pageToolBar->setMinimumHeight(height);
     splitter->setIncrement(height);
-    resizeContent(size(), height);
+
+    if(collapsedState)
+    {
+        resize(collapsedWidth, this->height());
+        setMaximumWidth(collapsedWidth);
+    }
+    else
+        resizeContent(size(), height);
+
     setVisibleRows(rows);
 }
 
@@ -274,8 +283,8 @@ void NavBar::setCollapsed(bool collapse)
     if(collapse == collapsedState)
         return;
 
+    proceedCollapse = true;
     collapsedState = collapse;
-    int rows = visibleRows();
 
     if(collapse)
     {
@@ -321,8 +330,7 @@ void NavBar::setCollapsed(bool collapse)
     splitter->setVisible(false);
     splitter->setVisible(true);
     resizeContent(size(), rowHeight());
-    //setVisibleRows(0);
-    //setVisibleRows(rows);
+    proceedCollapse = false;
 
     emit stateChanged(collapse);
 }
@@ -877,7 +885,9 @@ QList<NavBarPage> NavBar::visiblePages()
 void NavBar::onButtonVisibilityChanged(int visCount)
 {
     refillToolBar(visCount);
-    emit visibleRowsChanged(visCount); //TODO: do not emit this, when rowHeight is changed.
+
+    if(!proceedCollapse)
+        emit visibleRowsChanged(visCount); //TODO: do not emit this, when rowHeight is changed.
 }
 
 void NavBar::changePageVisibility(QAction *action)

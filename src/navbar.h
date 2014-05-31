@@ -24,17 +24,17 @@ public:
 class NavBar : public QFrame
 {
     Q_OBJECT
-    Q_PROPERTY(int   count               READ count)
-    Q_PROPERTY(int   currentIndex        READ currentIndex        WRITE setCurrentIndex NOTIFY currentChanged)
-    Q_PROPERTY(int   rowHeight           READ rowHeight           WRITE setRowHeight)
-    Q_PROPERTY(bool  collapsed           READ isCollapsed         WRITE setCollapsed)
-    Q_PROPERTY(bool  autoPopup           READ autoPopup           WRITE setAutoPopup)
-    Q_PROPERTY(bool  showCollapseButton  READ showCollapseButton  WRITE setShowCollapseButton)
-    Q_PROPERTY(bool  showHeader          READ showHeader          WRITE setShowHeader)
-    Q_PROPERTY(bool  showOptionsMenu     READ showOptionsMenu     WRITE setShowOptionsMenu)
-    Q_PROPERTY(int   visibleRows         READ visibleRows         WRITE setVisibleRows  NOTIFY visibleRowsChanged)
-    Q_PROPERTY(QSize smallIconSize       READ smallIconSize       WRITE setSmallIconSize)
-    Q_PROPERTY(QSize largeIconSize       READ largeIconSize       WRITE setLargeIconSize)
+    Q_PROPERTY(int   count              READ count)
+    Q_PROPERTY(int   currentIndex       READ currentIndex       WRITE setCurrentIndex NOTIFY currentChanged)
+    Q_PROPERTY(int   rowHeight          READ rowHeight          WRITE setRowHeight)
+    Q_PROPERTY(bool  collapsed          READ isCollapsed        WRITE setCollapsed    NOTIFY stateChanged)
+    Q_PROPERTY(bool  autoPopup          READ autoPopup          WRITE setAutoPopup)
+    Q_PROPERTY(bool  showCollapseButton READ showCollapseButton WRITE setShowCollapseButton)
+    Q_PROPERTY(bool  showHeader         READ showHeader         WRITE setShowHeader)
+    Q_PROPERTY(bool  showOptionsMenu    READ showOptionsMenu    WRITE setShowOptionsMenu)
+    Q_PROPERTY(int   visibleRows        READ visibleRows        WRITE setVisibleRows  NOTIFY visibleRowsChanged)
+    Q_PROPERTY(QSize smallIconSize      READ smallIconSize      WRITE setSmallIconSize)
+    Q_PROPERTY(QSize largeIconSize      READ largeIconSize      WRITE setLargeIconSize)
 
 public:
     enum { NavBarMarker = 0x4e426172 };
@@ -150,6 +150,7 @@ private:
     int   collapsedWidth;
     QSize pageIconSize;
     int   uniquePageCount;
+    bool  proceedCollapse;
 
     friend class NavBarPageListWidget;
 };

@@ -16,6 +16,8 @@ public:
     explicit NavBarHeader(QWidget *parent = 0, Qt::WindowFlags f = 0);
     explicit NavBarHeader(const QString & text, QWidget *parent = 0, Qt::WindowFlags f = 0);
 
+    QToolButton *button;
+
 signals:
     void buttonClicked(bool checked = false);
 
@@ -24,9 +26,6 @@ protected:
 
 private:
     void createButton();
-    QToolButton *button;
-
-    friend class NavBar;
 };
 
 class NavBarTitleButton: public QPushButton
