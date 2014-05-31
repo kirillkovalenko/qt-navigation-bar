@@ -24,6 +24,7 @@ private slots:
     void changeStylesheet(int index);
     void navBarCurrentChanged(int index);
     void navBarVisibleRowsChanged(int rows);
+    void navBarStateChanged(bool collapsed);
 
 protected:
     void closeEvent(QCloseEvent *e);
@@ -32,6 +33,7 @@ protected:
     QListWidget *signalWidget;
     QComboBox *styleBox;
     QCheckBox *showHeaderBox;
+    QCheckBox *showColBtnBox;
     QCheckBox *showOptMenuBox;
     QCheckBox *autoPopupBox;
     QPushButton *addPageButton;

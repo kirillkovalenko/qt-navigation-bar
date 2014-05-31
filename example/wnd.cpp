@@ -1,5 +1,6 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QGridLayout>
 #include <QLabel>
 #include <QInputDialog>
 #include <QSettings>
@@ -23,6 +24,7 @@ Wnd::Wnd(QWidget *parent)
 
     connect(navBar, SIGNAL(currentChanged(int)),     SLOT(navBarCurrentChanged(int)));
     connect(navBar, SIGNAL(visibleRowsChanged(int)), SLOT(navBarVisibleRowsChanged(int)));
+    connect(navBar, SIGNAL(stateChanged(bool)),      SLOT(navBarStateChanged(bool)));
 
     //Creating other stuff
 
@@ -45,6 +47,11 @@ Wnd::Wnd(QWidget *parent)
     showHeaderBox->setText("Show header");
     showHeaderBox->setChecked(true);
     connect(showHeaderBox, SIGNAL(toggled(bool)), navBar, SLOT(setShowHeader(bool)));
+
+    showColBtnBox = new QCheckBox;
+    showColBtnBox->setText("Show collapse button");
+    showColBtnBox->setChecked(true);
+    connect(showColBtnBox, SIGNAL(toggled(bool)), navBar, SLOT(setShowCollapseButton(bool)));
 
     showOptMenuBox = new QCheckBox;
     showOptMenuBox->setText("Show options menu button");
@@ -74,14 +81,17 @@ Wnd::Wnd(QWidget *parent)
     QVBoxLayout *vLayout = new QVBoxLayout;
     QHBoxLayout *hLayout = new QHBoxLayout;
     QHBoxLayout *bLayout = new QHBoxLayout;
+    QGridLayout *cLayout = new QGridLayout;
     bLayout->addWidget(addPageButton);
     bLayout->addWidget(insertPageButton);
     bLayout->addWidget(removePageButton);
     vLayout->addLayout(bLayout);
     vLayout->addWidget(styleBox);
-    vLayout->addWidget(showHeaderBox);
-    vLayout->addWidget(showOptMenuBox);
-    vLayout->addWidget(autoPopupBox);
+    cLayout->addWidget(showHeaderBox,  0, 0);
+    cLayout->addWidget(showColBtnBox,  1, 0);
+    cLayout->addWidget(showOptMenuBox, 0, 1);
+    cLayout->addWidget(autoPopupBox,   1, 1);
+    vLayout->addLayout(cLayout);
     vLayout->addWidget(signalWidget);
     hLayout->addWidget(navBar);
     hLayout->addLayout(vLayout);
@@ -137,6 +147,12 @@ void Wnd::navBarCurrentChanged(int index)
 void Wnd::navBarVisibleRowsChanged(int rows)
 {
     signalWidget->addItem(QString("visibleRowsChanged(%1)").arg(rows));
+    signalWidget->scrollToBottom();
+}
+
+void Wnd::navBarStateChanged(bool collapsed)
+{
+    signalWidget->addItem(QString("stateChanged(%1)").arg(collapsed));
     signalWidget->scrollToBottom();
 }
 

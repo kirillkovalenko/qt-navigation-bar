@@ -93,6 +93,7 @@ public:
 signals:
     void currentChanged(int index);
     void visibleRowsChanged(int rows);
+    void stateChanged(bool collapsed);
 
 public slots:
     void setCurrentIndex(int index);

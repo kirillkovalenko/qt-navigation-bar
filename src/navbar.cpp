@@ -41,7 +41,12 @@
  * @fn NavBar::visibleRowsChanged
  * This signal is emitted when number of visible rows in navigation bar page list changed, e.g. when splitter is moved.
  * @param rows Number of visible rows
- **/
+ */
+/**
+ * @fn NavBar::stateChanged
+ * This signal is emitted when navigation bar collapsed or expanded.
+ * @param collapsed True if collapsed
+ */
 
 
 /**
@@ -215,6 +220,7 @@ int NavBar::rowHeight() const
  * @property NavBar::collapsed
  * Sets navigation bar collapsed state on/off
  * @access bool isCollaped() const\n void setCollapsed(bool)
+ * @signals stateChanged(bool)
  */
 bool NavBar::isCollapsed() const
 {
@@ -315,8 +321,10 @@ void NavBar::setCollapsed(bool collapse)
     splitter->setVisible(false);
     splitter->setVisible(true);
     resizeContent(size(), rowHeight());
-    setVisibleRows(0);
-    setVisibleRows(rows);
+    //setVisibleRows(0);
+    //setVisibleRows(rows);
+
+    emit stateChanged(collapse);
 }
 
 /**
