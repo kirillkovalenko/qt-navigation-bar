@@ -921,6 +921,8 @@ QByteArray NavBar::saveState(int version) const
     stream << version;
     stream << visibleRows();
     stream << currentIndex();
+    stream << collapsedState;
+    stream << expandedWidth;
     stream << pages.size();
 
     foreach(const NavBarPage &page, pages)
@@ -943,7 +945,8 @@ bool NavBar::restoreState(const QByteArray &state, int version)
     QByteArray data = state;
     QDataStream stream(&data, QIODevice::ReadOnly);
 
-    int magic, ver, rows, cur, size;
+    int magic, ver, rows, cur, size, expwidth;
+    bool colstate;
 
     stream >> magic;
     stream >> ver;
@@ -953,6 +956,8 @@ bool NavBar::restoreState(const QByteArray &state, int version)
 
     stream >> rows;
     stream >> cur;
+    stream >> colstate;
+    stream >> expwidth;
     stream >> size;
 
     if((rows > pages.size()) || (cur > pages.size()-1) || (size > pages.size()))
@@ -995,6 +1000,12 @@ bool NavBar::restoreState(const QByteArray &state, int version)
 
     setVisibleRows(rows);
     setCurrentIndex(cur);
+    setCollapsed(colstate);
+    header->button->setChecked(colstate);
+
+    contentsPopup->resize(0, 0);
+    if(collapsedState)
+        expandedWidth = expwidth;
 
     return true;
 }

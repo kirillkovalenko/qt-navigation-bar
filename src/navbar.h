@@ -37,7 +37,7 @@ class NavBar : public QFrame
     Q_PROPERTY(QSize largeIconSize      READ largeIconSize      WRITE setLargeIconSize)
 
 public:
-    enum { NavBarMarker = 0x4e426172 };
+    enum { NavBarMarker = 0x4e427232 };
 
     explicit NavBar(QWidget *parent = 0, Qt::WindowFlags f = 0);
     ~NavBar();
