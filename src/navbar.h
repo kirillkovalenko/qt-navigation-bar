@@ -27,7 +27,7 @@ class NavBar : public QFrame
     Q_PROPERTY(int   count              READ count)
     Q_PROPERTY(int   currentIndex       READ currentIndex       WRITE setCurrentIndex NOTIFY currentChanged)
     Q_PROPERTY(int   rowHeight          READ rowHeight          WRITE setRowHeight)
-    Q_PROPERTY(bool  collapsed          READ isCollapsed        WRITE setCollapsed    NOTIFY stateChanged)
+    Q_PROPERTY(bool  collapsed          READ isCollapsed        WRITE setCollapsed    NOTIFY collapsedChanged)
     Q_PROPERTY(bool  autoPopup          READ autoPopup          WRITE setAutoPopup)
     Q_PROPERTY(bool  showCollapseButton READ showCollapseButton WRITE setShowCollapseButton)
     Q_PROPERTY(bool  showHeader         READ showHeader         WRITE setShowHeader)
@@ -93,7 +93,7 @@ public:
 signals:
     void currentChanged(int index);
     void visibleRowsChanged(int rows);
-    void stateChanged(bool collapsed);
+    void collapsedChanged(bool collapsed);
 
 public slots:
     void setCurrentIndex(int index);

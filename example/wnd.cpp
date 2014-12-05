@@ -24,7 +24,7 @@ Wnd::Wnd(QWidget *parent)
 
     connect(navBar, SIGNAL(currentChanged(int)),     SLOT(navBarCurrentChanged(int)));
     connect(navBar, SIGNAL(visibleRowsChanged(int)), SLOT(navBarVisibleRowsChanged(int)));
-    connect(navBar, SIGNAL(stateChanged(bool)),      SLOT(navBarStateChanged(bool)));
+    connect(navBar, SIGNAL(collapsedChanged(bool)),  SLOT(navBarCollapsedChanged(bool)));
 
     //Creating other stuff
 
@@ -150,9 +150,9 @@ void Wnd::navBarVisibleRowsChanged(int rows)
     signalWidget->scrollToBottom();
 }
 
-void Wnd::navBarStateChanged(bool collapsed)
+void Wnd::navBarCollapsedChanged(bool collapsed)
 {
-    signalWidget->addItem(QString("stateChanged(%1)").arg(collapsed));
+    signalWidget->addItem(QString("collapsedChanged(%1)").arg(collapsed));
     signalWidget->scrollToBottom();
 }
 

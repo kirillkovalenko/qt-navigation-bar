@@ -43,7 +43,7 @@
  * @param rows Number of visible rows
  */
 /**
- * @fn NavBar::stateChanged
+ * @fn NavBar::collapsedChanged
  * This signal is emitted when navigation bar collapsed or expanded.
  * @param collapsed True if collapsed
  */
@@ -220,7 +220,7 @@ int NavBar::rowHeight() const
  * @property NavBar::collapsed
  * Sets navigation bar collapsed state on/off
  * @access bool isCollaped() const\n void setCollapsed(bool)
- * @signals stateChanged(bool)
+ * @signals collapsedChanged(bool)
  */
 bool NavBar::isCollapsed() const
 {
@@ -332,7 +332,7 @@ void NavBar::setCollapsed(bool collapse)
     resizeContent(size(), rowHeight());
     proceedCollapse = false;
 
-    emit stateChanged(collapse);
+    emit collapsedChanged(collapse);
 }
 
 /**
