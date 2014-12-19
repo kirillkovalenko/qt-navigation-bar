@@ -23,3 +23,5 @@ RESOURCES += \
 
 FORMS += \
     navbaroptionsdialog.ui
+
+TRANSLATIONS += navigationbar_ru.ts
