@@ -447,6 +447,7 @@ void NavBar::recalcPageList(bool reorder)
  * @property NavBar::smallIconSize
  * This property holds size of icons in the bottom toolbar.
  * @access int smallIconSize() const\n void setSmallIconSize(int)
+ * @see largeIconSize
  */
 QSize NavBar::smallIconSize() const
 {
@@ -467,6 +468,7 @@ void NavBar::setSmallIconSize(const QSize &size)
  * @property NavBar::largeIconSize
  * This property holds size of icons in the page list.
  * @access int smallIconSize() const\n void setSmallIconSize(int)
+ * @see smallIconSize
  */
 QSize NavBar::largeIconSize() const
 {
@@ -640,6 +642,7 @@ void NavBar::removePage(int index)
  * Returns the text of the page at given position, or an empty string if index is out of range.
  * @param index Page index
  * @return Page text
+ * @see setPageText
  */
 QString NavBar::pageText(int index) const
 {
@@ -650,6 +653,7 @@ QString NavBar::pageText(int index) const
  * Returns true if the page at given position is enabled; otherwise returns false.
  * @param index Page index
  * @return Enabled or disabled
+ * @see setPageEnabled
  */
 bool NavBar::isPageEnabled(int index)
 {
@@ -660,6 +664,7 @@ bool NavBar::isPageEnabled(int index)
  * If visible is true then the page at given position is visible; otherwise the page at position index is invisible.
  * @param index Page index
  * @param enabled Enable or disable
+ * @see isPageVisible
  */
 void NavBar::setPageVisible(int index, bool visible)
 {
@@ -677,6 +682,7 @@ void NavBar::setPageVisible(int index, bool visible)
  * Returns true if the page at given position is visible; otherwise returns false.
  * @param index Page index
  * @return Visible or not
+ * @see setPageVisible
  */
 bool NavBar::isPageVisible(int index)
 {
@@ -687,6 +693,7 @@ bool NavBar::isPageVisible(int index)
  * If enabled is true then the page at given position is enabled; otherwise the page at position index is disabled.
  * @param index Page index
  * @param enabled Enable or disable
+ * @see isPageEnabled
  */
 void NavBar::setPageEnabled(int index, bool enabled)
 {
@@ -697,6 +704,7 @@ void NavBar::setPageEnabled(int index, bool enabled)
  * Returns the icon of the page at given position, or a null icon if index is out of range.
  * @param index Page index
  * @return Page icon
+ * @see setPageIcon
  */
 QIcon NavBar::pageIcon(int index) const
 {
@@ -707,6 +715,7 @@ QIcon NavBar::pageIcon(int index) const
  * Sets the text of the page at given position.
  * @param index Page index
  * @param text New text
+ * @see pageText
  */
 void NavBar::setPageText(int index, const QString &text)
 {
@@ -717,6 +726,7 @@ void NavBar::setPageText(int index, const QString &text)
  * Sets the icon of the page at given position.
  * @param index Page index
  * @param icon New icon
+ * @see pageIcon
  */
 void NavBar::setPageIcon(int index, const QIcon &icon)
 {

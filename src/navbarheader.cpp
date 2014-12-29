@@ -8,7 +8,7 @@
  * @class NavBarHeader
  * @brief Navigation bar header.
  *
- * Navigation bar header.
+ * Navigation bar header, with title and "collapse" button.
  */
 /**
  * @fn NavBarHeader::buttonClicked
@@ -58,6 +58,11 @@ void NavBarHeader::createButton()
     connect(button, SIGNAL(clicked(bool)), SIGNAL(buttonClicked(bool)));
 }
 
+/**
+ * @class NavBarTitleButton
+ *
+ * This button used as vertical title when NavBar is in collapsed mode. Clicking it will show popup with NavBar page content.
+ */
 
 NavBarTitleButton::NavBarTitleButton(QWidget *parent):
     QPushButton(parent)

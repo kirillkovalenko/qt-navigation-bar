@@ -5,10 +5,6 @@
  * @class NavBarSplitter
  * @brief Splitter, used inside navigation bar.
  */
-/**
- * @property NavBarSplitter::increment
- * This property holds increment, used to move splitter handle. This value must be equal to NavBar::rowHeight property.
- */
 
 /**
  * Constructs new splitter with the parent argument passed on to the QFrame constructor.
@@ -19,11 +15,19 @@ NavBarSplitter::NavBarSplitter(QWidget *parent):
 {
 }
 
+/**
+ * Returns increment, used to move splitter handle.
+ * @return Increment value
+ */
 int NavBarSplitter::increment() const
 {
     return qobject_cast<NavBarSplitterHandle *>(handle(1))->increment;
 }
 
+/**
+ * Sets increment, used to move splitter handle. This value must be equal to NavBar::rowHeight property.
+ * @param inc Increment value
+ */
 void NavBarSplitter::setIncrement(int inc)
 {
     qobject_cast<NavBarSplitterHandle *>(handle(1))->increment = inc;
